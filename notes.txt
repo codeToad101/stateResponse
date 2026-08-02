@@ -1,0 +1,15 @@
+WORKERS (N=1000-5000)
+├─ Attributes: wage, skill, employment_status, grievance, risk_perception
+├─ Behavior: work, consume, organize, protest if (grievance - risk) > threshold
+└─ Interact: locally (proximity/network) + with firms
+
+FIRMS (N=50-200)
+├─ Attributes: productivity, capital, workforce, profit
+├─ Behavior: hire/fire, set wages based on labor market tightness + profit
+└─ Feedback: tight labor → raise wages; slack → cut wages or lay off
+
+STATE (N=1, but endogenous decision-maker)
+├─ Observe: Gini coefficient, unemployment rate, protest intensity
+├─ Decide: fiscal policy (tax rate τ, redistribution R)
+├─ Objective: maximize [social stability - redistribution cost]
+└─ Constraint: budget balance (τ × wages ≈ R)
