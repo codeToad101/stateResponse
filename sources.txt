@@ -1,0 +1,10 @@
+Medicaid: https://www.statista.com/statistics/245348/total-medicaid-expenditure-since-1966/?srsltid=AfmBOoqKzgaT9nlfYKAEm7M0NYLajw30sZyqBvNFaIHUkukK6b-93tCe
+Unemployment Insurance: https://fred.stlouisfed.org/series/G160761A027NBEA
+Strike Listing: https://www.bls.gov/wsp/
+CNTSDATA: https://www.cntsdata.com/
+SNAP: https://www.fna.usda.gov/pd/supplemental-nutrition-assistance-program-snap?
+gini: https://pip.worldbank.org/api?
+federal tax: https://www.census.gov/data/tables/time-series/demo/income-poverty/historical-income-inequality.html
+eitc: Source: Internal Revenue Service, Statistics of Income Division, Table 2.5:  Returns with 
+Earned Income Credit and Table A: Selected Income and Tax Items for Selected Years (in 
+Current and Constant Dollars). January 2024.
