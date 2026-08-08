@@ -82,101 +82,6 @@ class ManualDataTranslator:
         
         return aligned
     
-    def ingest_csv(self, filename, date_col, value_col, series_name, 
-                   fill_method='ffill', fill_gaps_with_zero=False, encoding='utf-8', 
-                   skip_rows=0):
-        """Ingest CSV file with encoding fallback."""
-        filepath = self.data_dir / filename
-        
-        # Determine encoding
-        actual_encoding = encoding
-        try:
-            df = pd.read_csv(filepath, encoding=encoding, skiprows=skip_rows)
-        except UnicodeDecodeError:
-            for enc in ['latin-1', 'cp1252', 'iso-8859-1']:
-                try:
-                    df = pd.read_csv(filepath, encoding=enc, skiprows=skip_rows)
-                    actual_encoding = enc
-                    break
-                except:
-                    continue
-            else:
-                print(f"  ✗ {filename}: Could not decode with any encoding")
-                return None
-        except Exception as e:
-            print(f"  ✗ {filename}: {str(e)[:50]}")
-            return None
-        
-        try:
-            # Handle table headers that start with "Table"
-            if df.shape[1] > 10 and str(df.columns[0]).startswith('Table'):
-                # Re-read with skiprows=1 to use row 0 as header
-                df = pd.read_csv(filepath, encoding=actual_encoding, skiprows=1)
-            
-            # Clean column names
-            df.columns = [str(c).strip() for c in df.columns]
-            
-            # Parse dates and values
-            # Remove % signs and commas from value column
-            values = df[value_col].astype(str).str.replace('%', '').str.replace(',', '')
-            values = pd.to_numeric(values, errors='coerce')
-            
-            dates = pd.to_datetime(df[date_col], errors='coerce')
-            
-            # Create series and remove NaN dates
-            series = pd.Series(values.values, index=dates)
-            series = series[series.index.notna()]
-            
-            if len(series) == 0:
-                print(f"  ⚠ {filename}: No valid data after parsing")
-                return None
-            
-            aligned = self._align_to_quarterly(series, series_name, 
-                                               fill_method, fill_gaps_with_zero)
-            self.translated_series[series_name] = aligned
-            print(f"  ✓ {filename} → {series_name} ({len(series)} records)")
-            return aligned
-        except Exception as e:
-            print(f"  ✗ {filename}: {str(e)[:50]}")
-            import traceback
-            traceback.print_exc()
-            return None
-    
-    def ingest_xlsx(self, filename, sheet_name, date_col, value_col, series_name,
-                    fill_method='ffill', fill_gaps_with_zero=False):
-        """Ingest Excel file with flexible column handling."""
-        filepath = self.data_dir / filename
-        try:
-            df = pd.read_excel(filepath, sheet_name=sheet_name)
-            
-            # Handle multiple columns (sum them)
-            if isinstance(value_col, list):
-                # Sum across multiple columns, skip NaN
-                data_values = df[value_col].sum(axis=1, skipna=True).values
-                col_str = " + ".join(value_col)
-            else:
-                # Single column
-                data_values = df[value_col].values
-                col_str = value_col
-            
-            # Parse dates - handle various formats
-            dates = pd.to_datetime(df[date_col], errors='coerce')
-            
-            # Remove rows with NaN dates or values
-            mask = dates.notna() & pd.Series(data_values).notna()
-            dates = dates[mask]
-            data_values = pd.Series(data_values)[mask].values
-            
-            series = pd.Series(data_values, index=dates)
-            aligned = self._align_to_quarterly(series, series_name,
-                                               fill_method, fill_gaps_with_zero)
-            self.translated_series[series_name] = aligned
-            print(f"  ✓ {filename} (sheet: {sheet_name}) → {series_name} ({len(series)} records)")
-            return aligned
-        except Exception as e:
-            print(f"  ✗ {filename}: {str(e)[:50]}")
-            return None
-    
     def ingest_and_merge_strike_data(self, annual_file, detailed_file, 
                                      annual_date_col, annual_workers_col, annual_days_col,
                                      detailed_date_col, detailed_workers_col, detailed_days_col,
@@ -338,6 +243,112 @@ class ManualDataTranslator:
         
         except Exception as e:
             print(f"  ✗ {filename}: {str(e)[:50]}")
+            return None
+
+    def ingest_and_adjust_fiscal_year(self, filename, date_col, value_col, 
+                                    series_name, file_type='xlsx', 
+                                    sheet_name=None, encoding='utf-8', skip_rows=0,
+                                    is_fiscal_year=True):
+        """
+        Ingest annual data (fiscal or calendar year), adjust if FY, then align to quarterly.
+        Single flow with consistent diagnostics from _align_to_quarterly().
+        
+        Args:
+            filename: str
+            date_col: str, column name with dates
+            value_col: str or list, column(s) with values
+            series_name: str
+            file_type: 'xlsx' or 'csv'
+            sheet_name: str (only if xlsx)
+            encoding: str (only if csv)
+            skip_rows: int (only if csv)
+        
+        Returns:
+            pd.Series aligned to quarterly (or None if failed)
+        """
+        filepath = self.data_dir / filename
+        
+        try:
+            # ===== INGEST =====
+            if file_type == 'xlsx':
+                df = pd.read_excel(filepath, sheet_name=sheet_name)
+            else:  # csv
+                actual_encoding = encoding
+                try:
+                    df = pd.read_csv(filepath, encoding=encoding, skiprows=skip_rows)
+                except UnicodeDecodeError:
+                    for enc in ['latin-1', 'cp1252', 'iso-8859-1']:
+                        try:
+                            df = pd.read_csv(filepath, encoding=enc, skiprows=skip_rows)
+                            actual_encoding = enc
+                            break
+                        except:
+                            continue
+                    else:
+                        print(f"  ✗ {filename}: Could not decode")
+                        return None
+            
+            # Clean columns
+            df.columns = [str(c).strip() for c in df.columns]
+            
+            # Parse values (handle % and commas)
+            if isinstance(value_col, list):
+                data_values = df[value_col].sum(axis=1, skipna=True).values
+            else:
+                values_raw = df[value_col].astype(str).str.replace('%', '').str.replace(',', '')
+                data_values = pd.to_numeric(values_raw, errors='coerce').values
+            
+            # Parse dates
+            dates = pd.to_datetime(df[date_col], errors='coerce')
+            
+            # Remove NaN rows
+            mask = dates.notna() & pd.Series(data_values).notna()
+            dates = dates[mask]
+            data_values = pd.Series(data_values)[mask].values
+            
+            series_annual = pd.Series(data_values, index=dates)
+            
+            if len(series_annual) == 0:
+                print(f"  ✗ {filename}: No valid data after parsing")
+                return None
+            
+            # ===== DETECT & ADJUST FISCAL YEAR =====
+            # Heuristic: if year values suggest FY (Oct-Sept), adjust to CY
+            # Most federal spending data (Medicaid, SNAP, UI) reports on FY basis
+            years = series_annual.index.year
+            
+            # Simple heuristic: assume annual data ending in Oct-Sept is FY
+            # (most common for US federal fiscal year programs)
+            # If your data is explicitly labeled FY, set this flag manually
+            is_fiscal_year = True  # Set to False if you KNOW it's calendar year
+            
+            if is_fiscal_year and len(series_annual) > 0:
+                # Shift FY dates to Jan 1 of calendar year
+                adjusted_index = pd.to_datetime([f"{y}-01-01" for y in years])
+                series_annual.index = adjusted_index
+                adj_note = " (FY→CY adjusted)"
+            else:
+                adj_note = ""
+            
+            # ===== ALIGN TO QUARTERLY =====
+            aligned = self._align_to_quarterly(
+                series_annual, 
+                series_name, 
+                fill_method='ffill', 
+                fill_gaps_with_zero=False
+            )
+            
+            # Store in translated series
+            self.translated_series[series_name] = aligned
+            
+            print(f"  ✓ {filename} → {series_name} ({len(series_annual)} years{adj_note})")
+            
+            return aligned
+        
+        except Exception as e:
+            print(f"  ✗ {filename}: {str(e)[:60]}")
+            import traceback
+            traceback.print_exc()
             return None
     
     def print_diagnostics(self):
@@ -587,75 +598,6 @@ class USStateResponseDataCollector:
         
         self._log("Tax data collection (partial)")
     
-    def collect_redistribution_data(self):
-        """
-        MANUAL AGGREGATION of redistribution programs:
-        1. Unemployment Insurance (UI)
-        2. Workers Compensation
-        3. Veterans Benefits
-        4. SNAP (Food Stamps)
-        5. EITC (Earned Income Tax Credit)
-        6. Medicaid (medical vendor payments)
-        
-        These will be manually collected and summed.
-        """
-        self._log("Setting up redistribution program components...")
-        
-        # FRED IDs for individual programs (to be fetched or manual)
-        programs = {
-            'unemployment_insurance': {
-                'fred_id': 'IUPBS',  # Unemployment Insurance Benefits Paid
-                'description': 'Quarterly benefits paid ($ billions)',
-                'notes': 'Direct from FRED'
-            },
-            'workers_compensation': {
-                'fred_id': 'BEIC',  # Workers Compensation Insurance Benefits
-                'description': 'Quarterly benefits paid ($ billions)',
-                'notes': 'Direct from FRED'
-            },
-            'social_security': {
-                'fred_id': 'A702RC1', #Social Security Benefit Payments
-                'description': 'Annual benefits paid ($ billions) - forward-fill to quarterly',
-                'notes': 'Direct from FRED'
-            },
-            'veterans_benefits': {
-                'fred_id': 'A759RC1',  # Veterans Compensation & Pension
-                'description': 'Annual benefits paid ($ billions) - forward-fill to quarterly',
-                'notes': 'Direct from FRED'
-            },
-            'snap': {
-                'fred_id': 'A627RC1',  # SNAP Benefits Paid
-                'description': 'Annual benefits paid ($ billions) - forward-fill to quarterly',
-                'notes': 'Manual collection from USDA or Census'
-            },
-            'eitc': {
-                'fred_id': None,
-                'description': 'Annual tax credits claimed ($ billions)',
-                'notes': 'Manual from IRS / Tax Foundation'
-            },
-            'medicaid': {
-                'fred_id': 'A091RX1Q027SBEA',  # Medicaid benefit payments
-                'description': 'Quarterly benefit payments ($ billions)',
-                'notes': 'Direct from FRED'
-            }
-        }
-        
-        for program_name, metadata in programs.items():
-            if metadata['fred_id']:
-                self.fetch_fred_quarterly(
-                    metadata['fred_id'],
-                    f"redist_{program_name}"
-                )
-            else:
-                self._log(
-                    f"⚠ {program_name.upper()}: Manual collection required",
-                    "WARN"
-                )
-            
-            self.redistribution_components[program_name] = metadata
-        
-        self._log("Redistribution programs: Ready for aggregation")
-    
     def aggregate_redistribution(self):
         """
         Combine all redistribution components into single series.
@@ -824,7 +766,6 @@ class USStateResponseDataCollector:
         self.collect_income_inequality_data()
         self.collect_wage_percentile_data()
         self.collect_tax_data()
-        self.collect_redistribution_data()
         self.collect_protest_data()
         
         self._log("\n" + "-"*70)
@@ -902,20 +843,12 @@ def parse_ambiguous_strike_dates(date_series):
             years.append(np.nan)
     
     return pd.Series(years, index=date_series.index)
- 
+
 def run_manual_ingestion(collector_data, data_dir="data/raw/"):
-    """
-    Run fixed manual data ingestion pipeline.
+    """Run manual data ingestion with unified FY handling."""
     
-    Args:
-        collector_data: pd.DataFrame from USDataCollector (with quarterly index)
-        data_dir: path to raw manual data files
-    
-    Returns:
-        Merged DataFrame with all manual + FRED data
-    """
     print("\n" + "="*80)
-    print("MANUAL DATA INGESTION PIPELINE (FIXED)")
+    print("MANUAL DATA INGESTION PIPELINE")
     print("="*80 + "\n")
     
     translator = ManualDataTranslator(
@@ -925,47 +858,66 @@ def run_manual_ingestion(collector_data, data_dir="data/raw/"):
     
     print("Ingesting data files...\n")
     
-    # 1. GINI (CSV)
-    translator.ingest_csv(
+    # Calendar year data (no FY adjustment needed)
+    translator.ingest_and_adjust_fiscal_year(
         filename="gini.csv",
         date_col="reporting_year",
         value_col="gini",
         series_name="gini_coefficient",
-        fill_method='ffill'
+        file_type='csv',
+        is_fiscal_year=False  # ← Calendar year
     )
     
-    # 2. FEDERAL TAX RATES (CSV with encoding issue)
-    translator.ingest_csv(
+    translator.ingest_and_adjust_fiscal_year(
         filename="federal-tax.csv",
         date_col="Year",
         value_col="Total",
         series_name="avg_federal_tax_rate_pct",
-        fill_method='ffill',
-        encoding='utf-8',  # Will fallback to latin-1
-        skip_rows=1  # Skip the table header row
+        file_type='csv',
+        skip_rows=1,
+        is_fiscal_year=False  # ← Calendar year
     )
     
-    # 3. EITC (XLSX)
-    translator.ingest_xlsx(
+    translator.ingest_and_adjust_fiscal_year(
         filename="EITC_to_2025.xlsx",
-        sheet_name="Sheet1",
         date_col="Year",
         value_col="total_eitc_billions",
         series_name="redist_eitc",
-        fill_gaps_with_zero=True
+        file_type='xlsx',
+        sheet_name="Sheet1",
+        is_fiscal_year=False  # ← Calendar year
     )
     
-    # 4. SNAP (XLSX)
-    translator.ingest_xlsx(
+    # Fiscal year data (needs FY→CY adjustment)
+    translator.ingest_and_adjust_fiscal_year(
         filename="SNAP.xlsx",
-        sheet_name="Sheet1",
         date_col="Fiscal_Year",
         value_col="snap_benefits_millions",
         series_name="redist_snap",
-        fill_gaps_with_zero=True
+        file_type='xlsx',
+        sheet_name="Sheet1",
+        is_fiscal_year=True  # ← Fiscal year
     )
     
-    # 5. STRIKES (merged annual + BLS monthly)
+    translator.ingest_and_adjust_fiscal_year(
+        filename="medicaid.csv",
+        date_col="Year",
+        value_col="expenditure_billions",
+        series_name="redist_medicaid",
+        file_type='csv',
+        is_fiscal_year=True  # ← Fiscal year
+    )
+    
+    # Calendar year (full date format)
+    translator.ingest_and_adjust_fiscal_year(
+        filename="UI.csv",
+        date_col="observation_date",
+        value_col="money_billions",
+        series_name="redist_ui",
+        file_type='csv',
+        is_fiscal_year=False  # ← Calendar year
+    )
+
     translator.ingest_and_merge_strike_data(
         annual_file="annual-strike-listing.xlsx",
         detailed_file="strike-listing.xlsx",
@@ -977,8 +929,7 @@ def run_manual_ingestion(collector_data, data_dir="data/raw/"):
         detailed_days_col="idle_days",
         cutover_year=1988
     )
-    
-    # 6. CNTSDATA PROTESTS (US only)
+
     translator.ingest_cntsdata_protests(
         filename="CNTSDATA.xlsx",
         sheet_name="2026 Data",
@@ -994,13 +945,15 @@ def run_manual_ingestion(collector_data, data_dir="data/raw/"):
     translator.validate_alignment(reference_series_name="gini_coefficient")
     
     # ===== MERGE =====
-    print("Merging with FRED data...\n")
+    print("\nMerging with FRED data...\n")
     merged_df = translator.merge_into_dataframe(collector_data)
+
+    merged_df['redist_snap'] = merged_df['redist_snap'] / 1000
+    merged_df['redist_eitc'] = merged_df['redist_eitc'] / 1000
     
-    print(f"✓ Merge complete")
+    print(f"✓ Complete (all series on calendar year basis, quarterly aligned)")
     print(f"  Shape: {merged_df.shape}")
     print(f"  Date range: {merged_df.index.min().date()} to {merged_df.index.max().date()}")
-    print(f"  Columns: {merged_df.columns.tolist()}")
     
     return merged_df
 
@@ -1026,6 +979,7 @@ if __name__ == "__main__":
 
     # Step 3: Ingest manual data
     merged = run_manual_ingestion(collector.data, data_dir="data/raw/")
+    collector.data = merged
 
     # Step 4: Calculate strike severity
     if 'workers_affected' in merged.columns:
