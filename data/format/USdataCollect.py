@@ -299,7 +299,12 @@ class ManualDataTranslator:
                 data_values = pd.to_numeric(values_raw, errors='coerce').values
             
             # Parse dates
-            dates = pd.to_datetime(df[date_col], errors='coerce')
+            raw_col = df[date_col]
+            if pd.api.types.is_numeric_dtype(raw_col) or raw_col.astype(str).str.match(r'^\d{4}$').all():
+                # bare year integers (e.g. 1970, 1971...) -> treat as Jan 1 of that year
+                dates = pd.to_datetime(raw_col.astype(int).astype(str) + '-01-01', errors='coerce')
+            else:
+                dates = pd.to_datetime(raw_col, errors='coerce')
             
             # Remove NaN rows
             mask = dates.notna() & pd.Series(data_values).notna()
@@ -316,11 +321,6 @@ class ManualDataTranslator:
             # Heuristic: if year values suggest FY (Oct-Sept), adjust to CY
             # Most federal spending data (Medicaid, SNAP, UI) reports on FY basis
             years = series_annual.index.year
-            
-            # Simple heuristic: assume annual data ending in Oct-Sept is FY
-            # (most common for US federal fiscal year programs)
-            # If your data is explicitly labeled FY, set this flag manually
-            is_fiscal_year = True  # Set to False if you KNOW it's calendar year
             
             if is_fiscal_year and len(series_annual) > 0:
                 # Shift FY dates to Jan 1 of calendar year
@@ -628,7 +628,7 @@ class USStateResponseDataCollector:
     def collect_gdp_data(self):
         """Nominal GDP (for % calculations)"""
         self._log("Collecting GDP data...")
-        self.fetch_fred_quarterly("A191RL1Q225SBEA", "gdp_billions")
+        self.fetch_fred_quarterly("GDP", "gdp_billions")
     
     def collect_protest_data(self):
         """
@@ -689,42 +689,57 @@ class USStateResponseDataCollector:
         
         self._log("✓ Derived metrics calculated")
     
-    def calculate_strike_severity(self, workers_affected_col, days_idle_col, output_col='protest_intensity_score'):
+    def calculate_strike_severity(self, workers_affected_col, days_idle_col,
+                                output_col='protest_intensity_score',
+                                days_per_quarter=91):
         """
-        Calculate composite strike severity score for state response function.
-        
-        Used after manual strike data ingestion. Combines:
-        - Participation rate: (workers_affected / civilian_labor_force)
-        - Duration: days_idle (cumulative disruption)
-        
-        Args:
-            workers_affected_col: column name with workers affected
-            days_idle_col: column name with cumulative days idle
-            output_col: name for output severity score
-        
-        Returns:
-            None (modifies self.data in place)
+        Composite strike severity score, rebuilt to avoid saturation.
+
+        Old version divided cumulative person-days-idle by 365 and clipped —
+        since days_idle is a *summed* figure across all strikes in a quarter
+        (often in the thousands+), that clip triggered almost every period,
+        collapsing the score to a near-constant ~0.5. Fixed by:
+        1. Normalizing days_idle against total *available* person-days
+            (labor_force x days_per_quarter), not a flat 365.
+        2. log1p-transforming both components before combining, since
+            strike activity is extremely right-skewed (a few large strikes
+            dominate raw counts).
+        3. Min-max rescaling the combined score across the full series so
+            it actually spans [0, 1] instead of saturating.
         """
         if 'civilian_labor_force_thousands' not in self.data.columns:
             self._log("Strike severity calc requires civilian_labor_force_thousands", "WARN")
             return
-        
+
         if workers_affected_col not in self.data.columns or days_idle_col not in self.data.columns:
             self._log(f"Strike columns {workers_affected_col}, {days_idle_col} not found", "WARN")
             return
-        
-        # Participation rate (affected / total labor force, scaled to 0-1)
-        participation = self.data[workers_affected_col] / (self.data['civilian_labor_force_thousands'] * 1000)
-        participation = participation.clip(0, 1)  # cap at 100%
-        
-        # Days idle (normalize to 0-1 scale: cap at 365 days/quarter)
-        days_scaled = self.data[days_idle_col] / 365
-        days_scaled = days_scaled.clip(0, 1)
-        
-        # Composite score: equal weight to participation + duration
-        self.data[output_col] = (participation + days_scaled) / 2
-        
-        self._log(f"✓ Strike severity calculated → {output_col}")
+
+        labor_force = self.data['civilian_labor_force_thousands'] * 1000
+
+        # Genuine rates (sanity-clipped only to guard against bad input data,
+        # not expected to bind under normal values)
+        participation_rate = (self.data[workers_affected_col] / labor_force).clip(0, 1)
+        days_idle_rate = (self.data[days_idle_col] / (labor_force * days_per_quarter)).clip(0, 1)
+
+        # Log-transform to tame right-skew (scale up first since rates are tiny,
+        # e.g. ~1e-5, and log1p on values that small barely moves them)
+        log_participation = np.log1p(participation_rate * 1e6)
+        log_days_idle = np.log1p(days_idle_rate * 1e6)
+
+        raw_score = log_participation + log_days_idle
+
+        # Min-max rescale across the full series -> guarantees real spread in [0,1]
+        valid = raw_score.dropna()
+        if len(valid) == 0 or valid.max() == valid.min():
+            self._log(f"{output_col}: insufficient variation to rescale", "WARN")
+            self.data[output_col] = raw_score
+            return
+
+        self.data[output_col] = (raw_score - valid.min()) / (valid.max() - valid.min())
+
+        self._log(f"✓ Strike severity recalculated → {output_col} "
+                f"(range: {self.data[output_col].min():.3f}-{self.data[output_col].max():.3f})")
     
     def validate_data(self):
         """Check for issues, report coverage"""
