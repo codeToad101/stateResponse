@@ -8,3 +8,68 @@ federal tax: https://www.census.gov/data/tables/time-series/demo/income-poverty/
 eitc: Source: Internal Revenue Service, Statistics of Income Division, Table 2.5:  Returns with 
 Earned Income Credit and Table A: Selected Income and Tax Items for Selected Years (in 
 Current and Constant Dollars). January 2024.
+
+
+SOURCES = [
+    {
+        "citation": "Dosi, G., Pereira, M. C., Roventini, A., & Virgillito, M. E. (2020). "
+                    "Wage Inequality, Labor Market Polarization and Skill-Biased "
+                    "Technological Change: An Evolutionary (Agent-Based) Approach. "
+                    "Computational Economics.",
+        "url": "https://link.springer.com/article/10.1007/s10614-020-10026-0",
+        "relevance": (
+            "Most directly relevant source for the occupational-tier pay structure "
+            "(agents/worker.py: occupational_tier()) -- continuous skill heterogeneity "
+            "with skill-biased, convex pay premiums, in a labor-market ABM close to "
+            "this project's own worker/firm setup. Worth citing directly for the "
+            "modeling choice, and worth reading further for calibration targets if "
+            "the tier bands get refined."
+        ),
+    },
+    {
+        "citation": "Socio-Economic Review (2018). Effects of labour market reforms upon "
+                    "unemployment and income inequalities: an agent-based model.",
+        "url": "https://academic.oup.com/ser/article/16/4/687/4739737",
+        "relevance": (
+            "Explicitly links wage-share vs. profit-share splits (parallels "
+            "Firm.profit_share_to_owner) to resulting Gini, and models firing/rehire "
+            "dynamics driving between-worker inequality -- close structural parallel "
+            "to this project's Firm/Worker mechanics."
+        ),
+    },
+    {
+        "citation": "Dawid, H., Gemkow, S., Harting, P., van der Hoog, S., & Neugart, M. "
+                    "Eurace@Unibi Model documentation and related papers.",
+        "url": "https://faculty.sites.iastate.edu/tesfatsi/archive/tesfatsi/amulmark.htm",
+        "relevance": (
+            "Standard reference macro-ABM framework using heterogeneous general + "
+            "specific worker skills -- the precedent this project's occupational-tier "
+            "structure is drawn from. Good general methodology citation for the ABM's "
+            "labor-market design overall, not just the inequality mechanic."
+        ),
+    },
+    {
+        "citation": "Seppecher, P. JAMEL (Java Agent-based MacroEconomic Laboratory) "
+                    "documentation and related papers.",
+        "url": "https://faculty.sites.iastate.edu/tesfatsi/archive/tesfatsi/amulmark.htm",
+        "relevance": (
+            "Explicit wage-share vs. profit-share income stabilization mechanism in a "
+            "full macro-ABM -- relevant precedent for the capital-income channel "
+            "(Firm.owner_income / owner_wealth) added to close the Gini gap."
+        ),
+    },
+    {
+        "citation": "Bertotti, M. L., & Modanese, G. et al. An agent-based model of the "
+                    "observed distribution of wealth in the United States.",
+        "url": "https://link.springer.com/article/10.1007/s11403-017-0200-9",
+        "relevance": (
+            "Methodologically relevant for HOW to validate simulated inequality "
+            "against a real target distribution (initialize-to-historical-share, then "
+            "check simulated Gini forward) -- closest analog to this project's "
+            "mode='historical' validation approach in abm_model.py. Caution: models "
+            "WEALTH distribution (US wealth Gini ~0.85), not income (~0.35-0.42, this "
+            "project's actual target) -- useful for technique, not for a numeric "
+            "target to match directly."
+        ),
+    },
+]

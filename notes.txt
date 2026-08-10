@@ -1,15 +1,6 @@
-WORKERS (N=1000-5000)
-├─ Attributes: wage, skill, employment_status, grievance, risk_perception
-├─ Behavior: work, consume, organize, protest if (grievance - risk) > threshold
-└─ Interact: locally (proximity/network) + with firms
+make BVAR Markov-Switching (?)
 
-FIRMS (N=50-200)
-├─ Attributes: productivity, capital, workforce, profit
-├─ Behavior: hire/fire, set wages based on labor market tightness + profit
-└─ Feedback: tight labor → raise wages; slack → cut wages or lay off
+Helpful, and arguably not optional given your own framing:
 
-STATE (N=1, but endogenous decision-maker)
-├─ Observe: Gini coefficient, unemployment rate, protest intensity
-├─ Decide: fiscal policy (tax rate τ, redistribution R)
-├─ Objective: maximize [social stability - redistribution cost]
-└─ Constraint: budget balance (τ × wages ≈ R)
+Crisis/revolt mechanism (Turchin/Lawson-Oak) — your README already poses reform vs. revolution as the central ideological stake. Without some revolt-capable mechanism, the "revolution" side of that question is structurally unrepresentable, especially for dictatorship/captured regimes. I'd rank this closer to necessary than optional, but as phase 2 — after the response function is fixed.
+Cross-country data — strengthens the extrapolation region specifically, valuable but not required to answer the core US-calibrated regime comparison.

@@ -760,7 +760,7 @@ class USStateResponseDataCollector:
         
         self._log("✓ Validation complete")
     
-    def export_data(self, filepath="us_state_response_data.csv"):
+    def export_data(self, filepath="results/us_state_response_data.csv"):
         """Save to CSV"""
         try:
             self.data.to_csv(filepath)
@@ -1001,7 +1001,7 @@ if __name__ == "__main__":
         collector.calculate_strike_severity('workers_affected', 'days_idle')
 
     # Step 5: Export & inspect
-    collector.export_data("us_state_response_data.csv")
+    collector.export_data("results/us_state_response_data.csv")
 
     # Check shape & coverage
     print(f"\n✓ Final shape: {merged.shape}")
@@ -1028,7 +1028,7 @@ if __name__ == "__main__":
     # collector.clean_and_align()
     # collector.calculate_derived_metrics()
     # collector.validate_data()
-    # collector.export_data("us_state_response_data.csv")
+    # collector.export_data("results/us_state_response_data.csv")
     # 
     # print("\n✓ Ready for state response function fitting!")
     # print(f"  Shape: {collector.data.shape}")

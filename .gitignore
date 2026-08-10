@@ -1,4 +1,6 @@
 .venv/
 .env/
+.DS_Store
 data/format/secret.py
 data/format/__pycache__/
+__pycache__/
