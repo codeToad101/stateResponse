@@ -390,10 +390,19 @@ class ManualDataTranslator:
             years = series_annual.index.year
             
             if is_fiscal_year and len(series_annual) > 0:
-                # Shift FY dates to Jan 1 of calendar year
-                adjusted_index = pd.to_datetime([f"{y}-01-01" for y in years])
+                if country != "United States":
+                    # Egypt-only: FY runs Jul-Jun, labeled by the ending
+                    # year (e.g. "2011" = FY Jul 2010-Jun 2011). Shift to
+                    # Jul 1 of the PRECEDING calendar year (FY start)
+                    # rather than Jan 1 of the label year. Not
+                    # generalized -- Egypt is the only non-US FY case.
+                    adjusted_index = pd.to_datetime([f"{y-1}-07-01" for y in years])
+                    adj_note = " (Egypt FY Jul-Jun → CY adjusted)"
+                else:
+                    # Shift FY dates to Jan 1 of calendar year
+                    adjusted_index = pd.to_datetime([f"{y}-01-01" for y in years])
+                    adj_note = " (FY→CY adjusted)"
                 series_annual.index = adjusted_index
-                adj_note = " (FY→CY adjusted)"
             else:
                 adj_note = ""
             
@@ -1154,7 +1163,7 @@ def run_manual_ingestion(collector_data, data_dir="data/raw/"):
         value_col="value",
         series_name="redist_usd_bn",
         file_type='csv',
-        is_fiscal_year=False,
+        is_fiscal_year=True,
         country_col="Country",
         country="Egypt",
         country_filter="Egypt"

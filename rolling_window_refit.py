@@ -37,7 +37,7 @@ import pandas as pd
 from agents.state import StateResponseFitter, load_and_prepare_data, build_model_inputs
 
 
-def rolling_refit(csv_path="results/us_state_response_data.csv",
+def rolling_refit(csv_path="results/combined_long_panel.csv",
                    window_years=20, step_years=5, min_obs=12):
     """
     Slides a window_years-wide window across the annual data in

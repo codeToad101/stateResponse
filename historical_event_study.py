@@ -28,7 +28,7 @@ import numpy as np
 import pandas as pd
 
 
-def load_annual_history(csv_path="results/us_state_response_data.csv"):
+def load_annual_history(csv_path="results/combined_long_panel.csv"):
     """
     Aggregates the quarterly CSV to one row per year, independent of
     the ABM-fitting pipeline's load_and_prepare_data() -- kept

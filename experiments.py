@@ -50,7 +50,7 @@ _REGIME_INDEX = {r: i for i, r in enumerate(Regime.ALL)}
 # SHARED FIT — every experiment below reuses this
 # ============================================================================
 
-def fit_once(csv_path="results/us_state_response_data.csv"):
+def fit_once(csv_path="results/combined_long_panel.csv"):
     """
     Single shared fit for every experiment below. Returns everything a
     model instance needs (response_fn, response_params, residuals,

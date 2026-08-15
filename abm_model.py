@@ -330,7 +330,7 @@ class StateResponseModel(mesa.Model):
 
     # ------------------------------------------------------------------
     @classmethod
-    def from_calibrated_data(cls, csv_path="results/us_state_response_data.csv",
+    def from_calibrated_data(cls, csv_path="results/combined_long_panel.csv",
                               regime=Regime.REPRESENTATIVE,
                               n_workers=1000, n_firms=100, mode="free", seed=None,
                               redistribution_enabled=True):
