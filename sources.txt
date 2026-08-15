@@ -5,6 +5,11 @@ CNTSDATA: https://www.cntsdata.com/
 SNAP: https://www.fna.usda.gov/pd/supplemental-nutrition-assistance-program-snap?
 gini: https://pip.worldbank.org/api?
 federal tax: https://www.census.gov/data/tables/time-series/demo/income-poverty/historical-income-inequality.html
+police violence data: politicalterrorscale.org
+gini across non-US: fsolt.org/swiid
+Data sources: OECD (2025)OECD (1985)Lindert (2004) – with major processing by Our World in Data for social spending in non-US areas
+https://data.worldbank.org/ for most non-us : (NY.GDP.MKTP.CD, SL.UEM.TOTL.ZS, GC.TAX.TOTL.GD.ZS, NY.GDP.MKTP.KD.ZG)
+
 eitc: Source: Internal Revenue Service, Statistics of Income Division, Table 2.5:  Returns with 
 Earned Income Credit and Table A: Selected Income and Tax Items for Selected Years (in 
 Current and Constant Dollars). January 2024.
@@ -73,3 +78,11 @@ SOURCES = [
         ),
     },
 ]
+
+policy feedback literature, e.g. Pierson 1993 on path dependence in welfare states
+
+Piketty r>g, Kuran preference falsification, Clark & Oswald reference wage, Dosi et al. 2020, Kaplan & Violante hand-to-mouth, Litterman/Bańbura-Giannone-Reichlin BVAR shrinkage, Burnham & Anderson AIC model selection, Newey-West 1994, Watts-Strogatz, Epstein 2002/generative social science)
+
+social data for -->
+USSR/russia:
+https://scholarworks.wmich.edu/cgi/viewcontent.cgi?article=1195&context=jssw

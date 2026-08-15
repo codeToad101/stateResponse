@@ -30,6 +30,7 @@ against):
 import os
 import numpy as np
 import pandas as pd
+from scipy.stats import linregress
 from statsmodels.tsa.stattools import acf
 
 from abm_model import StateResponseModel
@@ -58,7 +59,7 @@ def fit_once(csv_path="results/us_state_response_data.csv"):
     annual = load_and_prepare_data(csv_path)
     X, y, years = build_model_inputs(annual)
     fitter = StateResponseFitter(X, y, years)
-    best_name, results = fitter.fit_and_compare()
+    best_name, results = fitter.fit_and_compare(extrapolation_safe_only=True)
     best = results[best_name]
     if best["type"] != "parametric":
         raise ValueError(f"Best fit '{best_name}' is a GAM; wrap its predict() "
@@ -187,10 +188,36 @@ def run_regime_comparison(fit, regimes=Regime.ALL, n_seeds=25, n_steps=200,
     summary = raw.groupby("regime")[metric_cols + ["regime"]].apply(
         lambda g: _summ(g)
     )
+    print_regime_summary(summary, n_seeds, n_steps, burn_in)
+    return raw, summary, timeseries
+
+def print_regime_summary(summary, n_seeds, n_steps, burn_in):
+    """
+    Human-legible reformat of the wide regime-comparison summary table --
+    one block per metric, regimes as rows, mean + 95% CI in one line,
+    instead of one unreadable wide row per regime.
+    """
+    metric_labels = {
+        "mean_gini": "Gini",
+        "mean_unemployment": "Unemployment rate",
+        "mean_protest_share": "Protest share",
+        "mean_redistribution": "Redistribution (mean)",
+        "std_redistribution": "Redistribution (volatility)",
+    }
+
     print(f"\nRegime comparison ({n_seeds} seeds/regime, {n_steps} steps, "
           f"burn-in={burn_in})")
-    print(summary.round(4).to_string())
-    return raw, summary, timeseries
+    print("=" * 60)
+
+    for metric, label in metric_labels.items():
+        print(f"\n{label}")
+        print("-" * 60)
+        for regime in summary.index:
+            m = summary.loc[regime, f"{metric}_mean"]
+            lo = summary.loc[regime, f"{metric}_ci95_lo"]
+            hi = summary.loc[regime, f"{metric}_ci95_hi"]
+            print(f"  {regime:<16} {m:>8.4f}   [{lo:.4f}, {hi:.4f}]")
+    print("\n" + "=" * 60)
 
 
 # ============================================================================
@@ -235,6 +262,8 @@ def reform_vs_revolution_test(timeseries, burn_in=50, spike_percentile=90,
             if protest.std() == 0:
                 continue
             threshold = np.percentile(protest, spike_percentile)
+            if threshold <= 0:
+                continue
             spike_ticks = np.where(protest >= threshold)[0]
             for t in spike_ticks:
                 if t < pre_baseline_window or t + event_window >= len(redist):
@@ -377,6 +406,323 @@ def permutation_null_check(fit, n_permutations=2000, seed=0):
 
     return dict(observed=observed, null_dist=null_dist, p_value=p_value)
 
+# ============================================================================
+# 6. GINI GROWTH VS. REDISTRIBUTION TEST
+# ============================================================================
+
+def run_gini_growth_test(fit, n_seeds=15, n_steps=500, burn_in=100,
+                          n_workers=400, n_firms=40, base_seed=9000):
+    """
+    Isolates whether the fiscal-response channel matters for Gini's
+    long-run trajectory at all, vs. only dampens it, by running the
+    SAME representative-regime setup with redistribution fully on vs.
+    fully off (State.redistribution_enabled) and comparing each
+    condition's post-burn-in Gini TREND (OLS slope of gini vs. step),
+    not just its mean level.
+
+    n_steps is much longer than the 200-step regime comparison --
+    compounding-driven Gini drift needs runway to separate from
+    per-tick noise; 200 steps is fine for level comparisons, not for
+    slope estimation.
+
+    Three possible outcomes, all reportable as a real finding:
+      - off has a steeper positive Gini slope than on: redistribution
+        measurably dampens (but per wealth_growth_check.py, does not
+        reverse) rising inequality -- consistent with "insufficient."
+      - on and off have statistically indistinguishable slopes:
+        redistribution as currently calibrated has no detectable effect
+        on the inequality trend at all in this model -- a stronger,
+        different claim than "insufficient."
+      - off has a FLATTER slope than on: would contradict the intended
+        mechanism and needs debugging before any claim is made.
+    """
+    def _condition_slopes(redistribution_enabled):
+        slopes = []
+        for s in range(n_seeds):
+            seed = base_seed + (0 if redistribution_enabled else 1) * 10_000 + s
+            model = StateResponseModel(
+                n_workers=n_workers, n_firms=n_firms, regime=Regime.REPRESENTATIVE,
+                response_fn=fit["response_fn"], response_params=fit["response_params"],
+                response_residuals=fit["residuals"], response_domain_bounds=fit["domain_bounds"],
+                worker_calibration=fit["worker_calibration"],
+                mode="free", initial_gini=fit["initial_gini"],
+                initial_avg_wage=20.0, seed=seed,
+                redistribution_enabled=redistribution_enabled,
+            )
+            for _ in range(n_steps):
+                model.step()
+            df = model.datacollector.get_model_vars_dataframe()
+            post = df.iloc[burn_in:]
+            steps = np.arange(len(post))
+            slope = linregress(steps, post["gini"].to_numpy()).slope
+            slopes.append(slope)
+        return np.array(slopes)
+
+    on_slopes = _condition_slopes(True)
+    off_slopes = _condition_slopes(False)
+
+    def _mean_ci(x):
+        m = x.mean()
+        se = x.std(ddof=1) / np.sqrt(len(x))
+        return m, m - 1.96 * se, m + 1.96 * se
+
+    on_m, on_lo, on_hi = _mean_ci(on_slopes)
+    off_m, off_lo, off_hi = _mean_ci(off_slopes)
+    diff = off_slopes - on_slopes
+    diff_m, diff_lo, diff_hi = _mean_ci(diff)
+
+    print(f"\nGini trend (post-burn-in OLS slope, {n_seeds} seeds/condition, "
+          f"{n_steps} steps, burn-in={burn_in})")
+    print(f"  redistribution ON:  slope = {on_m:+.6f}/step   [{on_lo:+.6f}, {on_hi:+.6f}]")
+    print(f"  redistribution OFF: slope = {off_m:+.6f}/step   [{off_lo:+.6f}, {off_hi:+.6f}]")
+    print(f"  OFF minus ON:       {diff_m:+.6f}   [{diff_lo:+.6f}, {diff_hi:+.6f}]")
+    if diff_lo > 0:
+        print("  -> OFF's slope is credibly steeper than ON's: redistribution measurably "
+              "dampens the rise in Gini in this model (consistent with 'insufficient, "
+              "not absent' if wealth_growth_check.py also showed a real Gini uptrend "
+              "even with redistribution on).")
+    elif diff_hi < 0:
+        print("  -> OFF's slope is credibly FLATTER than ON's -- redistribution appears "
+              "to be accelerating inequality, opposite of the intended mechanism. This "
+              "needs debugging before any claim is made from it.")
+    else:
+        print("  -> ON and OFF slopes are not credibly different: as calibrated, the "
+              "fiscal-response channel has no detectable effect on the Gini trend in "
+              "this model, not merely a dampened one.")
+
+    out = pd.DataFrame({
+        "condition": ["on"] * n_seeds + ["off"] * n_seeds,
+        "seed_index": list(range(n_seeds)) * 2,
+        "gini_slope": np.concatenate([on_slopes, off_slopes]),
+    })
+    return out, dict(on_mean=on_m, on_ci=(on_lo, on_hi),
+                      off_mean=off_m, off_ci=(off_lo, off_hi),
+                      diff_mean=diff_m, diff_ci=(diff_lo, diff_hi))
+
+# ============================================================================
+# 6b. DOSE-RESPONSE CHECK — is the null a scale artifact?
+# ============================================================================
+
+def run_redistribution_dose_response(fit, multipliers=(1, 3, 10, 30),
+                                      n_seeds=10, n_steps=500, burn_in=100,
+                                      n_workers=400, n_firms=40, base_seed=9500):
+    """
+    Scales State.redistribution post-decision by each multiplier and
+    re-checks the Gini slope, to distinguish "redistribution doesn't
+    reach the inequality channel at all" (slope stays flat even at 30x)
+    from "current calibration is just too weak" (slope responds to scale).
+    """
+    from scipy.stats import linregress
+
+    results = []
+    for mult in multipliers:
+        slopes = []
+        for s in range(n_seeds):
+            seed = base_seed + int(mult * 100) + s
+            model = StateResponseModel(
+                n_workers=n_workers, n_firms=n_firms, regime=Regime.REPRESENTATIVE,
+                response_fn=fit["response_fn"], response_params=fit["response_params"],
+                response_residuals=fit["residuals"], response_domain_bounds=fit["domain_bounds"],
+                worker_calibration=fit["worker_calibration"],
+                mode="free", initial_gini=fit["initial_gini"],
+                initial_avg_wage=20.0, seed=seed, redistribution_enabled=True,
+            )
+            orig_redistribute = model.state.redistribute
+            def scaled_redistribute(workers, _orig=orig_redistribute, _m=mult):
+                model.state.redistribution *= _m
+                _orig(workers)
+            model.state.redistribute = scaled_redistribute
+
+            for _ in range(n_steps):
+                model.step()
+            df = model.datacollector.get_model_vars_dataframe().iloc[burn_in:]
+            slope = linregress(np.arange(len(df)), df["gini"].to_numpy()).slope
+            slopes.append(slope)
+        slopes = np.array(slopes)
+        m, se = slopes.mean(), slopes.std(ddof=1) / np.sqrt(len(slopes))
+        results.append(dict(multiplier=mult, mean_slope=m,
+                             ci95_lo=m - 1.96*se, ci95_hi=m + 1.96*se))
+        print(f"  {mult:>4}x redistribution: Gini slope = {m:+.6f}  "
+              f"[{m-1.96*se:+.6f}, {m+1.96*se:+.6f}]")
+
+    out = pd.DataFrame(results)
+    print("\nDose-response result:")
+    print(out.round(6).to_string(index=False))
+    if out["mean_slope"].max() - out["mean_slope"].min() < 2 * out["ci95_hi"].sub(out["ci95_lo"]).mean():
+        print("-> Slope insensitive to scale even at 30x: redistribution mechanism "
+              "appears structurally disconnected from the Gini/inequality channel, "
+              "not merely underpowered.")
+    else:
+        print("-> Slope responds to scale: current real-data calibration is simply "
+              "too weak, consistent with 'insufficient, not absent.'")
+    return out
+
+# ============================================================================
+# 7. TARGETING DIAGNOSTIC — is the ON-condition Gini rise concentrated
+#    in the fixed recipient group, and does per-recipient subsidy grow?
+# ============================================================================
+
+def run_targeting_diagnostic(fit, n_seeds=10, n_steps=500, burn_in=100,
+                              n_workers=400, n_firms=40, base_seed=9800):
+    """
+    Runs representative-regime, redistribution ON, and checks two things
+    against the post-burn-in window:
+      1. Does mean_transfer_per_recipient trend upward over time (the
+         "momentum via redist_lag" mechanism)?
+      2. Does gini_recipients rise faster than gini_non_recipients (the
+         "same fixed group getting an ever-larger, more concentrated
+         subsidy" mechanism)?
+    Both trending the same direction as the overall ON Gini slope from
+    run_gini_growth_test would confirm the targeting-concentration
+    explanation rather than a general "redistribution backfires" claim.
+    """
+    subsidy_slopes = []
+    gini_recip_slopes = []
+    gini_nonrecip_slopes = []
+    n_recipients_means = []
+
+    for s in range(n_seeds):
+        seed = base_seed + s
+        model = StateResponseModel(
+            n_workers=n_workers, n_firms=n_firms, regime=Regime.REPRESENTATIVE,
+            response_fn=fit["response_fn"], response_params=fit["response_params"],
+            response_residuals=fit["residuals"], response_domain_bounds=fit["domain_bounds"],
+            worker_calibration=fit["worker_calibration"],
+            mode="free", initial_gini=fit["initial_gini"],
+            initial_avg_wage=20.0, seed=seed, redistribution_enabled=True,
+        )
+        for _ in range(n_steps):
+            model.step()
+        df = model.datacollector.get_model_vars_dataframe().iloc[burn_in:].reset_index(drop=True)
+        steps = np.arange(len(df))
+
+        subsidy_slopes.append(linregress(steps, df["mean_transfer_per_recipient"]).slope)
+        gini_recip_slopes.append(linregress(steps, df["gini_recipients"]).slope)
+        gini_nonrecip_slopes.append(linregress(steps, df["gini_non_recipients"]).slope)
+        n_recipients_means.append(df["n_recipients"].mean())
+
+    def _mean_ci(x):
+        x = np.array(x)
+        m = x.mean()
+        se = x.std(ddof=1) / np.sqrt(len(x))
+        return m, m - 1.96 * se, m + 1.96 * se
+
+    subs_m, subs_lo, subs_hi = _mean_ci(subsidy_slopes)
+    gr_m, gr_lo, gr_hi = _mean_ci(gini_recip_slopes)
+    gnr_m, gnr_lo, gnr_hi = _mean_ci(gini_non_recipient_slopes := gini_nonrecip_slopes)
+    diff = np.array(gini_recip_slopes) - np.array(gini_nonrecip_slopes)
+    diff_m, diff_lo, diff_hi = _mean_ci(diff)
+
+    print(f"\nTargeting diagnostic ({n_seeds} seeds, {n_steps} steps, burn-in={burn_in})")
+    print(f"  Mean recipients/tick:              {np.mean(n_recipients_means):.1f} "
+          f"(fixed bottom-quartile-by-wage group, n_workers={n_workers})")
+    print(f"  Subsidy-per-recipient slope:       {subs_m:+.6f}/step   [{subs_lo:+.6f}, {subs_hi:+.6f}]")
+    print(f"  Gini (recipients only) slope:      {gr_m:+.6f}/step   [{gr_lo:+.6f}, {gr_hi:+.6f}]")
+    print(f"  Gini (non-recipients only) slope:  {gnr_m:+.6f}/step   [{gnr_lo:+.6f}, {gnr_hi:+.6f}]")
+    print(f"  Recipients minus non-recipients:   {diff_m:+.6f}   [{diff_lo:+.6f}, {diff_hi:+.6f}]")
+
+    subsidy_grows = subs_lo > 0
+    concentration_confirmed = diff_lo > 0
+    if subsidy_grows and concentration_confirmed:
+        print("  -> CONFIRMED: per-recipient subsidy grows over time AND inequality "
+              "within the recipient group rises faster than among non-recipients. "
+              "This supports a targeting-design explanation (fixed-group, "
+              "growing, concentrated transfer) for the earlier ON > OFF Gini-slope "
+              "result -- not a general 'redistribution backfires' finding.")
+    elif concentration_confirmed:
+        print("  -> Gini rises faster within recipients than non-recipients, but "
+              "subsidy-per-recipient itself is not credibly growing -- some other "
+              "within-group divergence (e.g. wage/investment variance among "
+              "recipients) is driving it, not simply a growing lump sum. Needs "
+              "further decomposition before claiming the targeting mechanism.")
+    else:
+        print("  -> Neither the subsidy-growth nor the within-group-concentration "
+              "pattern is credibly confirmed. The earlier ON > OFF Gini-slope "
+              "result is NOT yet explained by this mechanism -- treat it as an "
+              "open finding, not attributed to targeting design.")
+
+    out = pd.DataFrame({
+        "seed_index": range(n_seeds),
+        "subsidy_per_recipient_slope": subsidy_slopes,
+        "gini_recipients_slope": gini_recip_slopes,
+        "gini_non_recipients_slope": gini_nonrecip_slopes,
+        "mean_n_recipients": n_recipients_means,
+    })
+    return out, dict(subsidy_slope=(subs_m, subs_lo, subs_hi),
+                      gini_recipients_slope=(gr_m, gr_lo, gr_hi),
+                      gini_non_recipients_slope=(gnr_m, gnr_lo, gnr_hi),
+                      diff=(diff_m, diff_lo, diff_hi))
+
+# ============================================================================
+# 8. MECHANISM TRACE — variance decomposition + repression-cap check
+# ============================================================================
+
+def run_mechanism_trace(fit, regimes=Regime.ALL, n_seeds=10, n_steps=300,
+                         burn_in=60, n_workers=400, n_firms=40, base_seed=9900):
+    """
+    Two mechanism checks, run across all three regimes:
+      1. Income-variance decomposition (wage / transfer / owner-capital
+         share of total variance) -- tests whether Gini is structurally
+         dominated by capital-income variance regardless of transfer
+         size (the r>g-style explanation for the redistribution<->Gini
+         null).
+      2. repression_bound_share -- fraction of workers each tick whose
+         protest probability would stay suppressed EVEN AT MAXIMUM
+         grievance, given their current risk_perception/threshold. High
+         and regime-dependent (captured/dictatorship >> representative)
+         would support a repression-caps-the-signal explanation for weak
+         protest->redistribution linkage, distinct from the weak
+         macro-sensitivity calibration itself.
+    """
+    records = []
+    for regime in regimes:
+        for s in range(n_seeds):
+            seed = base_seed + _REGIME_INDEX[regime] * 10_000 + s
+            model = build_model(fit, regime, mode="free",
+                                 n_workers=n_workers, n_firms=n_firms, seed=seed)
+            for _ in range(n_steps):
+                model.step()
+            df = model.datacollector.get_model_vars_dataframe().iloc[burn_in:]
+            records.append(dict(
+                regime=regime, seed=seed,
+                mean_wage_var_share=df["wage_var_share"].mean(),
+                mean_transfer_var_share=df["transfer_var_share"].mean(),
+                mean_owner_var_share=df["owner_var_share"].mean(),
+                mean_repression_bound_share=df["repression_bound_share"].mean(),
+            ))
+
+    out = pd.DataFrame(records)
+    summary = out.groupby("regime")[[
+        "mean_wage_var_share", "mean_transfer_var_share",
+        "mean_owner_var_share", "mean_repression_bound_share"
+    ]].agg(["mean", "std"])
+
+    print(f"\nMechanism trace ({n_seeds} seeds/regime, {n_steps} steps, burn-in={burn_in})")
+    print("=" * 70)
+    print("\nIncome variance share by source (of total income variance driving Gini):")
+    print(summary[["mean_wage_var_share", "mean_transfer_var_share", "mean_owner_var_share"]]
+          .round(4).to_string())
+    print("\nRepression-bound share (fraction of workers capped regardless of grievance):")
+    print(summary[["mean_repression_bound_share"]].round(4).to_string())
+
+    owner_dominant = (out.groupby("regime")["mean_owner_var_share"].mean() >
+                       out.groupby("regime")["mean_transfer_var_share"].mean() * 5).all()
+    if owner_dominant:
+        print("\n-> Owner/capital-income variance dominates transfer-income variance by "
+              ">5x in every regime: consistent with a structural (r>g-style) "
+              "explanation for the redistribution<->Gini null -- a bottom-targeted, "
+              "capped transfer pool cannot offset unconstrained capital-income "
+              "variance at the top, regardless of transfer size. Present as a "
+              "modeled hypothesis for real-world investigation, not an empirical "
+              "finding on its own.")
+    else:
+        print("\n-> Owner/capital-income variance does not clearly dominate transfer "
+              "variance -- the r>g-style explanation is not well-supported by this "
+              "decomposition; the redistribution<->Gini null likely has some other "
+              "or additional cause.")
+
+    return out, summary
+
 
 # ============================================================================
 # __main__
@@ -419,6 +765,30 @@ if __name__ == "__main__":
     print("5. PERMUTATION NULL CHECK")
     print("-" * 70)
     perm = permutation_null_check(fit)
+
+    print("\n" + "-" * 70)
+    print("6. GINI GROWTH VS. REDISTRIBUTION TEST")
+    print("-" * 70)
+    gini_growth_df, gini_growth_stats = run_gini_growth_test(fit)
+    gini_growth_df.to_csv("results/experiments/gini_growth_test.csv", index=False)
+
+    print("\n" + "-" * 70)
+    print("6b. REDISTRIBUTION DOSE-RESPONSE CHECK")
+    print("-" * 70)
+    dose_df = run_redistribution_dose_response(fit)
+    dose_df.to_csv("results/experiments/redistribution_dose_response.csv", index=False)
+
+    print("\n" + "-" * 70)
+    print("7. TARGETING DIAGNOSTIC")
+    print("-" * 70)
+    targeting_df, targeting_stats = run_targeting_diagnostic(fit)
+    targeting_df.to_csv("results/experiments/targeting_diagnostic.csv", index=False)
+
+    print("\n" + "-" * 70)
+    print("8. MECHANISM TRACE")
+    print("-" * 70)
+    mechanism_df, mechanism_summary = run_mechanism_trace(fit)
+    mechanism_df.to_csv("results/experiments/mechanism_trace.csv", index=False)
 
     print("\n" + "=" * 70)
     print("NOT YET IMPLEMENTED (flagged for follow-up, not silently skipped):")

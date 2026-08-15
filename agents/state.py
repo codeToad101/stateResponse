@@ -42,6 +42,7 @@ warnings.filterwarnings('ignore')
 from scipy.optimize import curve_fit
 from sklearn.metrics import r2_score, mean_squared_error
 from statsmodels.stats.stattools import durbin_watson
+from statsmodels.tsa.stattools import adfuller
 
 
 # ============================================================================
@@ -216,11 +217,39 @@ def load_and_prepare_data(csv_path="results/us_state_response_data.csv",
     if 'protest_intensity_score' in annual.columns:
         annual['protest_lag'] = annual['protest_intensity_score'].shift(protest_lag_years)
 
+    # ---- Derived: lagged redistribution (policy-persistence term) ----
+    if 'redistribution_pct_gdp' in annual.columns:
+        annual['redistribution_lag'] = annual['redistribution_pct_gdp'].shift(1)
+
+    # ---- Derived: first-differenced series (stationarity fix for the
+    # levels-based fitter) ----
+    # ADF testing showed redistribution_pct_gdp, gini_coefficient, and
+    # protest_intensity_score all have unit roots (p=0.70, 0.89, 0.70).
+    # prepare_var_data() already differenced before the BVAR; the
+    # StateResponseFitter needs the same treatment or its R²/CIs risk
+    # reflecting two series trending together, not a real relationship.
+    # gdp_growth_yoy_pct is already a rate/first-difference of GDP levels
+    # and is NOT differenced again here (confirm with check_stationarity).
+    if 'redistribution_pct_gdp' in annual.columns:
+        annual['d_redistribution_pct_gdp'] = annual['redistribution_pct_gdp'].diff()
+        # lag-1 of the differenced series itself: last period's CHANGE,
+        # not last period's level -- the differenced analog of redistribution_lag.
+        annual['d_redistribution_lag'] = annual['d_redistribution_pct_gdp'].shift(1)
+
+    if 'gini_coefficient' in annual.columns:
+        annual['d_gini_coefficient'] = annual['gini_coefficient'].diff()
+
+    if 'protest_intensity_score' in annual.columns:
+        annual['d_protest_intensity_score'] = annual['protest_intensity_score'].diff()
+        # same lag amount as protest_lag, applied to the differenced series
+        annual['d_protest_lag'] = annual['d_protest_intensity_score'].shift(protest_lag_years)
+
     return annual
 
 
-def build_model_inputs(annual, y_col='redistribution_pct_gdp',
-                        x_cols=('protest_lag', 'gini_coefficient', 'gdp_growth_yoy_pct')):
+def build_model_inputs(annual, y_col='d_redistribution_pct_gdp',
+                        x_cols=('d_protest_lag', 'd_gini_coefficient', 'gdp_growth_yoy_pct',
+                                'd_redistribution_lag')):
     """
     Extract (X, y) arrays for fitting, dropping any year with missing data
     in the required columns. Returns the aligned year index too, so
@@ -236,6 +265,71 @@ def build_model_inputs(annual, y_col='redistribution_pct_gdp',
     y = sub[y_col].to_numpy()
     years = sub.index.to_numpy()
     return X, y, years
+
+def check_collinearity(X, feature_names):
+    """
+    Pairwise correlation + VIF (variance inflation factor) across
+    predictors, run before fitting so an unstable/counterintuitive
+    coefficient (e.g. a large, sign-flipped gini coefficient) can be
+    diagnosed as collinearity rather than mistaken for a real effect.
+
+    VIF_i = 1 / (1 - R_i^2), where R_i^2 comes from regressing predictor
+    i on all other predictors. Rule of thumb: VIF > 5 is concerning,
+    VIF > 10 is a real problem -- coefficients on that predictor are
+    likely unstable and shouldn't be over-interpreted individually, even
+    if the overall fit (R²/AIC) looks good.
+    """
+    n_features = X.shape[0]
+    corr = np.corrcoef(X)
+
+    print("\nPairwise correlation between predictors:")
+    header = "              " + "".join(f"{name:>14}" for name in feature_names)
+    print(header)
+    for i, name in enumerate(feature_names):
+        row = "".join(f"{corr[i, j]:14.3f}" for j in range(n_features))
+        print(f"  {name:12}{row}")
+
+    print("\nVariance Inflation Factors (VIF > 5 concerning, > 10 problematic):")
+    for i, name in enumerate(feature_names):
+        others = [j for j in range(n_features) if j != i]
+        Xi = X[i]
+        Xo = X[others].T
+        Xo_design = np.column_stack([np.ones(len(Xi)), Xo])
+        beta, *_ = np.linalg.lstsq(Xo_design, Xi, rcond=None)
+        pred = Xo_design @ beta
+        ss_res = np.sum((Xi - pred) ** 2)
+        ss_tot = np.sum((Xi - Xi.mean()) ** 2)
+        r2_i = 1 - ss_res / ss_tot if ss_tot > 0 else 0.0
+        vif = 1 / (1 - r2_i) if r2_i < 1 else np.inf
+        flag = "  ⚠ HIGH" if vif > 10 else ("  ⚠ moderate" if vif > 5 else "")
+        print(f"  {name:22} VIF = {vif:7.2f}{flag}")
+
+def check_stationarity(series, name):
+    """
+    Augmented Dickey-Fuller test: is `series` stationary (fluctuates
+    around a stable mean) or does it have a unit root (wanders/trends
+    persistently)? Run on LEVELS (not first-differenced) series used
+    directly in the linear/logistic/exponential fits above, since a
+    unit root there risks a spurious regression -- high R²/tight CIs
+    that reflect two series drifting together, not a real relationship.
+    This is exactly the risk prepare_var_data() already guards against
+    by first-differencing for the BVAR; this check makes that same risk
+    visible for the levels-based StateResponseFitter models too.
+
+    H0 (null): series has a unit root (non-stationary).
+    p < 0.05: reject H0 -> stationary, levels-based fit is on safer ground.
+    p >= 0.05: fail to reject -> possible unit root, treat any levels-based
+    fit involving this series (e.g. redistribution_pct_gdp regressed on
+    its own lag) with real suspicion, not just a footnote.
+    """
+    clean = series.dropna()
+    result = adfuller(clean, autolag='AIC')
+    stat, pvalue, used_lag, nobs = result[0], result[1], result[2], result[3]
+    verdict = "stationary" if pvalue < 0.05 else "possible unit root (non-stationary)"
+    flag = "" if pvalue < 0.05 else "  ⚠"
+    print(f"  ADF({name}): stat={stat:.3f}  p={pvalue:.4f}  "
+          f"lags={used_lag}  n={nobs}  -> {verdict}{flag}")
+    return pvalue < 0.05
 
 
 # ============================================================================
@@ -258,7 +352,7 @@ class StateResponseFitter:
     a black-box GAM over an interpretable linear form.
     """
 
-    def __init__(self, X, y, years, feature_names=('protest_lag', 'gini', 'growth')):
+    def __init__(self, X, y, years, feature_names=('protest_lag', 'gini', 'growth', 'redist_lag')):
         self.X = X          # shape (n_features, n_obs)
         self.y = y
         self.years = years
@@ -281,21 +375,23 @@ class StateResponseFitter:
 
     # ---- parametric candidate forms ----
     @staticmethod
-    def linear_model(X, a, b, c, intercept):
-        protest, gini, growth = X
-        return a * protest + b * gini + c * growth + intercept
+    def linear_model(X, a, b, c, d, intercept):
+        protest, gini, growth, redist_lag = X
+        return a * protest + b * gini + c * growth + d * redist_lag + intercept
 
     @staticmethod
-    def logistic_model(X, a, b, c, k, x0):
-        """Response saturates at high protest/inequality (bounded-rational reaction)."""
-        protest, gini, growth = X
-        return a / (1 + np.exp(-k * (protest + b * gini - x0))) + c * growth
+    def logistic_model(X, a, b, c, d, k, x0):
+        """Saturates at high protest/inequality; redistribution_lag enters
+        additively as a policy-persistence term, same role as growth."""
+        protest, gini, growth, redist_lag = X
+        return a / (1 + np.exp(-k * (protest + b * gini - x0))) + c * growth + d * redist_lag
 
     @staticmethod
-    def exponential_model(X, a, b, c):
-        """Response accelerates at extreme inequality."""
-        protest, gini, growth = X
-        return a * np.exp(np.clip(b * gini, -50, 50)) + c * protest
+    def exponential_model(X, a, b, c, d):
+        """Accelerates at extreme inequality; redistribution_lag adds
+        policy persistence."""
+        protest, gini, growth, redist_lag = X
+        return a * np.exp(np.clip(b * gini, -50, 50)) + c * protest + d * redist_lag
 
     def _aic_bic(self, y_pred, k):
         """Standard Gaussian-likelihood AIC/BIC: n*ln(RSS/n) + penalty."""
@@ -343,7 +439,7 @@ class StateResponseFitter:
             return
         try:
             Xg = self.X.T  # pygam wants (n_obs, n_features)
-            gam = LinearGAM(s(0) + s(1) + s(2)).gridsearch(Xg, self.y, progress=False)
+            gam = LinearGAM(s(0) + s(1) + s(2) + s(3)).gridsearch(Xg, self.y, progress=False)
             y_pred = gam.predict(Xg)
             r2 = r2_score(self.y, y_pred)
             rmse = np.sqrt(mean_squared_error(self.y, y_pred))
@@ -409,11 +505,11 @@ class StateResponseFitter:
               f"({self.years.min()}-{self.years.max()})\n")
 
         self._fit_parametric('linear', self.linear_model,
-                              p0=[1, 1, 1, np.mean(self.y)])
+                              p0=[1, 1, 1, 0.5, np.mean(self.y)])
         self._fit_parametric('logistic', self.logistic_model,
-                              p0=[np.ptp(self.y), 1, 0.1, 1, np.mean(self.X[1])])
+                              p0=[np.ptp(self.y), 1, 0.1, 0.5, 1, np.mean(self.X[1])])
         self._fit_parametric('exponential', self.exponential_model,
-                              p0=[1, 1, 0.1])
+                              p0=[1, 1, 0.1, 0.5])
         self._fit_gam()
 
         if not self.results:
@@ -467,9 +563,9 @@ class StateResponseFitter:
         print(f"\n{model_name} — coefficient summary")
         print("-" * 60)
         labels = {
-            'linear': ['a (protest_lag)', 'b (gini)', 'c (growth)', 'intercept'],
-            'logistic': ['a (scale)', 'b (gini weight)', 'c (growth)', 'k (steepness)', 'x0 (midpoint)'],
-            'exponential': ['a (scale)', 'b (gini exponent)', 'c (protest)'],
+            'linear': ['a (d_protest_lag)', 'b (d_gini)', 'c (growth)', 'd (d_redist_lag)', 'intercept'],
+            'logistic': ['a (scale)', 'b (d_gini weight)', 'c (growth)', 'd (d_redist_lag)', 'k (steepness)', 'x0 (midpoint)'],
+            'exponential': ['a (scale)', 'b (d_gini exponent)', 'c (d_protest)', 'd (d_redist_lag)'],
         }.get(model_name, [f'param_{i}' for i in range(len(res['params']))])
 
         print(f"  {'':22}   {'naive CI (iid residuals)':32} {'HAC/Newey-West CI (' + str(res['nw_lags']) + ' lags)'}")
@@ -724,13 +820,18 @@ class State(mesa.Agent):
     """
 
     def __init__(self, model, response_fn, response_params, regime=Regime.REPRESENTATIVE,
-                 residuals=None, tax_rate=0.25, domain_bounds=None, rng=None):
+                 residuals=None, tax_rate=0.25, domain_bounds=None, rng=None,
+                 redistribution_enabled=True):
         super().__init__(model)
         self.random_gen = rng if rng is not None else np.random.default_rng()
 
         self.response_fn = response_fn
         self.response_params = response_params
         self.regime = regime
+        # off -> state never redistributes at all (hard 0.0, every tick),
+        # isolating whether the fiscal channel matters for Gini's trajectory
+        # at all, vs. only dampens it. On -> normal fitted dynamics.
+        self.redistribution_enabled = redistribution_enabled
         regime_params = Regime.params(regime)
         self.protest_weight = regime_params['protest_weight']
         self.police_intensity = regime_params['police_intensity']
@@ -767,6 +868,11 @@ class State(mesa.Agent):
 
         # for Worker._adapt_threshold's reinforcement signal
         self._last_redistribution = 0.0
+        # response_fn now predicts a CHANGE in redistribution (fitted on
+        # differenced series), not a level -- these track what's needed
+        # to compute this tick's deltas and next tick's d_redist_lag term.
+        self._last_redistribution_delta = 0.0
+        self._prev_gini = None
 
     def observe(self, avg_wage, gini, protest_intensity, growth):
         self.avg_wage = avg_wage
@@ -774,54 +880,75 @@ class State(mesa.Agent):
         self.growth = growth
         self.past_protests.append(protest_intensity)
 
-    def _clip_to_training_domain(self, protest, gini, growth):
-        """
-        Clips each input to the [min, max] actually observed in the
-        historical fitting data (see StateResponseFitter.domain_bounds_).
-        Values inside the observed range pass through unchanged; values
-        outside are pinned to the nearest boundary, so response_fn is
-        only ever asked to extrapolate as far as "flat past the edge of
-        what we've seen," never into genuinely unvalidated territory.
-        This is what keeps an unbounded-shaped function (exponential)
-        from exploding once the ABM's own dynamics (e.g. wealth
-        compounding) push simulated Gini past anything in 1960-2025 US
-        data.
-        """
+    def _clip_to_training_domain(self, protest, gini, growth, redist_lag):
         if self.domain_bounds is None:
-            return protest, gini, growth
+            return protest, gini, growth, redist_lag
         p_lo, p_hi = self.domain_bounds.get('protest_lag', (-np.inf, np.inf))
         g_lo, g_hi = self.domain_bounds.get('gini', (-np.inf, np.inf))
         gr_lo, gr_hi = self.domain_bounds.get('growth', (-np.inf, np.inf))
+        r_lo, r_hi = self.domain_bounds.get('redist_lag', (-np.inf, np.inf))
         return (
             float(np.clip(protest, p_lo, p_hi)),
             float(np.clip(gini, g_lo, g_hi)),
             float(np.clip(growth, gr_lo, gr_hi)),
+            float(np.clip(redist_lag, r_lo, r_hi)),
         )
 
     def decide_policy(self, lag_periods=1):
-        protest_lag = (
+        """
+        response_fn now predicts d_redistribution (a CHANGE), fitted on
+        first-differenced series -- the levels-based fit was found to run
+        on non-stationary series (ADF p=0.70/0.89/0.70 on redistribution,
+        gini, protest), risking a spurious regression. So each input here
+        is now a delta, not a level, and the model's prediction is added
+        onto last period's level rather than used directly. growth stays
+        undifferenced (already a rate). Same 4 inputs, same clipping
+        machinery, same public signature -- only what the numbers mean
+        changed.
+        """
+        if not self.redistribution_enabled:
+            # "off" condition for the Gini-growth-vs-redistribution test
+            # (experiments.py's run_gini_growth_test): no welfare channel
+            # exists at all, rather than a dampened one -- a stronger,
+            # more legible contrast than merely zeroing the protest term.
+            self.redistribution = 0.0
+            self._last_redistribution = 0.0
+            self._last_redistribution_delta = 0.0
+            self.model.last_redistribution_delta = 0.0
+            self._prev_gini = self.gini
+            return
+
+        protest_now = (
             self.past_protests[-lag_periods] if len(self.past_protests) >= lag_periods else 0.0
         )
-        # regime-weighted protest input -- captured/dictatorship states
-        # see a damped version of the same signal, not a different signal
-        weighted_protest = protest_lag * self.protest_weight
+        protest_prev = (
+            self.past_protests[-lag_periods - 1]
+            if len(self.past_protests) >= lag_periods + 1 else 0.0
+        )
+        d_protest_lag = (protest_now - protest_prev) * self.protest_weight
 
-        clipped_protest, clipped_gini, clipped_growth = self._clip_to_training_domain(
-            weighted_protest, self.gini, self.growth
+        d_gini = (self.gini - self._prev_gini) if self._prev_gini is not None else 0.0
+
+        clipped_d_protest, clipped_d_gini, clipped_growth, clipped_d_redist_lag = (
+            self._clip_to_training_domain(
+                d_protest_lag, d_gini, self.growth, self._last_redistribution_delta
+            )
         )
 
-        X = np.array([[clipped_protest], [clipped_gini], [clipped_growth]])
-        target = float(self.response_fn(X, *self.response_params)[0])
+        X = np.array([[clipped_d_protest], [clipped_d_gini],
+                       [clipped_growth], [clipped_d_redist_lag]])
+        predicted_delta = float(self.response_fn(X, *self.response_params)[0])
 
-        # bootstrapped noise term, matching R(t) = f(...) + epsilon(t)
         noise = self.random_gen.choice(self.residuals)
-        target += noise
+        predicted_delta += noise
 
-        self.redistribution = max(0.0, target)
+        new_redistribution = max(0.0, self._last_redistribution + predicted_delta)
 
-        # feed reinforcement signal to workers before they act next step
-        self.model.last_redistribution_delta = self.redistribution - self._last_redistribution
-        self._last_redistribution = self.redistribution
+        self.model.last_redistribution_delta = new_redistribution - self._last_redistribution
+        self._last_redistribution_delta = new_redistribution - self._last_redistribution
+        self._last_redistribution = new_redistribution
+        self.redistribution = new_redistribution
+        self._prev_gini = self.gini
 
     def redistribute(self, workers):
         """
@@ -831,10 +958,14 @@ class State(mesa.Agent):
         """
         if not workers:
             return
+
+        for w in workers:
+            w.transfer_income = 0.0  # reset every tick -- only this tick's
+            # recipients should carry a nonzero transfer forward
         recipients = sorted(workers, key=lambda w: w.wage)[: max(1, len(workers) // 4)]
         subsidy = self.redistribution / len(recipients)
         for w in recipients:
-            w.wage += subsidy
+             w.transfer_income = subsidy
 
     def step(self):
         """Mesa scheduling hook -- observe/decide/redistribute are called
@@ -866,14 +997,29 @@ if __name__ == "__main__":
 
     X, y, years = build_model_inputs(
         annual,
-        y_col='redistribution_pct_gdp',
-        x_cols=('protest_lag', 'gini_coefficient', 'gdp_growth_yoy_pct'),
+        y_col='d_redistribution_pct_gdp',
+        x_cols=('d_protest_lag', 'd_gini_coefficient', 'gdp_growth_yoy_pct', 'd_redistribution_lag'),
     )
 
     print(f"\nUsable rows for fitting after dropna: {len(y)}")
     if len(y) < 8:
         print("⚠ Very small sample for a 3-4 parameter model — treat coefficients "
               "as exploratory, not confirmatory, until coverage improves.")
+
+    check_collinearity(X, feature_names=('protest_lag', 'gini', 'growth', 'redist_lag'))
+
+    print("\nStationarity check (ADF test) on LEVELS series (context — these now feed")
+    print("the differenced fit only via their diffs, not directly):")
+    check_stationarity(annual['redistribution_pct_gdp'], 'redistribution_pct_gdp')
+    check_stationarity(annual['gini_coefficient'], 'gini_coefficient')
+    check_stationarity(annual['protest_intensity_score'], 'protest_intensity_score')
+
+    print("\nConfirmatory ADF check on the DIFFERENCED series actually used in the fit below:")
+    check_stationarity(annual['d_redistribution_pct_gdp'], 'd_redistribution_pct_gdp')
+    check_stationarity(annual['d_gini_coefficient'], 'd_gini_coefficient')
+    check_stationarity(annual['d_protest_intensity_score'], 'd_protest_intensity_score')
+    check_stationarity(annual['gdp_growth_yoy_pct'], 'gdp_growth_yoy_pct (undifferenced — already a rate)')
+
 
     print("\n" + "-" * 70)
     print("MODEL COMPARISON")

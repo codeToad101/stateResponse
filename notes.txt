@@ -4,3 +4,34 @@ Helpful, and arguably not optional given your own framing:
 
 Crisis/revolt mechanism (Turchin/Lawson-Oak) — your README already poses reform vs. revolution as the central ideological stake. Without some revolt-capable mechanism, the "revolution" side of that question is structurally unrepresentable, especially for dictatorship/captured regimes. I'd rank this closer to necessary than optional, but as phase 2 — after the response function is fixed.
 Cross-country data — strengthens the extrapolation region specifically, valuable but not required to answer the core US-calibrated regime comparison.
+
+Fix the calibration question first (Q2) — cheap, and rules out "artifact" before you conclude "null."
+Re-test with an episodic/discrete-event framing (does redistribution shift meaningfully in the few years around real historical strike waves) rather than only continuous annual correlation — closer to what disruption theory actually predicts.
+Only then consider cross-country data — as a way to add regime variation, not as a rescue from a null.
+
+Decide how to handle the rolling-window power problem (Chow test, or explicitly caveat it as inconclusive).
+Build the revolt-capable mechanism — no longer optional-phase-2, it's currently the reason 2/3 of your regime comparison is empty.
+Only then cross-national data, as you already had it scoped.
+
+note: keep rolling-window refit in as a minor supporting note ("no evidence of a stable nonzero coefficient in any sub-era, though power is limited at n≈20"), skip the Chow test, and put your remaining effort into the parts still actually unresolved — the revolt-mechanism gap and cross-national data.
+
+REMEMBRE THE WHOLE REASON ABM IS GOOD HERE IS BECAUSE IT IS MORE TRACTABLE. WHERE IS THE TRACTION -- also need to model
+the other side --> why Gini grows even w/ slightly more investment going towards social progs all da time
+
+
+**Not settled yet — two gaps, one on each side.**
+
+**ABM side — this is the real gap.** Whether "welfare insufficient" is mechanistically *explained* (not just narrated) depends on whether wealth compounding alone, absent reinvestment, can produce sustained rising inequality that redistribution merely dampens rather than reverses. Static compounding (interest accruing on a fixed wealth stock) tends toward an equilibrium Gini, not indefinite growth — it doesn't structurally explain a *persistent* rise. The standard mechanism that does is Piketty's r > g: capital income being reinvested into more capital (firms, real estate) faster than the economy/wages grow, which compounds *ownership share*, not just wealth level, and has no natural ceiling the way simple interest does. If your agents currently just accrue wealth passively rather than reinvesting it into productive/ownership assets that generate further income, you don't yet have a mechanism that can generate *sustained* Gini growth in the ABM — you'd likely see it plateau, which would undercut the very claim you want to make.
+
+So: add the reinvestment channel. Practically, you don't need this fully general — you need enough to test one thing: run the ABM with redistribution on vs. off, both with reinvestment enabled, and check whether Gini trajectory is rising-but-dampened (supports "insufficient") vs. flat/falling (would undercut the claim) vs. rising identically regardless of redistribution (would suggest redistribution is irrelevant to the wealth-concentration channel entirely — also a real finding, just a different one).
+This is a real, citable phenomenon in the welfare-targeting literature — categorical/cliff-based transfers concentrated on a fixed group can increase measured inequality relative to broad-based transfers, distinct from the transfer's size being wrong (Piven & Cloward's targeting-vs-universalism debate; more recent lumpy-transfer/benefit-cliff literature). But confirm it's actually happening before claiming it: check whether mean per-recipient subsidy in the ON condition grows across ticks, and whether Gini's rise is concentrated within the bottom quartile (recipients vs. non-recipient lower earners) rather than uniform. If that pattern holds, you have a genuine, interesting finding about transfer design, not a null about redistribution generally.
+
+
+Redistribution + protest disconnect --> What the ABM can legitimately add here: trace whether protest itself ever gets structurally large enough to matter, independent of the weak macro-sensitivity term — i.e., check if risk_perception/police_intensity damping caps protest participation before it could ever register, regardless of grievance. That's a citable hypothesis (Kuran's preference-falsification/threshold models: repression suppresses the signal before it can be observed, not just the response to it) — but frame it as "the ABM suggests X mechanism is worth testing empirically," not as ABM-derived proof.
+
+last note for redistribution + gini disconnect --> To close that gap and make the redistribution/Gini finding more fully citable, I'd add one more real-data check: compare the real trend of your bottom-quartile transfer components (redist_eitc/snap/medicaid/ui) against a real top-wealth-share proxy if you can get one (even a rough one, e.g. top marginal tax share or corporate profit share of GDP as a stand-in)
+
+list of countries plus theorized "box":
+representative: US, germany, UK
+captured: south africa (boom, 1994), chile (boom, 2019)
+dictatorship: russia, egypt (boom, 2011)

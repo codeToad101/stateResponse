@@ -1,0 +1,319 @@
+Entity,Code,Year,Public social expenditure as a share of GDP
+Chile,CHL,1986,13.311
+Chile,CHL,1987,11.496
+Chile,CHL,1988,10.237
+Chile,CHL,1989,9.667
+Chile,CHL,1990,9.558
+Chile,CHL,1991,9.569
+Chile,CHL,1992,9.139
+Chile,CHL,1993,9.257
+Chile,CHL,1994,8.974
+Chile,CHL,1995,10.745
+Chile,CHL,1996,11.619
+Chile,CHL,1997,11.326
+Chile,CHL,1998,11.707
+Chile,CHL,1999,12.486
+Chile,CHL,2000,10.214
+Chile,CHL,2001,9.899
+Chile,CHL,2002,9.915
+Chile,CHL,2003,9.764
+Chile,CHL,2004,9.177
+Chile,CHL,2005,8.829
+Chile,CHL,2006,8.212
+Chile,CHL,2007,8.389
+Chile,CHL,2008,9.527
+Chile,CHL,2009,11.46
+Chile,CHL,2010,10.543
+Chile,CHL,2011,10.074
+Chile,CHL,2012,10.133
+Chile,CHL,2013,10.087
+Chile,CHL,2014,10.371
+Chile,CHL,2015,10.901
+Chile,CHL,2016,11.129
+Chile,CHL,2017,11.416
+Chile,CHL,2018,11.386
+Chile,CHL,2019,11.656
+Chile,CHL,2020,15.501
+Chile,CHL,2021,19.585
+Chile,CHL,2022,12.313
+Chile,CHL,2023,12.882
+Germany,DEU,1880,0.5
+Germany,DEU,1890,0.53
+Germany,DEU,1900,0.59
+Germany,DEU,1930,4.82
+Germany,DEU,1960,15.369004
+Germany,DEU,1961,15.304998
+Germany,DEU,1962,15.388236
+Germany,DEU,1963,15.828846
+Germany,DEU,1964,15.354482
+Germany,DEU,1965,16.084034
+Germany,DEU,1966,16.293688
+Germany,DEU,1967,17.689854
+Germany,DEU,1968,17.47867
+Germany,DEU,1969,16.950384
+Germany,DEU,1970,16.568996
+Germany,DEU,1971,17.315866
+Germany,DEU,1972,17.964119
+Germany,DEU,1973,18.296705
+Germany,DEU,1974,19.96038
+Germany,DEU,1975,23.057457
+Germany,DEU,1976,22.730425
+Germany,DEU,1977,22.577394
+Germany,DEU,1978,22.024511
+Germany,DEU,1979,21.587797
+Germany,DEU,1980,21.788
+Germany,DEU,1981,22.446
+Germany,DEU,1982,22.433
+Germany,DEU,1983,22.14
+Germany,DEU,1984,21.881
+Germany,DEU,1985,22.228
+Germany,DEU,1986,22.247
+Germany,DEU,1987,22.715
+Germany,DEU,1988,22.705
+Germany,DEU,1989,21.643
+Germany,DEU,1990,21.354
+Germany,DEU,1991,22.476
+Germany,DEU,1992,24.188
+Germany,DEU,1993,24.934
+Germany,DEU,1994,25.102
+Germany,DEU,1995,25.649
+Germany,DEU,1996,26.216
+Germany,DEU,1997,25.691
+Germany,DEU,1998,25.593
+Germany,DEU,1999,25.599
+Germany,DEU,2000,25.506
+Germany,DEU,2001,25.492
+Germany,DEU,2002,26.141
+Germany,DEU,2003,26.545
+Germany,DEU,2004,25.937
+Germany,DEU,2005,26.22
+Germany,DEU,2006,24.927
+Germany,DEU,2007,24.044
+Germany,DEU,2008,24.193
+Germany,DEU,2009,27.427
+Germany,DEU,2010,26.685
+Germany,DEU,2011,25.385
+Germany,DEU,2012,25.285
+Germany,DEU,2013,25.492
+Germany,DEU,2014,25.43
+Germany,DEU,2015,25.721
+Germany,DEU,2016,25.922
+Germany,DEU,2017,25.938
+Germany,DEU,2018,26.041
+Germany,DEU,2019,26.409
+Germany,DEU,2020,29.471
+Germany,DEU,2021,28.867
+Germany,DEU,2022,27.718
+Germany,DEU,2023,27.293
+Germany,DEU,2024,27.854
+United Kingdom,GBR,1880,0.86
+United Kingdom,GBR,1890,0.83
+United Kingdom,GBR,1900,1
+United Kingdom,GBR,1910,1.38
+United Kingdom,GBR,1920,1.39
+United Kingdom,GBR,1930,2.24
+United Kingdom,GBR,1960,10.491441
+United Kingdom,GBR,1961,10.753797
+United Kingdom,GBR,1962,10.958211
+United Kingdom,GBR,1963,11.49145
+United Kingdom,GBR,1964,11.2993765
+United Kingdom,GBR,1965,11.976261
+United Kingdom,GBR,1966,12.208261
+United Kingdom,GBR,1967,12.895713
+United Kingdom,GBR,1968,13.396644
+United Kingdom,GBR,1969,13.390328
+United Kingdom,GBR,1970,13.558754
+United Kingdom,GBR,1971,13.424457
+United Kingdom,GBR,1972,14.260652
+United Kingdom,GBR,1973,13.84068
+United Kingdom,GBR,1974,15.323655
+United Kingdom,GBR,1975,16.054113
+United Kingdom,GBR,1976,16.63472
+United Kingdom,GBR,1977,16.575602
+United Kingdom,GBR,1978,16.909748
+United Kingdom,GBR,1979,16.822386
+United Kingdom,GBR,1980,16.867
+United Kingdom,GBR,1981,18.312
+United Kingdom,GBR,1982,18.823
+United Kingdom,GBR,1983,19.606
+United Kingdom,GBR,1984,19.576
+United Kingdom,GBR,1985,19.609
+United Kingdom,GBR,1986,19.614
+United Kingdom,GBR,1987,18.79
+United Kingdom,GBR,1988,17.473
+United Kingdom,GBR,1989,16.841
+United Kingdom,GBR,1990,17.248
+United Kingdom,GBR,1991,18.879
+United Kingdom,GBR,1992,20.486
+United Kingdom,GBR,1993,21.063
+United Kingdom,GBR,1994,20.308
+United Kingdom,GBR,1995,18.954
+United Kingdom,GBR,1996,18.767
+United Kingdom,GBR,1997,18.927
+United Kingdom,GBR,1998,19.13
+United Kingdom,GBR,1999,18.908
+United Kingdom,GBR,2000,19.258
+United Kingdom,GBR,2001,19.791
+United Kingdom,GBR,2002,19.843
+United Kingdom,GBR,2003,20.675
+United Kingdom,GBR,2004,21.21
+United Kingdom,GBR,2005,21.261
+United Kingdom,GBR,2006,21.265
+United Kingdom,GBR,2007,21.473
+United Kingdom,GBR,2008,22.791
+United Kingdom,GBR,2009,25.094
+United Kingdom,GBR,2010,25.234
+United Kingdom,GBR,2011,25.076
+United Kingdom,GBR,2012,25.279
+United Kingdom,GBR,2013,24.583
+United Kingdom,GBR,2014,24.024
+United Kingdom,GBR,2015,23.698
+United Kingdom,GBR,2016,22.9
+United Kingdom,GBR,2017,22.647
+United Kingdom,GBR,2018,22.223
+United Kingdom,GBR,2019,22.252
+United Kingdom,GBR,2020,25.609
+United Kingdom,GBR,2021,24.404
+United Kingdom,GBR,2022,22.747
+United Kingdom,GBR,2023,22.985
+United States,USA,1880,0.29
+United States,USA,1890,0.45
+United States,USA,1900,0.55
+United States,USA,1910,0.56
+United States,USA,1920,0.7
+United States,USA,1930,0.56
+United States,USA,1960,6.2148666
+United States,USA,1961,6.785977
+United States,USA,1962,6.833349
+United States,USA,1963,6.8057847
+United States,USA,1964,6.717871
+United States,USA,1965,6.7227244
+United States,USA,1966,6.835506
+United States,USA,1967,7.513561
+United States,USA,1968,7.8853393
+United States,USA,1969,7.979135
+United States,USA,1970,8.879691
+United States,USA,1971,9.5997715
+United States,USA,1972,9.746132
+United States,USA,1973,9.940621
+United States,USA,1974,10.912134
+United States,USA,1975,12.406018
+United States,USA,1976,12.254199
+United States,USA,1977,12.023055
+United States,USA,1978,11.657559
+United States,USA,1979,11.810509
+United States,USA,1980,12.86
+United States,USA,1981,13.2
+United States,USA,1982,13.619
+United States,USA,1983,13.783
+United States,USA,1984,12.894
+United States,USA,1985,12.587
+United States,USA,1986,12.924
+United States,USA,1987,12.883
+United States,USA,1988,12.845
+United States,USA,1989,12.833
+United States,USA,1990,13.195
+United States,USA,1991,14.162
+United States,USA,1992,14.841
+United States,USA,1993,15.108
+United States,USA,1994,15.052
+United States,USA,1995,14.932
+United States,USA,1996,14.74
+United States,USA,1997,14.323
+United States,USA,1998,14.385
+United States,USA,1999,14.111
+United States,USA,2000,14.123
+United States,USA,2001,14.698
+United States,USA,2002,15.535
+United States,USA,2003,15.801
+United States,USA,2004,15.664
+United States,USA,2005,15.494
+United States,USA,2006,15.544
+United States,USA,2007,15.676
+United States,USA,2008,16.251
+United States,USA,2009,18.32
+United States,USA,2010,19.048
+United States,USA,2011,18.749
+United States,USA,2012,18.483
+United States,USA,2013,18.421
+United States,USA,2014,18.41
+United States,USA,2015,18.483
+United States,USA,2016,18.588
+United States,USA,2017,18.386
+United States,USA,2018,18.153
+United States,USA,2019,18.202
+United States,USA,2020,23.677
+United States,USA,2021,21.619
+United States,USA,2022,18.98
+United States,USA,2023,18.951
+United States,USA,2024,19.814
+Poland,POL,1990,14.139
+Poland,POL,1991,20.407
+Poland,POL,1992,23.95
+Poland,POL,1993,23.446
+Poland,POL,1994,22.376
+Poland,POL,1995,21.725
+Poland,POL,1996,21.903
+Poland,POL,1997,21.408
+Poland,POL,1998,20.629
+Poland,POL,1999,20.974
+Poland,POL,2000,20.063
+Poland,POL,2001,21.575
+Poland,POL,2002,21.725
+Poland,POL,2003,21.841
+Poland,POL,2004,21.116
+Poland,POL,2005,20.84
+Poland,POL,2006,20.56
+Poland,POL,2007,19.498
+Poland,POL,2008,20.146
+Poland,POL,2009,21.255
+Poland,POL,2010,20.802
+Poland,POL,2011,19.595
+Poland,POL,2012,19.871
+Poland,POL,2013,20.742
+Poland,POL,2014,20.325
+Poland,POL,2015,20.15
+Poland,POL,2016,21.189
+Poland,POL,2017,20.743
+Poland,POL,2018,20.288
+Poland,POL,2019,20.962
+Poland,POL,2020,23.47
+Poland,POL,2021,22.155
+Poland,POL,2022,20.72
+Poland,POL,2023,21.86
+Poland,POL,2024,23.067
+South Korea,KOR,1990,2.548
+South Korea,KOR,1991,2.455
+South Korea,KOR,1992,2.667
+South Korea,KOR,1993,2.738
+South Korea,KOR,1994,2.733
+South Korea,KOR,1995,2.906
+South Korea,KOR,1996,3.049
+South Korea,KOR,1997,3.281
+South Korea,KOR,1998,4.55
+South Korea,KOR,1999,5.423
+South Korea,KOR,2000,4.245
+South Korea,KOR,2001,4.489
+South Korea,KOR,2002,4.361
+South Korea,KOR,2003,4.626
+South Korea,KOR,2004,5.185
+South Korea,KOR,2005,5.507
+South Korea,KOR,2006,6.272
+South Korea,KOR,2007,6.342
+South Korea,KOR,2008,6.806
+South Korea,KOR,2009,7.589
+South Korea,KOR,2010,7.373
+South Korea,KOR,2011,7.337
+South Korea,KOR,2012,7.825
+South Korea,KOR,2013,8.297
+South Korea,KOR,2014,8.633
+South Korea,KOR,2015,9.052
+South Korea,KOR,2016,9.247
+South Korea,KOR,2017,9.473
+South Korea,KOR,2018,10.172
+South Korea,KOR,2019,11.423
+South Korea,KOR,2020,14.876
+South Korea,KOR,2021,15.222
+South Korea,KOR,2022,16.235
+South Korea,KOR,2023,15.359
+South Korea,KOR,2024,15.326

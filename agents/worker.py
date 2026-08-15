@@ -82,7 +82,7 @@ MEAN_SKILL_PREMIUM = 1.262223
 
 class Worker(mesa.Agent):
     def __init__(self, model, skill, initial_wage,
-                 threshold_mean=0.3, threshold_std=0.1,
+                 threshold_mean=0.62, threshold_std=0.1,
                  gini_sensitivity=0.0, redistribution_sensitivity=0.0,
                  consumption_floor=None,
                  savings_rate=0.30, investment_threshold_multiple=5.0,
@@ -142,6 +142,10 @@ class Worker(mesa.Agent):
 
         # --- mutable state, carried across steps (path dependence) ---
         self.wage = initial_wage
+        self.transfer_income = 0.0  # state redistribution -- kept separate
+        # from self.wage because Firm._pay_employees fully OVERWRITES wage
+        # every tick (w.wage = firm.wage * skill_premium); folding transfers
+        # into wage silently erased them before they could ever be measured.
         self.employment_status = EmploymentStatus.EMPLOYED
         self.grievance = 0.0
         self.risk_perception = 0.0
@@ -152,21 +156,21 @@ class Worker(mesa.Agent):
     # ------------------------------------------------------------------
     def _update_grievance(self, state):
         """
-        Grievance is relative, not absolute (matches the project's math
-        spec: G_i(t) = (reference_wage - w_i) / reference_wage). The
-        reference wage is itself an exponential moving average of the
-        macro reference point rather than being read fresh each step --
-        a worker's sense of "fair" shifts gradually with conditions,
-        which is the bounded-rationality analog of not having perfect,
-        instantaneous information about the whole economy.
+        Peer-comparison reference wage (Clark & Oswald 1996; Card et al. 2012):
+        workers compare themselves to others in their own occupational tier,
+        not the whole population. Inequality's effect on grievance is handled
+        separately via the calibrated gini_sensitivity pathway below, so it's
+        no longer double-counted by also discounting the reference anchor.
         """
-        macro_reference = state.avg_wage * (1 - state.gini)
+        tier_mean = getattr(self.model, "tier_avg_wage", {}).get(
+            self.occupation, state.avg_wage
+        )
         ema_alpha = 0.15
         self.reference_wage_ema = (
-            ema_alpha * macro_reference + (1 - ema_alpha) * self.reference_wage_ema
+            ema_alpha * tier_mean + (1 - ema_alpha) * self.reference_wage_ema
         )
         if self.employment_status == EmploymentStatus.UNEMPLOYED:
-            self.grievance = 1.0  # unemployment is itself a strong signal
+            self.grievance = 1.0
         else:
             self.grievance = max(
                 0.0, (self.reference_wage_ema - self.wage) / self.reference_wage_ema
@@ -222,6 +226,21 @@ class Worker(mesa.Agent):
         # independent of how aggrieved workers actually are
         self.risk_perception = state.police_intensity * (1 - local_visibility)
 
+    def repression_binding(self):
+        """
+        Diagnostic (not used in decide_protest itself): True if
+        risk_perception has driven the protest-probability gap deeply
+        negative regardless of grievance -- i.e. repression alone is
+        enough to suppress protest before grievance/threshold can matter.
+        Used to test whether the protest<->redistribution null partly
+        reflects protest being structurally capped upstream (Kuran-style
+        preference falsification: repression suppresses the visible
+        SIGNAL, not just the state's response to it) rather than only
+        reflecting a genuinely weak redistribution response.
+        """
+        gap_if_max_grievance = (1.5 - self.risk_perception) - self.threshold
+        return gap_if_max_grievance < 0
+
     def _decide_protest(self):
         """
         Probabilistic (logistic), not a hard cutoff. Two workers with
@@ -272,7 +291,18 @@ class Worker(mesa.Agent):
            (clipped at -100%, no leveraged losses below the invested
            amount).
         """
-        surplus = max(0.0, self.wage - self.consumption_floor)
+        # transfer_income runs through the SAME consumption_floor logic as
+        # wage -- only the portion of (wage + transfer) above subsistence
+        # is save-able, rather than treating transfers as either always-
+        # consumed or always-save-eligible by fiat. This means a small
+        # routine transfer to an already-above-floor worker adds directly
+        # to savable surplus, while a transfer that itself is what pushes
+        # someone above floor is partially captured too -- both realistic,
+        # neither hardcoded. Unemployed guard (below) still zeroes wage-
+        # side surplus, but NOT transfer_income -- a laid-off worker who
+        # is a redistribution recipient can still save from that transfer,
+        # which is the actual point of a means-tested transfer existing.
+        total_income = self.wage + self.transfer_income
         if self.employment_status == EmploymentStatus.UNEMPLOYED:
             # Guards independently of Firm zeroing wage on layoff (see
             # Firm._hire_fire) -- an unemployed worker never accrues new
@@ -280,7 +310,8 @@ class Worker(mesa.Agent):
             # a fired worker's frozen last wage kept "earning" every tick
             # forever, compounding into unbounded wealth over a long run
             # -- a real bug caught during testing, not a hypothetical one.
-            surplus = 0.0
+            total_income = self.transfer_income
+        surplus = max(0.0, total_income - self.consumption_floor)
         self.wealth += self.savings_rate * surplus
 
         self.investment_income = 0.0
@@ -308,7 +339,7 @@ class Worker(mesa.Agent):
         # agents never race on the same worker's wage in a single tick
 
 
-def calibrate_population_from_bvar(bvar, threshold_mean_base=0.3, threshold_std_base=0.08):
+def calibrate_population_from_bvar(bvar, threshold_mean_base=0.62, threshold_std_base=0.08):
     """
     Derive population-level Worker parameters from the fitted Bayesian
     VAR (state.py's BayesianVAR) instead of hand-picking constants.

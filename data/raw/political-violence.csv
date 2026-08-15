@@ -1,0 +1,638 @@
+Country,Country_OLD,Year,COW_Code_A,COW_Code_N,WordBank_Code_A,UN_Code_N,Region,PTS_A,PTS_H,PTS_S,NA_Status_A,NA_Status_H,NA_Status_S
+Chile,Chile,1976,CHL,155,CHL,152,lac,4,NA,3,0,88,0
+Chile,Chile,1977,CHL,155,CHL,152,lac,4,NA,3,0,88,0
+Chile,Chile,1978,CHL,155,CHL,152,lac,5,NA,NA,0,88,88
+Chile,Chile,1979,CHL,155,CHL,152,lac,4,NA,3,0,88,0
+Chile,Chile,1980,CHL,155,CHL,152,lac,4,NA,4,0,88,0
+Chile,Chile,1981,CHL,155,CHL,152,lac,5,NA,3,0,88,0
+Chile,Chile,1982,CHL,155,CHL,152,lac,4,NA,3,0,88,0
+Chile,Chile,1983,CHL,155,CHL,152,lac,4,NA,3,0,88,0
+Chile,Chile,1984,CHL,155,CHL,152,lac,4,NA,3,0,88,0
+Chile,Chile,1985,CHL,155,CHL,152,lac,4,NA,3,0,88,0
+Chile,Chile,1986,CHL,155,CHL,152,lac,4,NA,5,0,88,0
+Chile,Chile,1987,CHL,155,CHL,152,lac,4,NA,4,0,88,0
+Chile,Chile,1988,CHL,155,CHL,152,lac,3,NA,4,0,88,0
+Chile,Chile,1989,CHL,155,CHL,152,lac,3,NA,3,0,88,0
+Chile,Chile,1990,CHL,155,CHL,152,lac,3,NA,3,0,99,0
+Chile,Chile,1991,CHL,155,CHL,152,lac,3,NA,3,0,88,0
+Chile,Chile,1992,CHL,155,CHL,152,lac,3,NA,3,0,99,0
+Chile,Chile,1993,CHL,155,CHL,152,lac,3,NA,2,0,88,0
+Chile,Chile,1994,CHL,155,CHL,152,lac,2,NA,2,0,88,0
+Chile,Chile,1995,CHL,155,CHL,152,lac,2,NA,2,0,99,0
+Chile,Chile,1996,CHL,155,CHL,152,lac,2,NA,2,0,99,0
+Chile,Chile,1997,CHL,155,CHL,152,lac,2,NA,2,0,88,0
+Chile,Chile,1998,CHL,155,CHL,152,lac,2,NA,2,0,88,0
+Chile,Chile,1999,CHL,155,CHL,152,lac,2,NA,2,0,88,0
+Chile,Chile,2000,CHL,155,CHL,152,lac,2,NA,2,0,99,0
+Chile,Chile,2001,CHL,155,CHL,152,lac,2,NA,2,0,99,0
+Chile,Chile,2002,CHL,155,CHL,152,lac,2,NA,2,0,99,0
+Chile,Chile,2003,CHL,155,CHL,152,lac,2,NA,2,0,99,0
+Chile,Chile,2004,CHL,155,CHL,152,lac,1,NA,1,0,88,0
+Chile,Chile,2005,CHL,155,CHL,152,lac,1,NA,1,0,99,0
+Chile,Chile,2006,CHL,155,CHL,152,lac,2,NA,1,0,88,0
+Chile,Chile,2007,CHL,155,CHL,152,lac,2,NA,1,0,99,0
+Chile,Chile,2008,CHL,155,CHL,152,lac,2,NA,2,0,88,0
+Chile,Chile,2009,CHL,155,CHL,152,lac,2,NA,2,0,99,0
+Chile,Chile,2010,CHL,155,CHL,152,lac,1,NA,2,0,99,0
+Chile,Chile,2011,CHL,155,CHL,152,lac,2,NA,2,0,88,0
+Chile,Chile,2012,CHL,155,CHL,152,lac,2,NA,2,0,99,0
+Chile,Chile,2013,CHL,155,CHL,152,lac,NA,2,2,88,0,0
+Chile,Chile,2014,CHL,155,CHL,152,lac,2,2,2,0,0,0
+Chile,Chile,2015,CHL,155,CHL,152,lac,2,2,1,0,0,0
+Chile,Chile,2016,CHL,155,CHL,152,lac,2,2,2,0,0,0
+Chile,Chile,2017,CHL,155,CHL,152,lac,2,1,2,0,0,0
+Chile,Chile,2018,CHL,155,CHL,152,lac,NA,1,2,88,0,0
+Chile,Chile,2019,CHL,155,CHL,152,lac,4,4,2,0,0,0
+Chile,Chile,2020,CHL,155,CHL,152,lac,3,4,3,0,0,0
+Chile,Chile,2021,CHL,155,CHL,152,lac,3,2,2,0,0,0
+Chile,Chile,2022,CHL,155,CHL,152,lac,3,2,2,0,0,0
+Chile,Chile,2023,CHL,155,CHL,152,lac,2,1,2,0,0,0
+Chile,Chile,2024,CHL,155,CHL,152,lac,2,NA,2,0,88,0
+Egypt,Egypt,1976,EGY,651,EGY,818,mena,3,NA,1,0,88,0
+Egypt,Egypt,1977,EGY,651,EGY,818,mena,3,NA,2,0,88,0
+Egypt,Egypt,1978,EGY,651,EGY,818,mena,3,NA,2,0,88,0
+Egypt,Egypt,1979,EGY,651,EGY,818,mena,3,NA,2,0,88,0
+Egypt,Egypt,1980,EGY,651,EGY,818,mena,3,NA,1,0,88,0
+Egypt,Egypt,1981,EGY,651,EGY,818,mena,3,NA,3,0,88,0
+Egypt,Egypt,1982,EGY,651,EGY,818,mena,3,NA,3,0,88,0
+Egypt,Egypt,1983,EGY,651,EGY,818,mena,3,NA,3,0,88,0
+Egypt,Egypt,1984,EGY,651,EGY,818,mena,3,NA,2,0,88,0
+Egypt,Egypt,1985,EGY,651,EGY,818,mena,3,NA,2,0,88,0
+Egypt,Egypt,1986,EGY,651,EGY,818,mena,3,NA,3,0,88,0
+Egypt,Egypt,1987,EGY,651,EGY,818,mena,3,NA,2,0,88,0
+Egypt,Egypt,1988,EGY,651,EGY,818,mena,3,NA,3,0,88,0
+Egypt,Egypt,1989,EGY,651,EGY,818,mena,4,NA,3,0,88,0
+Egypt,Egypt,1990,EGY,651,EGY,818,mena,3,NA,3,0,88,0
+Egypt,Egypt,1991,EGY,651,EGY,818,mena,4,NA,3,0,88,0
+Egypt,Egypt,1992,EGY,651,EGY,818,mena,3,NA,3,0,99,0
+Egypt,Egypt,1993,EGY,651,EGY,818,mena,4,NA,4,0,99,0
+Egypt,Egypt,1994,EGY,651,EGY,818,mena,4,NA,4,0,99,0
+Egypt,Egypt,1995,EGY,651,EGY,818,mena,4,NA,4,0,99,0
+Egypt,Egypt,1996,EGY,651,EGY,818,mena,4,NA,3,0,99,0
+Egypt,Egypt,1997,EGY,651,EGY,818,mena,4,NA,4,0,99,0
+Egypt,Egypt,1998,EGY,651,EGY,818,mena,3,NA,3,0,99,0
+Egypt,Egypt,1999,EGY,651,EGY,818,mena,3,NA,3,0,99,0
+Egypt,Egypt,2000,EGY,651,EGY,818,mena,3,NA,3,0,99,0
+Egypt,Egypt,2001,EGY,651,EGY,818,mena,4,NA,3,0,99,0
+Egypt,Egypt,2002,EGY,651,EGY,818,mena,4,NA,3,0,99,0
+Egypt,Egypt,2003,EGY,651,EGY,818,mena,4,NA,3,0,99,0
+Egypt,Egypt,2004,EGY,651,EGY,818,mena,4,NA,3,0,88,0
+Egypt,Egypt,2005,EGY,651,EGY,818,mena,3,NA,4,0,99,0
+Egypt,Egypt,2006,EGY,651,EGY,818,mena,4,NA,4,0,88,0
+Egypt,Egypt,2007,EGY,651,EGY,818,mena,4,NA,3,0,99,0
+Egypt,Egypt,2008,EGY,651,EGY,818,mena,4,NA,3,0,88,0
+Egypt,Egypt,2009,EGY,651,EGY,818,mena,4,NA,3,0,99,0
+Egypt,Egypt,2010,EGY,651,EGY,818,mena,4,NA,4,0,99,0
+Egypt,Egypt,2011,EGY,651,EGY,818,mena,4,NA,4,0,88,0
+Egypt,Egypt,2012,EGY,651,EGY,818,mena,3,NA,3,0,88,0
+Egypt,Egypt,2013,EGY,651,EGY,818,mena,NA,4,4,88,0,0
+Egypt,Egypt,2014,EGY,651,EGY,818,mena,4,4,4,0,0,0
+Egypt,Egypt,2015,EGY,651,EGY,818,mena,4,4,4,0,0,0
+Egypt,Egypt,2016,EGY,651,EGY,818,mena,4,4,4,0,0,0
+Egypt,Egypt,2017,EGY,651,EGY,818,mena,5,4,4,0,0,0
+Egypt,Egypt,2018,EGY,651,EGY,818,mena,4,4,4,0,0,0
+Egypt,Egypt,2019,EGY,651,EGY,818,mena,5,4,4,0,0,0
+Egypt,Egypt,2020,EGY,651,EGY,818,mena,4,4,4,0,0,0
+Egypt,Egypt,2021,EGY,651,EGY,818,mena,4,4,4,0,0,0
+Egypt,Egypt,2022,EGY,651,EGY,818,mena,4,3,4,0,0,0
+Egypt,Egypt,2023,EGY,651,EGY,818,mena,4,4,4,0,0,0
+Egypt,Egypt,2024,EGY,651,EGY,818,mena,4,4,4,0,0,0
+German Democratic Republic,"Germany, East",1976,GDR,265,NA,NA,eca,4,NA,NA,0,88,88
+German Democratic Republic,"Germany, East",1977,GDR,265,NA,NA,eca,3,NA,NA,0,88,88
+German Democratic Republic,"Germany, East",1978,GDR,265,NA,NA,eca,3,NA,NA,0,88,88
+German Democratic Republic,"Germany, East",1979,GDR,265,NA,NA,eca,3,NA,4,0,88,0
+German Democratic Republic,"Germany, East",1980,GDR,265,NA,NA,eca,2,NA,3,0,88,0
+German Democratic Republic,"Germany, East",1981,GDR,265,NA,NA,eca,3,NA,3,0,88,0
+German Democratic Republic,"Germany, East",1982,GDR,265,NA,NA,eca,3,NA,3,0,88,0
+German Democratic Republic,"Germany, East",1983,GDR,265,NA,NA,eca,3,NA,3,0,88,0
+German Democratic Republic,"Germany, East",1984,GDR,265,NA,NA,eca,3,NA,3,0,88,0
+German Democratic Republic,"Germany, East",1985,GDR,265,NA,NA,eca,3,NA,2,0,88,0
+German Democratic Republic,"Germany, East",1986,GDR,265,NA,NA,eca,NA,NA,3,99,88,0
+German Democratic Republic,"Germany, East",1987,GDR,265,NA,NA,eca,3,NA,3,0,88,0
+German Democratic Republic,"Germany, East",1988,GDR,265,NA,NA,eca,3,NA,2,0,88,0
+German Democratic Republic,"Germany, East",1989,GDR,265,NA,NA,eca,2,NA,2,0,99,0
+German Democratic Republic,"Germany, East",1990,GDR,265,NA,NA,eca,1,NA,1,0,88,0
+German Democratic Republic,"Germany, East",1991,GDR,265,NA,NA,eca,NA,NA,NA,77,77,77
+German Democratic Republic,"Germany, East",1992,GDR,265,NA,NA,eca,NA,NA,NA,77,77,77
+German Democratic Republic,"Germany, East",1993,GDR,265,NA,NA,eca,NA,NA,NA,77,77,77
+German Democratic Republic,"Germany, East",1994,GDR,265,NA,NA,eca,NA,NA,NA,77,77,77
+German Democratic Republic,"Germany, East",1995,GDR,265,NA,NA,eca,NA,NA,NA,77,77,77
+German Democratic Republic,"Germany, East",1996,GDR,265,NA,NA,eca,NA,NA,NA,77,77,77
+German Democratic Republic,"Germany, East",1997,GDR,265,NA,NA,eca,NA,NA,NA,77,77,77
+German Democratic Republic,"Germany, East",1998,GDR,265,NA,NA,eca,NA,NA,NA,77,77,77
+German Democratic Republic,"Germany, East",1999,GDR,265,NA,NA,eca,NA,NA,NA,77,77,77
+German Democratic Republic,"Germany, East",2000,GDR,265,NA,NA,eca,NA,NA,NA,77,77,77
+German Democratic Republic,"Germany, East",2001,GDR,265,NA,NA,eca,NA,NA,NA,77,77,77
+German Democratic Republic,"Germany, East",2002,GDR,265,NA,NA,eca,NA,NA,NA,77,77,77
+German Democratic Republic,"Germany, East",2003,GDR,265,NA,NA,eca,NA,NA,NA,77,77,77
+German Democratic Republic,"Germany, East",2004,GDR,265,NA,NA,eca,NA,NA,NA,77,77,77
+German Democratic Republic,"Germany, East",2005,GDR,265,NA,NA,eca,NA,NA,NA,77,77,77
+German Democratic Republic,"Germany, East",2006,GDR,265,NA,NA,eca,NA,NA,NA,77,77,77
+German Democratic Republic,"Germany, East",2007,GDR,265,NA,NA,eca,NA,NA,NA,77,77,77
+German Democratic Republic,"Germany, East",2008,GDR,265,NA,NA,eca,NA,NA,NA,77,77,77
+German Democratic Republic,"Germany, East",2009,GDR,265,NA,NA,eca,NA,NA,NA,77,77,77
+German Democratic Republic,"Germany, East",2010,GDR,265,NA,NA,eca,NA,NA,NA,77,77,77
+German Democratic Republic,"Germany, East",2011,GDR,265,NA,NA,eca,NA,NA,NA,77,77,77
+German Democratic Republic,"Germany, East",2012,GDR,265,NA,NA,eca,NA,NA,NA,77,77,77
+German Democratic Republic,"Germany, East",2013,GDR,265,NA,NA,eca,NA,NA,NA,77,77,77
+German Democratic Republic,"Germany, East",2014,GDR,265,NA,NA,eca,NA,NA,NA,77,77,77
+German Democratic Republic,"Germany, East",2015,GDR,265,NA,NA,eca,NA,NA,NA,77,77,77
+German Democratic Republic,"Germany, East",2016,GDR,265,NA,NA,eca,NA,NA,NA,77,77,77
+German Democratic Republic,"Germany, East",2017,GDR,265,NA,NA,eca,NA,NA,NA,77,77,77
+German Democratic Republic,"Germany, East",2018,GDR,265,NA,NA,eca,NA,NA,NA,77,77,77
+German Democratic Republic,"Germany, East",2019,GDR,265,NA,NA,eca,NA,NA,NA,77,77,77
+German Democratic Republic,"Germany, East",2020,GDR,265,NA,NA,eca,NA,NA,NA,77,77,77
+German Democratic Republic,"Germany, East",2021,GDR,265,NA,NA,eca,NA,NA,NA,77,77,77
+German Democratic Republic,"Germany, East",2022,GDR,265,NA,NA,eca,NA,NA,NA,77,77,77
+German Democratic Republic,"Germany, East",2023,GDR,265,NA,NA,eca,NA,NA,NA,77,77,77
+German Democratic Republic,"Germany, East",2024,GDR,265,NA,NA,eca,NA,NA,NA,77,77,77
+German Federal Republic,"Germany, West",1976,GFR,260,NA,NA,eca,1,NA,1,0,88,0
+German Federal Republic,"Germany, West",1977,GFR,260,NA,NA,eca,2,NA,1,0,88,0
+German Federal Republic,"Germany, West",1978,GFR,260,NA,NA,eca,1,NA,1,0,88,0
+German Federal Republic,"Germany, West",1979,GFR,260,NA,NA,eca,1,NA,1,0,88,0
+German Federal Republic,"Germany, West",1980,GFR,260,NA,NA,eca,2,NA,1,0,88,0
+German Federal Republic,"Germany, West",1981,GFR,260,NA,NA,eca,2,NA,1,0,88,0
+German Federal Republic,"Germany, West",1982,GFR,260,NA,NA,eca,2,NA,1,0,88,0
+German Federal Republic,"Germany, West",1983,GFR,260,NA,NA,eca,2,NA,1,0,88,0
+German Federal Republic,"Germany, West",1984,GFR,260,NA,NA,eca,2,NA,1,0,88,0
+German Federal Republic,"Germany, West",1985,GFR,260,NA,NA,eca,2,NA,1,0,88,0
+German Federal Republic,"Germany, West",1986,GFR,260,NA,NA,eca,2,NA,1,0,88,0
+German Federal Republic,"Germany, West",1987,GFR,260,NA,NA,eca,2,NA,1,0,88,0
+German Federal Republic,"Germany, West",1988,GFR,260,NA,NA,eca,2,NA,1,0,88,0
+German Federal Republic,"Germany, West",1989,GFR,260,NA,NA,eca,1,NA,1,0,88,0
+German Federal Republic,"Germany, West",1990,GFR,260,NA,NA,eca,NA,NA,NA,77,77,77
+German Federal Republic,"Germany, West",1991,GFR,260,NA,NA,eca,NA,NA,NA,77,77,77
+German Federal Republic,"Germany, West",1992,GFR,260,NA,NA,eca,NA,NA,NA,77,77,77
+German Federal Republic,"Germany, West",1993,GFR,260,NA,NA,eca,NA,NA,NA,77,77,77
+German Federal Republic,"Germany, West",1994,GFR,260,NA,NA,eca,NA,NA,NA,77,77,77
+German Federal Republic,"Germany, West",1995,GFR,260,NA,NA,eca,NA,NA,NA,77,77,77
+German Federal Republic,"Germany, West",1996,GFR,260,NA,NA,eca,NA,NA,NA,77,77,77
+German Federal Republic,"Germany, West",1997,GFR,260,NA,NA,eca,NA,NA,NA,77,77,77
+German Federal Republic,"Germany, West",1998,GFR,260,NA,NA,eca,NA,NA,NA,77,77,77
+German Federal Republic,"Germany, West",1999,GFR,260,NA,NA,eca,NA,NA,NA,77,77,77
+German Federal Republic,"Germany, West",2000,GFR,260,NA,NA,eca,NA,NA,NA,77,77,77
+German Federal Republic,"Germany, West",2001,GFR,260,NA,NA,eca,NA,NA,NA,77,77,77
+German Federal Republic,"Germany, West",2002,GFR,260,NA,NA,eca,NA,NA,NA,77,77,77
+German Federal Republic,"Germany, West",2003,GFR,260,NA,NA,eca,NA,NA,NA,77,77,77
+German Federal Republic,"Germany, West",2004,GFR,260,NA,NA,eca,NA,NA,NA,77,77,77
+German Federal Republic,"Germany, West",2005,GFR,260,NA,NA,eca,NA,NA,NA,77,77,77
+German Federal Republic,"Germany, West",2006,GFR,260,NA,NA,eca,NA,NA,NA,77,77,77
+German Federal Republic,"Germany, West",2007,GFR,260,NA,NA,eca,NA,NA,NA,77,77,77
+German Federal Republic,"Germany, West",2008,GFR,260,NA,NA,eca,NA,NA,NA,77,77,77
+German Federal Republic,"Germany, West",2009,GFR,260,NA,NA,eca,NA,NA,NA,77,77,77
+German Federal Republic,"Germany, West",2010,GFR,260,NA,NA,eca,NA,NA,NA,77,77,77
+German Federal Republic,"Germany, West",2011,GFR,260,NA,NA,eca,NA,NA,NA,77,77,77
+German Federal Republic,"Germany, West",2012,GFR,260,NA,NA,eca,NA,NA,NA,77,77,77
+German Federal Republic,"Germany, West",2013,GFR,260,NA,NA,eca,NA,NA,NA,77,77,77
+German Federal Republic,"Germany, West",2014,GFR,260,NA,NA,eca,NA,NA,NA,77,77,77
+German Federal Republic,"Germany, West",2015,GFR,260,NA,NA,eca,NA,NA,NA,77,77,77
+German Federal Republic,"Germany, West",2016,GFR,260,NA,NA,eca,NA,NA,NA,77,77,77
+German Federal Republic,"Germany, West",2017,GFR,260,NA,NA,eca,NA,NA,NA,77,77,77
+German Federal Republic,"Germany, West",2018,GFR,260,NA,NA,eca,NA,NA,NA,77,77,77
+German Federal Republic,"Germany, West",2019,GFR,260,NA,NA,eca,NA,NA,NA,77,77,77
+German Federal Republic,"Germany, West",2020,GFR,260,NA,NA,eca,NA,NA,NA,77,77,77
+German Federal Republic,"Germany, West",2021,GFR,260,NA,NA,eca,NA,NA,NA,77,77,77
+German Federal Republic,"Germany, West",2022,GFR,260,NA,NA,eca,NA,NA,NA,77,77,77
+German Federal Republic,"Germany, West",2023,GFR,260,NA,NA,eca,NA,NA,NA,77,77,77
+German Federal Republic,"Germany, West",2024,GFR,260,NA,NA,eca,NA,NA,NA,77,77,77
+Germany,Germany,1976,GMY,255,DEU,276,eca,NA,NA,NA,77,77,77
+Germany,Germany,1977,GMY,255,DEU,276,eca,NA,NA,NA,77,77,77
+Germany,Germany,1978,GMY,255,DEU,276,eca,NA,NA,NA,77,77,77
+Germany,Germany,1979,GMY,255,DEU,276,eca,NA,NA,NA,77,77,77
+Germany,Germany,1980,GMY,255,DEU,276,eca,NA,NA,NA,77,77,77
+Germany,Germany,1981,GMY,255,DEU,276,eca,NA,NA,NA,77,77,77
+Germany,Germany,1982,GMY,255,DEU,276,eca,NA,NA,NA,77,77,77
+Germany,Germany,1983,GMY,255,DEU,276,eca,NA,NA,NA,77,77,77
+Germany,Germany,1984,GMY,255,DEU,276,eca,NA,NA,NA,77,77,77
+Germany,Germany,1985,GMY,255,DEU,276,eca,NA,NA,NA,77,77,77
+Germany,Germany,1986,GMY,255,DEU,276,eca,NA,NA,NA,77,77,77
+Germany,Germany,1987,GMY,255,DEU,276,eca,NA,NA,NA,77,77,77
+Germany,Germany,1988,GMY,255,DEU,276,eca,NA,NA,NA,77,77,77
+Germany,Germany,1989,GMY,255,DEU,276,eca,NA,NA,NA,77,77,77
+Germany,Germany,1990,GMY,255,DEU,276,eca,1,NA,1,0,88,0
+Germany,Germany,1991,GMY,255,DEU,276,eca,1,NA,1,0,88,0
+Germany,Germany,1992,GMY,255,DEU,276,eca,1,NA,2,0,88,0
+Germany,Germany,1993,GMY,255,DEU,276,eca,1,NA,1,0,99,0
+Germany,Germany,1994,GMY,255,DEU,276,eca,3,NA,1,0,99,0
+Germany,Germany,1995,GMY,255,DEU,276,eca,2,NA,2,0,99,0
+Germany,Germany,1996,GMY,255,DEU,276,eca,1,NA,2,0,99,0
+Germany,Germany,1997,GMY,255,DEU,276,eca,NA,NA,1,99,88,0
+Germany,Germany,1998,GMY,255,DEU,276,eca,1,NA,1,0,88,0
+Germany,Germany,1999,GMY,255,DEU,276,eca,1,NA,2,0,88,0
+Germany,Germany,2000,GMY,255,DEU,276,eca,1,NA,1,0,88,0
+Germany,Germany,2001,GMY,255,DEU,276,eca,2,NA,2,0,88,0
+Germany,Germany,2002,GMY,255,DEU,276,eca,2,NA,1,0,88,0
+Germany,Germany,2003,GMY,255,DEU,276,eca,2,NA,2,0,88,0
+Germany,Germany,2004,GMY,255,DEU,276,eca,2,NA,2,0,88,0
+Germany,Germany,2005,GMY,255,DEU,276,eca,2,NA,1,0,88,0
+Germany,Germany,2006,GMY,255,DEU,276,eca,1,NA,1,0,88,0
+Germany,Germany,2007,GMY,255,DEU,276,eca,1,NA,1,0,88,0
+Germany,Germany,2008,GMY,255,DEU,276,eca,1,NA,1,0,88,0
+Germany,Germany,2009,GMY,255,DEU,276,eca,1,NA,1,0,88,0
+Germany,Germany,2010,GMY,255,DEU,276,eca,1,NA,1,0,88,0
+Germany,Germany,2011,GMY,255,DEU,276,eca,1,NA,1,0,88,0
+Germany,Germany,2012,GMY,255,DEU,276,eca,1,NA,1,0,88,0
+Germany,Germany,2013,GMY,255,DEU,276,eca,NA,1,1,88,0,0
+Germany,Germany,2014,GMY,255,DEU,276,eca,1,NA,1,0,88,0
+Germany,Germany,2015,GMY,255,DEU,276,eca,1,NA,1,0,88,0
+Germany,Germany,2016,GMY,255,DEU,276,eca,1,NA,1,0,88,0
+Germany,Germany,2017,GMY,255,DEU,276,eca,1,NA,1,0,88,0
+Germany,Germany,2018,GMY,255,DEU,276,eca,NA,NA,1,88,88,0
+Germany,Germany,2019,GMY,255,DEU,276,eca,1,NA,1,0,88,0
+Germany,Germany,2020,GMY,255,DEU,276,eca,1,1,1,0,0,0
+Germany,Germany,2021,GMY,255,DEU,276,eca,1,1,1,0,0,0
+Germany,Germany,2022,GMY,255,DEU,276,eca,1,1,1,0,0,0
+Germany,Germany,2023,GMY,255,DEU,276,eca,1,1,1,0,0,0
+Germany,Germany,2024,GMY,255,DEU,276,eca,2,2,1,0,0,0
+Russian Federation,Russia,1976,RUS,365,RUS,643,eca,NA,NA,NA,77,77,77
+Russian Federation,Russia,1977,RUS,365,RUS,643,eca,NA,NA,NA,77,77,77
+Russian Federation,Russia,1978,RUS,365,RUS,643,eca,NA,NA,NA,77,77,77
+Russian Federation,Russia,1979,RUS,365,RUS,643,eca,NA,NA,NA,77,77,77
+Russian Federation,Russia,1980,RUS,365,RUS,643,eca,NA,NA,NA,77,77,77
+Russian Federation,Russia,1981,RUS,365,RUS,643,eca,NA,NA,NA,77,77,77
+Russian Federation,Russia,1982,RUS,365,RUS,643,eca,NA,NA,NA,77,77,77
+Russian Federation,Russia,1983,RUS,365,RUS,643,eca,NA,NA,NA,77,77,77
+Russian Federation,Russia,1984,RUS,365,RUS,643,eca,NA,NA,NA,77,77,77
+Russian Federation,Russia,1985,RUS,365,RUS,643,eca,NA,NA,NA,77,77,77
+Russian Federation,Russia,1986,RUS,365,RUS,643,eca,NA,NA,NA,77,77,77
+Russian Federation,Russia,1987,RUS,365,RUS,643,eca,NA,NA,NA,77,77,77
+Russian Federation,Russia,1988,RUS,365,RUS,643,eca,NA,NA,NA,77,77,77
+Russian Federation,Russia,1989,RUS,365,RUS,643,eca,NA,NA,NA,77,77,77
+Russian Federation,Russia,1990,RUS,365,RUS,643,eca,NA,NA,NA,77,77,77
+Russian Federation,Russia,1991,RUS,365,RUS,643,eca,NA,NA,NA,77,77,77
+Russian Federation,Russia,1992,RUS,365,RUS,643,eca,2,NA,3,0,88,0
+Russian Federation,Russia,1993,RUS,365,RUS,643,eca,2,NA,3,0,88,0
+Russian Federation,Russia,1994,RUS,365,RUS,643,eca,4,NA,5,0,99,0
+Russian Federation,Russia,1995,RUS,365,RUS,643,eca,4,NA,5,0,99,0
+Russian Federation,Russia,1996,RUS,365,RUS,643,eca,4,NA,4,0,99,0
+Russian Federation,Russia,1997,RUS,365,RUS,643,eca,3,NA,4,0,99,0
+Russian Federation,Russia,1998,RUS,365,RUS,643,eca,4,NA,5,0,99,0
+Russian Federation,Russia,1999,RUS,365,RUS,643,eca,4,NA,4,0,99,0
+Russian Federation,Russia,2000,RUS,365,RUS,643,eca,5,NA,3,0,99,0
+Russian Federation,Russia,2001,RUS,365,RUS,643,eca,4,NA,4,0,99,0
+Russian Federation,Russia,2002,RUS,365,RUS,643,eca,4,NA,4,0,99,0
+Russian Federation,Russia,2003,RUS,365,RUS,643,eca,4,NA,4,0,99,0
+Russian Federation,Russia,2004,RUS,365,RUS,643,eca,4,NA,4,0,88,0
+Russian Federation,Russia,2005,RUS,365,RUS,643,eca,4,NA,4,0,99,0
+Russian Federation,Russia,2006,RUS,365,RUS,643,eca,4,NA,4,0,88,0
+Russian Federation,Russia,2007,RUS,365,RUS,643,eca,4,NA,4,0,99,0
+Russian Federation,Russia,2008,RUS,365,RUS,643,eca,4,NA,4,0,88,0
+Russian Federation,Russia,2009,RUS,365,RUS,643,eca,4,NA,4,0,99,0
+Russian Federation,Russia,2010,RUS,365,RUS,643,eca,4,NA,4,0,99,0
+Russian Federation,Russia,2011,RUS,365,RUS,643,eca,4,NA,4,0,88,0
+Russian Federation,Russia,2012,RUS,365,RUS,643,eca,4,NA,4,0,99,0
+Russian Federation,Russia,2013,RUS,365,RUS,643,eca,NA,3,4,88,0,0
+Russian Federation,Russia,2014,RUS,365,RUS,643,eca,4,4,4,0,0,0
+Russian Federation,Russia,2015,RUS,365,RUS,643,eca,3,3,4,0,0,0
+Russian Federation,Russia,2016,RUS,365,RUS,643,eca,4,4,4,0,0,0
+Russian Federation,Russia,2017,RUS,365,RUS,643,eca,4,3,4,0,0,0
+Russian Federation,Russia,2018,RUS,365,RUS,643,eca,NA,4,4,88,0,0
+Russian Federation,Russia,2019,RUS,365,RUS,643,eca,4,4,4,0,0,0
+Russian Federation,Russia,2020,RUS,365,RUS,643,eca,4,3,4,0,0,0
+Russian Federation,Russia,2021,RUS,365,RUS,643,eca,4,4,4,0,0,0
+Russian Federation,Russia,2022,RUS,365,RUS,643,eca,5,4,5,0,0,0
+Russian Federation,Russia,2023,RUS,365,RUS,643,eca,4,4,5,0,0,0
+Russian Federation,Russia,2024,RUS,365,RUS,643,eca,5,4,5,0,0,0
+Russia-Occupied Areas (Ukraine),Russia-Occupied Areas (Ukraine),1976,NA,NA,NA,NA,eca,NA,NA,NA,66,66,66
+Russia-Occupied Areas (Ukraine),Russia-Occupied Areas (Ukraine),1977,NA,NA,NA,NA,eca,NA,NA,NA,66,66,66
+Russia-Occupied Areas (Ukraine),Russia-Occupied Areas (Ukraine),1978,NA,NA,NA,NA,eca,NA,NA,NA,66,66,66
+Russia-Occupied Areas (Ukraine),Russia-Occupied Areas (Ukraine),1979,NA,NA,NA,NA,eca,NA,NA,NA,66,66,66
+Russia-Occupied Areas (Ukraine),Russia-Occupied Areas (Ukraine),1980,NA,NA,NA,NA,eca,NA,NA,NA,66,66,66
+Russia-Occupied Areas (Ukraine),Russia-Occupied Areas (Ukraine),1981,NA,NA,NA,NA,eca,NA,NA,NA,66,66,66
+Russia-Occupied Areas (Ukraine),Russia-Occupied Areas (Ukraine),1982,NA,NA,NA,NA,eca,NA,NA,NA,66,66,66
+Russia-Occupied Areas (Ukraine),Russia-Occupied Areas (Ukraine),1983,NA,NA,NA,NA,eca,NA,NA,NA,66,66,66
+Russia-Occupied Areas (Ukraine),Russia-Occupied Areas (Ukraine),1984,NA,NA,NA,NA,eca,NA,NA,NA,66,66,66
+Russia-Occupied Areas (Ukraine),Russia-Occupied Areas (Ukraine),1985,NA,NA,NA,NA,eca,NA,NA,NA,66,66,66
+Russia-Occupied Areas (Ukraine),Russia-Occupied Areas (Ukraine),1986,NA,NA,NA,NA,eca,NA,NA,NA,66,66,66
+Russia-Occupied Areas (Ukraine),Russia-Occupied Areas (Ukraine),1987,NA,NA,NA,NA,eca,NA,NA,NA,66,66,66
+Russia-Occupied Areas (Ukraine),Russia-Occupied Areas (Ukraine),1988,NA,NA,NA,NA,eca,NA,NA,NA,66,66,66
+Russia-Occupied Areas (Ukraine),Russia-Occupied Areas (Ukraine),1989,NA,NA,NA,NA,eca,NA,NA,NA,66,66,66
+Russia-Occupied Areas (Ukraine),Russia-Occupied Areas (Ukraine),1990,NA,NA,NA,NA,eca,NA,NA,NA,66,66,66
+Russia-Occupied Areas (Ukraine),Russia-Occupied Areas (Ukraine),1991,NA,NA,NA,NA,eca,NA,NA,NA,66,66,66
+Russia-Occupied Areas (Ukraine),Russia-Occupied Areas (Ukraine),1992,NA,NA,NA,NA,eca,NA,NA,NA,66,66,66
+Russia-Occupied Areas (Ukraine),Russia-Occupied Areas (Ukraine),1993,NA,NA,NA,NA,eca,NA,NA,NA,66,66,66
+Russia-Occupied Areas (Ukraine),Russia-Occupied Areas (Ukraine),1994,NA,NA,NA,NA,eca,NA,NA,NA,66,66,66
+Russia-Occupied Areas (Ukraine),Russia-Occupied Areas (Ukraine),1995,NA,NA,NA,NA,eca,NA,NA,NA,66,66,66
+Russia-Occupied Areas (Ukraine),Russia-Occupied Areas (Ukraine),1996,NA,NA,NA,NA,eca,NA,NA,NA,66,66,66
+Russia-Occupied Areas (Ukraine),Russia-Occupied Areas (Ukraine),1997,NA,NA,NA,NA,eca,NA,NA,NA,66,66,66
+Russia-Occupied Areas (Ukraine),Russia-Occupied Areas (Ukraine),1998,NA,NA,NA,NA,eca,NA,NA,NA,66,66,66
+Russia-Occupied Areas (Ukraine),Russia-Occupied Areas (Ukraine),1999,NA,NA,NA,NA,eca,NA,NA,NA,66,66,66
+Russia-Occupied Areas (Ukraine),Russia-Occupied Areas (Ukraine),2000,NA,NA,NA,NA,eca,NA,NA,NA,66,66,66
+Russia-Occupied Areas (Ukraine),Russia-Occupied Areas (Ukraine),2001,NA,NA,NA,NA,eca,NA,NA,NA,66,66,66
+Russia-Occupied Areas (Ukraine),Russia-Occupied Areas (Ukraine),2002,NA,NA,NA,NA,eca,NA,NA,NA,66,66,66
+Russia-Occupied Areas (Ukraine),Russia-Occupied Areas (Ukraine),2003,NA,NA,NA,NA,eca,NA,NA,NA,66,66,66
+Russia-Occupied Areas (Ukraine),Russia-Occupied Areas (Ukraine),2004,NA,NA,NA,NA,eca,NA,NA,NA,66,66,66
+Russia-Occupied Areas (Ukraine),Russia-Occupied Areas (Ukraine),2005,NA,NA,NA,NA,eca,NA,NA,NA,66,66,66
+Russia-Occupied Areas (Ukraine),Russia-Occupied Areas (Ukraine),2006,NA,NA,NA,NA,eca,NA,NA,NA,66,66,66
+Russia-Occupied Areas (Ukraine),Russia-Occupied Areas (Ukraine),2007,NA,NA,NA,NA,eca,NA,NA,NA,66,66,66
+Russia-Occupied Areas (Ukraine),Russia-Occupied Areas (Ukraine),2008,NA,NA,NA,NA,eca,NA,NA,NA,66,66,66
+Russia-Occupied Areas (Ukraine),Russia-Occupied Areas (Ukraine),2009,NA,NA,NA,NA,eca,NA,NA,NA,66,66,66
+Russia-Occupied Areas (Ukraine),Russia-Occupied Areas (Ukraine),2010,NA,NA,NA,NA,eca,NA,NA,NA,66,66,66
+Russia-Occupied Areas (Ukraine),Russia-Occupied Areas (Ukraine),2011,NA,NA,NA,NA,eca,NA,NA,NA,66,66,66
+Russia-Occupied Areas (Ukraine),Russia-Occupied Areas (Ukraine),2012,NA,NA,NA,NA,eca,NA,NA,NA,66,66,66
+Russia-Occupied Areas (Ukraine),Russia-Occupied Areas (Ukraine),2013,NA,NA,NA,NA,eca,NA,NA,NA,66,66,66
+Russia-Occupied Areas (Ukraine),Russia-Occupied Areas (Ukraine),2014,NA,NA,NA,NA,eca,NA,NA,NA,66,66,66
+Russia-Occupied Areas (Ukraine),Russia-Occupied Areas (Ukraine),2015,NA,NA,NA,NA,eca,NA,NA,NA,66,66,66
+Russia-Occupied Areas (Ukraine),Russia-Occupied Areas (Ukraine),2016,NA,NA,NA,NA,eca,NA,NA,NA,66,66,66
+Russia-Occupied Areas (Ukraine),Russia-Occupied Areas (Ukraine),2017,NA,NA,NA,NA,eca,NA,NA,NA,66,66,66
+Russia-Occupied Areas (Ukraine),Russia-Occupied Areas (Ukraine),2018,NA,NA,NA,NA,eca,NA,NA,NA,66,66,66
+Russia-Occupied Areas (Ukraine),Russia-Occupied Areas (Ukraine),2019,NA,NA,NA,NA,eca,NA,NA,NA,66,66,66
+Russia-Occupied Areas (Ukraine),Russia-Occupied Areas (Ukraine),2020,NA,NA,NA,NA,eca,NA,NA,NA,66,66,66
+Russia-Occupied Areas (Ukraine),Russia-Occupied Areas (Ukraine),2021,NA,NA,NA,NA,eca,NA,NA,NA,66,66,66
+Russia-Occupied Areas (Ukraine),Russia-Occupied Areas (Ukraine),2022,NA,NA,NA,NA,eca,NA,NA,5,66,66,0
+Russia-Occupied Areas (Ukraine),Russia-Occupied Areas (Ukraine),2023,NA,NA,NA,NA,eca,5,5,5,0,0,0
+Russia-Occupied Areas (Ukraine),Russia-Occupied Areas (Ukraine),2024,NA,NA,NA,NA,eca,NA,NA,5,66,66,0
+South Africa,South Africa,1976,SAF,560,ZAF,710,ssa,4,NA,NA,0,88,88
+South Africa,South Africa,1977,SAF,560,ZAF,710,ssa,4,NA,3,0,88,0
+South Africa,South Africa,1978,SAF,560,ZAF,710,ssa,3,NA,NA,0,88,88
+South Africa,South Africa,1979,SAF,560,ZAF,710,ssa,3,NA,3,0,88,0
+South Africa,South Africa,1980,SAF,560,ZAF,710,ssa,3,NA,3,0,88,0
+South Africa,South Africa,1981,SAF,560,ZAF,710,ssa,3,NA,2,0,88,0
+South Africa,South Africa,1982,SAF,560,ZAF,710,ssa,3,NA,3,0,88,0
+South Africa,South Africa,1983,SAF,560,ZAF,710,ssa,4,NA,2,0,88,0
+South Africa,South Africa,1984,SAF,560,ZAF,710,ssa,3,NA,3,0,88,0
+South Africa,South Africa,1985,SAF,560,ZAF,710,ssa,4,NA,4,0,88,0
+South Africa,South Africa,1986,SAF,560,ZAF,710,ssa,5,NA,5,0,88,0
+South Africa,South Africa,1987,SAF,560,ZAF,710,ssa,4,NA,5,0,88,0
+South Africa,South Africa,1988,SAF,560,ZAF,710,ssa,4,NA,5,0,88,0
+South Africa,South Africa,1989,SAF,560,ZAF,710,ssa,4,NA,4,0,99,0
+South Africa,South Africa,1990,SAF,560,ZAF,710,ssa,4,NA,4,0,99,0
+South Africa,South Africa,1991,SAF,560,ZAF,710,ssa,5,NA,4,0,88,0
+South Africa,South Africa,1992,SAF,560,ZAF,710,ssa,5,NA,4,0,99,0
+South Africa,South Africa,1993,SAF,560,ZAF,710,ssa,5,NA,5,0,99,0
+South Africa,South Africa,1994,SAF,560,ZAF,710,ssa,5,NA,4,0,99,0
+South Africa,South Africa,1995,SAF,560,ZAF,710,ssa,4,NA,4,0,99,0
+South Africa,South Africa,1996,SAF,560,ZAF,710,ssa,4,NA,4,0,99,0
+South Africa,South Africa,1997,SAF,560,ZAF,710,ssa,4,NA,3,0,99,0
+South Africa,South Africa,1998,SAF,560,ZAF,710,ssa,4,NA,4,0,99,0
+South Africa,South Africa,1999,SAF,560,ZAF,710,ssa,3,NA,3,0,99,0
+South Africa,South Africa,2000,SAF,560,ZAF,710,ssa,4,NA,2,0,99,0
+South Africa,South Africa,2001,SAF,560,ZAF,710,ssa,4,NA,3,0,99,0
+South Africa,South Africa,2002,SAF,560,ZAF,710,ssa,3,NA,3,0,99,0
+South Africa,South Africa,2003,SAF,560,ZAF,710,ssa,3,NA,3,0,99,0
+South Africa,South Africa,2004,SAF,560,ZAF,710,ssa,3,NA,3,0,88,0
+South Africa,South Africa,2005,SAF,560,ZAF,710,ssa,3,NA,3,0,99,0
+South Africa,South Africa,2006,SAF,560,ZAF,710,ssa,3,NA,3,0,88,0
+South Africa,South Africa,2007,SAF,560,ZAF,710,ssa,3,NA,4,0,99,0
+South Africa,South Africa,2008,SAF,560,ZAF,710,ssa,3,NA,3,0,88,0
+South Africa,South Africa,2009,SAF,560,ZAF,710,ssa,3,NA,3,0,99,0
+South Africa,South Africa,2010,SAF,560,ZAF,710,ssa,3,NA,3,0,99,0
+South Africa,South Africa,2011,SAF,560,ZAF,710,ssa,3,NA,3,0,88,0
+South Africa,South Africa,2012,SAF,560,ZAF,710,ssa,3,NA,4,0,99,0
+South Africa,South Africa,2013,SAF,560,ZAF,710,ssa,NA,2,4,88,0,0
+South Africa,South Africa,2014,SAF,560,ZAF,710,ssa,3,3,3,0,0,0
+South Africa,South Africa,2015,SAF,560,ZAF,710,ssa,3,3,4,0,0,0
+South Africa,South Africa,2016,SAF,560,ZAF,710,ssa,3,NA,4,0,99,0
+South Africa,South Africa,2017,SAF,560,ZAF,710,ssa,4,3,4,0,0,0
+South Africa,South Africa,2018,SAF,560,ZAF,710,ssa,NA,3,3,88,0,0
+South Africa,South Africa,2019,SAF,560,ZAF,710,ssa,4,3,3,0,0,0
+South Africa,South Africa,2020,SAF,560,ZAF,710,ssa,4,3,3,0,0,0
+South Africa,South Africa,2021,SAF,560,ZAF,710,ssa,4,3,4,0,0,0
+South Africa,South Africa,2022,SAF,560,ZAF,710,ssa,4,3,3,0,0,0
+South Africa,South Africa,2023,SAF,560,ZAF,710,ssa,3,3,3,0,0,0
+South Africa,South Africa,2024,SAF,560,ZAF,710,ssa,3,2,3,0,0,0
+Soviet Union,Soviet Union,1976,NA,NA,NA,NA,eca,3,NA,NA,0,88,88
+Soviet Union,Soviet Union,1977,NA,NA,NA,NA,eca,3,NA,NA,88,88,0
+Soviet Union,Soviet Union,1978,NA,NA,NA,NA,eca,3,NA,NA,0,88,88
+Soviet Union,Soviet Union,1979,NA,NA,NA,NA,eca,4,NA,3,0,88,0
+Soviet Union,Soviet Union,1980,NA,NA,NA,NA,eca,3,NA,3,0,88,0
+Soviet Union,Soviet Union,1981,NA,NA,NA,NA,eca,3,NA,3,0,88,0
+Soviet Union,Soviet Union,1982,NA,NA,NA,NA,eca,3,NA,3,0,88,0
+Soviet Union,Soviet Union,1983,NA,NA,NA,NA,eca,3,NA,3,0,88,0
+Soviet Union,Soviet Union,1984,NA,NA,NA,NA,eca,2,NA,2,0,88,0
+Soviet Union,Soviet Union,1985,NA,NA,NA,NA,eca,2,NA,2,0,88,0
+Soviet Union,Soviet Union,1986,NA,NA,NA,NA,eca,3,NA,3,0,88,0
+Soviet Union,Soviet Union,1987,NA,NA,NA,NA,eca,3,NA,4,0,88,0
+Soviet Union,Soviet Union,1988,NA,NA,NA,NA,eca,2,NA,2,0,88,0
+Soviet Union,Soviet Union,1989,NA,NA,NA,NA,eca,2,NA,2,0,99,0
+Soviet Union,Soviet Union,1990,NA,NA,NA,NA,eca,3,NA,3,0,99,0
+Soviet Union,Soviet Union,1991,NA,NA,NA,NA,eca,3,NA,4,0,88,0
+Soviet Union,Soviet Union,1992,NA,NA,NA,NA,eca,NA,NA,NA,77,99,77
+Soviet Union,Soviet Union,1993,NA,NA,NA,NA,eca,NA,NA,NA,77,77,77
+Soviet Union,Soviet Union,1994,NA,NA,NA,NA,eca,NA,NA,NA,77,77,77
+Soviet Union,Soviet Union,1995,NA,NA,NA,NA,eca,NA,NA,NA,77,77,77
+Soviet Union,Soviet Union,1996,NA,NA,NA,NA,eca,NA,NA,NA,77,77,77
+Soviet Union,Soviet Union,1997,NA,NA,NA,NA,eca,NA,NA,NA,77,77,77
+Soviet Union,Soviet Union,1998,NA,NA,NA,NA,eca,NA,NA,NA,77,77,77
+Soviet Union,Soviet Union,1999,NA,NA,NA,NA,eca,NA,NA,NA,77,77,77
+Soviet Union,Soviet Union,2000,NA,NA,NA,NA,eca,NA,NA,NA,77,77,77
+Soviet Union,Soviet Union,2001,NA,NA,NA,NA,eca,NA,NA,NA,77,77,77
+Soviet Union,Soviet Union,2002,NA,NA,NA,NA,eca,NA,NA,NA,77,77,77
+Soviet Union,Soviet Union,2003,NA,NA,NA,NA,eca,NA,NA,NA,77,77,77
+Soviet Union,Soviet Union,2004,NA,NA,NA,NA,eca,NA,NA,NA,77,77,77
+Soviet Union,Soviet Union,2005,NA,NA,NA,NA,eca,NA,NA,NA,77,77,77
+Soviet Union,Soviet Union,2006,NA,NA,NA,NA,eca,NA,NA,NA,77,77,77
+Soviet Union,Soviet Union,2007,NA,NA,NA,NA,eca,NA,NA,NA,77,77,77
+Soviet Union,Soviet Union,2008,NA,NA,NA,NA,eca,NA,NA,NA,77,77,77
+Soviet Union,Soviet Union,2009,NA,NA,NA,NA,eca,NA,NA,NA,77,77,77
+Soviet Union,Soviet Union,2010,NA,NA,NA,NA,eca,NA,NA,NA,77,77,77
+Soviet Union,Soviet Union,2011,NA,NA,NA,NA,eca,NA,NA,NA,77,77,77
+Soviet Union,Soviet Union,2012,NA,NA,NA,NA,eca,NA,NA,NA,77,77,77
+Soviet Union,Soviet Union,2013,NA,NA,NA,NA,eca,NA,NA,NA,77,77,77
+Soviet Union,Soviet Union,2014,NA,NA,NA,NA,eca,NA,NA,NA,77,77,77
+Soviet Union,Soviet Union,2015,NA,NA,NA,NA,eca,NA,NA,NA,77,77,77
+Soviet Union,Soviet Union,2016,NA,NA,NA,NA,eca,NA,NA,NA,77,77,77
+Soviet Union,Soviet Union,2017,NA,NA,NA,NA,eca,NA,NA,NA,77,77,77
+Soviet Union,Soviet Union,2018,NA,NA,NA,NA,eca,NA,NA,NA,77,77,77
+Soviet Union,Soviet Union,2019,NA,NA,NA,NA,eca,NA,NA,NA,77,77,77
+Soviet Union,Soviet Union,2020,NA,NA,NA,NA,eca,NA,NA,NA,77,77,77
+Soviet Union,Soviet Union,2021,NA,NA,NA,NA,eca,NA,NA,NA,77,77,77
+Soviet Union,Soviet Union,2022,NA,NA,NA,NA,eca,NA,NA,NA,77,77,77
+Soviet Union,Soviet Union,2023,NA,NA,NA,NA,eca,NA,NA,NA,77,77,77
+Soviet Union,Soviet Union,2024,NA,NA,NA,NA,eca,NA,NA,NA,77,77,77
+United Kingdom,United Kingdom,1976,UKG,200,GBR,826,eca,2,NA,1,0,88,0
+United Kingdom,United Kingdom,1977,UKG,200,GBR,826,eca,2,NA,1,0,88,0
+United Kingdom,United Kingdom,1978,UKG,200,GBR,826,eca,2,NA,1,0,88,0
+United Kingdom,United Kingdom,1979,UKG,200,GBR,826,eca,1,NA,1,0,88,0
+United Kingdom,United Kingdom,1980,UKG,200,GBR,826,eca,1,NA,1,0,88,0
+United Kingdom,United Kingdom,1981,UKG,200,GBR,826,eca,1,NA,1,0,88,0
+United Kingdom,United Kingdom,1982,UKG,200,GBR,826,eca,1,NA,1,0,88,0
+United Kingdom,United Kingdom,1983,UKG,200,GBR,826,eca,1,NA,1,0,88,0
+United Kingdom,United Kingdom,1984,UKG,200,GBR,826,eca,2,NA,1,0,88,0
+United Kingdom,United Kingdom,1985,UKG,200,GBR,826,eca,1,NA,1,0,88,0
+United Kingdom,United Kingdom,1986,UKG,200,GBR,826,eca,2,NA,1,0,88,0
+United Kingdom,United Kingdom,1987,UKG,200,GBR,826,eca,1,NA,1,0,88,0
+United Kingdom,United Kingdom,1988,UKG,200,GBR,826,eca,2,NA,1,0,88,0
+United Kingdom,United Kingdom,1989,UKG,200,GBR,826,eca,1,NA,1,0,88,0
+United Kingdom,United Kingdom,1990,UKG,200,GBR,826,eca,1,NA,1,0,88,0
+United Kingdom,United Kingdom,1991,UKG,200,GBR,826,eca,2,NA,1,0,88,0
+United Kingdom,United Kingdom,1992,UKG,200,GBR,826,eca,2,NA,1,0,99,0
+United Kingdom,United Kingdom,1993,UKG,200,GBR,826,eca,1,NA,1,0,99,0
+United Kingdom,United Kingdom,1994,UKG,200,GBR,826,eca,1,NA,1,0,99,0
+United Kingdom,United Kingdom,1995,UKG,200,GBR,826,eca,1,NA,1,0,99,0
+United Kingdom,United Kingdom,1996,UKG,200,GBR,826,eca,NA,NA,1,99,88,0
+United Kingdom,United Kingdom,1997,UKG,200,GBR,826,eca,1,NA,1,0,99,0
+United Kingdom,United Kingdom,1998,UKG,200,GBR,826,eca,2,NA,2,0,99,0
+United Kingdom,United Kingdom,1999,UKG,200,GBR,826,eca,1,NA,1,0,99,0
+United Kingdom,United Kingdom,2000,UKG,200,GBR,826,eca,2,NA,1,0,99,0
+United Kingdom,United Kingdom,2001,UKG,200,GBR,826,eca,2,NA,2,0,99,0
+United Kingdom,United Kingdom,2002,UKG,200,GBR,826,eca,2,NA,2,0,99,0
+United Kingdom,United Kingdom,2003,UKG,200,GBR,826,eca,2,NA,2,0,99,0
+United Kingdom,United Kingdom,2004,UKG,200,GBR,826,eca,2,NA,2,0,88,0
+United Kingdom,United Kingdom,2005,UKG,200,GBR,826,eca,2,NA,3,0,88,0
+United Kingdom,United Kingdom,2006,UKG,200,GBR,826,eca,2,NA,2,0,88,0
+United Kingdom,United Kingdom,2007,UKG,200,GBR,826,eca,2,NA,2,0,88,0
+United Kingdom,United Kingdom,2008,UKG,200,GBR,826,eca,2,NA,2,0,88,0
+United Kingdom,United Kingdom,2009,UKG,200,GBR,826,eca,2,NA,2,0,88,0
+United Kingdom,United Kingdom,2010,UKG,200,GBR,826,eca,1,NA,1,0,88,0
+United Kingdom,United Kingdom,2011,UKG,200,GBR,826,eca,1,NA,1,0,88,0
+United Kingdom,United Kingdom,2012,UKG,200,GBR,826,eca,1,NA,1,0,88,0
+United Kingdom,United Kingdom,2013,UKG,200,GBR,826,eca,NA,1,1,88,0,0
+United Kingdom,United Kingdom,2014,UKG,200,GBR,826,eca,1,NA,1,0,88,0
+United Kingdom,United Kingdom,2015,UKG,200,GBR,826,eca,1,NA,1,0,88,0
+United Kingdom,United Kingdom,2016,UKG,200,GBR,826,eca,2,NA,1,0,88,0
+United Kingdom,United Kingdom,2017,UKG,200,GBR,826,eca,1,NA,1,0,88,0
+United Kingdom,United Kingdom,2018,UKG,200,GBR,826,eca,NA,NA,1,88,88,0
+United Kingdom,United Kingdom,2019,UKG,200,GBR,826,eca,1,NA,1,0,88,0
+United Kingdom,United Kingdom,2020,UKG,200,GBR,826,eca,1,1,1,0,0,0
+United Kingdom,United Kingdom,2021,UKG,200,GBR,826,eca,1,1,1,0,0,0
+United Kingdom,United Kingdom,2022,UKG,200,GBR,826,eca,1,1,1,0,0,0
+United Kingdom,United Kingdom,2023,UKG,200,GBR,826,eca,1,1,1,0,0,0
+United Kingdom,United Kingdom,2024,UKG,200,GBR,826,eca,1,1,1,0,0,0
+United States,United States,1976,USA,2,USA,840,na,1,NA,NA,0,88,88
+United States,United States,1977,USA,2,USA,840,na,1,NA,1,0,88,0
+United States,United States,1978,USA,2,USA,840,na,1,NA,NA,0,88,88
+United States,United States,1979,USA,2,USA,840,na,1,NA,NA,0,88,88
+United States,United States,1980,USA,2,USA,840,na,1,NA,NA,0,88,88
+United States,United States,1981,USA,2,USA,840,na,1,NA,NA,0,88,88
+United States,United States,1982,USA,2,USA,840,na,1,NA,NA,0,88,88
+United States,United States,1983,USA,2,USA,840,na,1,NA,NA,0,88,88
+United States,United States,1984,USA,2,USA,840,na,1,NA,NA,0,88,88
+United States,United States,1985,USA,2,USA,840,na,1,NA,NA,0,88,88
+United States,United States,1986,USA,2,USA,840,na,1,NA,NA,0,88,88
+United States,United States,1987,USA,2,USA,840,na,2,NA,NA,0,88,88
+United States,United States,1988,USA,2,USA,840,na,1,NA,NA,0,88,88
+United States,United States,1989,USA,2,USA,840,na,1,NA,NA,0,99,88
+United States,United States,1990,USA,2,USA,840,na,1,NA,NA,0,88,88
+United States,United States,1991,USA,2,USA,840,na,2,NA,NA,0,88,88
+United States,United States,1992,USA,2,USA,840,na,2,NA,NA,0,88,88
+United States,United States,1993,USA,2,USA,840,na,1,NA,NA,0,99,88
+United States,United States,1994,USA,2,USA,840,na,1,NA,NA,0,88,88
+United States,United States,1995,USA,2,USA,840,na,1,NA,NA,0,99,88
+United States,United States,1996,USA,2,USA,840,na,1,NA,NA,0,88,88
+United States,United States,1997,USA,2,USA,840,na,1,NA,NA,0,99,88
+United States,United States,1998,USA,2,USA,840,na,1,NA,NA,0,88,88
+United States,United States,1999,USA,2,USA,840,na,1,NA,NA,0,99,88
+United States,United States,2000,USA,2,USA,840,na,1,NA,NA,0,99,88
+United States,United States,2001,USA,2,USA,840,na,2,NA,NA,0,99,88
+United States,United States,2002,USA,2,USA,840,na,2,NA,NA,0,99,88
+United States,United States,2003,USA,2,USA,840,na,2,NA,NA,0,99,88
+United States,United States,2004,USA,2,USA,840,na,3,NA,NA,0,88,88
+United States,United States,2005,USA,2,USA,840,na,3,NA,NA,0,88,88
+United States,United States,2006,USA,2,USA,840,na,3,NA,NA,0,88,88
+United States,United States,2007,USA,2,USA,840,na,3,NA,NA,0,88,88
+United States,United States,2008,USA,2,USA,840,na,3,NA,NA,0,88,88
+United States,United States,2009,USA,2,USA,840,na,3,NA,NA,0,88,88
+United States,United States,2010,USA,2,USA,840,na,3,NA,NA,0,88,88
+United States,United States,2011,USA,2,USA,840,na,3,NA,NA,0,88,88
+United States,United States,2012,USA,2,USA,840,na,3,NA,NA,0,88,88
+United States,United States,2013,USA,2,USA,840,na,NA,2,NA,88,0,88
+United States,United States,2014,USA,2,USA,840,na,2,2,NA,0,0,88
+United States,United States,2015,USA,2,USA,840,na,2,3,NA,0,0,88
+United States,United States,2016,USA,2,USA,840,na,2,3,NA,0,0,88
+United States,United States,2017,USA,2,USA,840,na,2,3,NA,0,0,88
+United States,United States,2018,USA,2,USA,840,na,NA,3,NA,88,0,88
+United States,United States,2019,USA,2,USA,840,na,4,3,NA,0,0,88
+United States,United States,2020,USA,2,USA,840,na,3,3,NA,0,0,88
+United States,United States,2021,USA,2,USA,840,na,3,3,NA,0,0,88
+United States,United States,2022,USA,2,USA,840,na,3,2,NA,0,0,88
+United States,United States,2023,USA,2,USA,840,na,3,3,NA,0,0,88
+United States,United States,2024,USA,2,USA,840,na,3,3,NA,0,0,88
+"Korea, Republic of",South Korea (Republic of Korea),1976,ROK,732,KOR,410,eap,3,NA,3,0,88,0
+"Korea, Republic of",South Korea (Republic of Korea),1977,ROK,732,KOR,410,eap,3,NA,3,0,88,0
+"Korea, Republic of",South Korea (Republic of Korea),1978,ROK,732,KOR,410,eap,3,NA,2,0,88,0
+"Korea, Republic of",South Korea (Republic of Korea),1979,ROK,732,KOR,410,eap,3,NA,2,0,88,0
+"Korea, Republic of",South Korea (Republic of Korea),1980,ROK,732,KOR,410,eap,3,NA,3,0,88,0
+"Korea, Republic of",South Korea (Republic of Korea),1981,ROK,732,KOR,410,eap,3,NA,3,0,88,0
+"Korea, Republic of",South Korea (Republic of Korea),1982,ROK,732,KOR,410,eap,3,NA,3,0,88,0
+"Korea, Republic of",South Korea (Republic of Korea),1983,ROK,732,KOR,410,eap,4,NA,3,0,88,0
+"Korea, Republic of",South Korea (Republic of Korea),1984,ROK,732,KOR,410,eap,3,NA,3,0,88,0
+"Korea, Republic of",South Korea (Republic of Korea),1985,ROK,732,KOR,410,eap,3,NA,3,0,88,0
+"Korea, Republic of",South Korea (Republic of Korea),1986,ROK,732,KOR,410,eap,3,NA,3,0,88,0
+"Korea, Republic of",South Korea (Republic of Korea),1987,ROK,732,KOR,410,eap,3,NA,3,0,88,0
+"Korea, Republic of",South Korea (Republic of Korea),1988,ROK,732,KOR,410,eap,3,NA,2,0,88,0
+"Korea, Republic of",South Korea (Republic of Korea),1989,ROK,732,KOR,410,eap,3,NA,3,0,99,0
+"Korea, Republic of",South Korea (Republic of Korea),1990,ROK,732,KOR,410,eap,3,NA,3,0,99,0
+"Korea, Republic of",South Korea (Republic of Korea),1991,ROK,732,KOR,410,eap,3,NA,3,0,88,0
+"Korea, Republic of",South Korea (Republic of Korea),1992,ROK,732,KOR,410,eap,3,NA,3,0,99,0
+"Korea, Republic of",South Korea (Republic of Korea),1993,ROK,732,KOR,410,eap,2,NA,2,0,88,0
+"Korea, Republic of",South Korea (Republic of Korea),1994,ROK,732,KOR,410,eap,3,NA,2,0,88,0
+"Korea, Republic of",South Korea (Republic of Korea),1995,ROK,732,KOR,410,eap,3,NA,2,0,88,0
+"Korea, Republic of",South Korea (Republic of Korea),1996,ROK,732,KOR,410,eap,3,NA,2,0,88,0
+"Korea, Republic of",South Korea (Republic of Korea),1997,ROK,732,KOR,410,eap,2,NA,2,0,88,0
+"Korea, Republic of",South Korea (Republic of Korea),1998,ROK,732,KOR,410,eap,2,NA,2,0,88,0
+"Korea, Republic of",South Korea (Republic of Korea),1999,ROK,732,KOR,410,eap,2,NA,2,0,88,0
+"Korea, Republic of",South Korea (Republic of Korea),2000,ROK,732,KOR,410,eap,2,NA,2,0,88,0
+"Korea, Republic of",South Korea (Republic of Korea),2001,ROK,732,KOR,410,eap,2,NA,2,0,88,0
+"Korea, Republic of",South Korea (Republic of Korea),2002,ROK,732,KOR,410,eap,3,NA,3,0,88,0
+"Korea, Republic of",South Korea (Republic of Korea),2003,ROK,732,KOR,410,eap,2,NA,2,0,88,0
+"Korea, Republic of",South Korea (Republic of Korea),2004,ROK,732,KOR,410,eap,2,NA,2,0,88,0
+"Korea, Republic of",South Korea (Republic of Korea),2005,ROK,732,KOR,410,eap,2,NA,1,0,88,0
+"Korea, Republic of",South Korea (Republic of Korea),2006,ROK,732,KOR,410,eap,2,NA,1,0,88,0
+"Korea, Republic of",South Korea (Republic of Korea),2007,ROK,732,KOR,410,eap,2,NA,2,0,99,0
+"Korea, Republic of",South Korea (Republic of Korea),2008,ROK,732,KOR,410,eap,2,NA,2,0,88,0
+"Korea, Republic of",South Korea (Republic of Korea),2009,ROK,732,KOR,410,eap,3,NA,2,0,88,0
+"Korea, Republic of",South Korea (Republic of Korea),2010,ROK,732,KOR,410,eap,1,NA,1,0,88,0
+"Korea, Republic of",South Korea (Republic of Korea),2011,ROK,732,KOR,410,eap,1,NA,1,0,88,0
+"Korea, Republic of",South Korea (Republic of Korea),2012,ROK,732,KOR,410,eap,2,NA,1,0,88,0
+"Korea, Republic of",South Korea (Republic of Korea),2013,ROK,732,KOR,410,eap,NA,NA,1,88,88,0
+"Korea, Republic of",South Korea (Republic of Korea),2014,ROK,732,KOR,410,eap,2,NA,2,0,88,0
+"Korea, Republic of",South Korea (Republic of Korea),2015,ROK,732,KOR,410,eap,1,NA,2,0,88,0
+"Korea, Republic of",South Korea (Republic of Korea),2016,ROK,732,KOR,410,eap,2,NA,2,0,88,0
+"Korea, Republic of",South Korea (Republic of Korea),2017,ROK,732,KOR,410,eap,2,1,2,0,0,0
+"Korea, Republic of",South Korea (Republic of Korea),2018,ROK,732,KOR,410,eap,NA,1,1,88,0,0
+"Korea, Republic of",South Korea (Republic of Korea),2019,ROK,732,KOR,410,eap,1,1,2,0,0,0
+"Korea, Republic of",South Korea (Republic of Korea),2020,ROK,732,KOR,410,eap,1,1,2,0,0,0
+"Korea, Republic of",South Korea (Republic of Korea),2021,ROK,732,KOR,410,eap,1,1,2,0,0,0
+"Korea, Republic of",South Korea (Republic of Korea),2022,ROK,732,KOR,410,eap,1,1,2,0,0,0
+"Korea, Republic of",South Korea (Republic of Korea),2023,ROK,732,KOR,410,eap,1,1,1,0,0,0
+"Korea, Republic of",South Korea (Republic of Korea),2024,ROK,732,KOR,410,eap,1,1,2,0,0,0
+Poland,Poland,1976,POL,290,POL,616,eca,3,NA,NA,0,88,88
+Poland,Poland,1977,POL,290,POL,616,eca,3,NA,NA,0,88,88
+Poland,Poland,1978,POL,290,POL,616,eca,2,NA,NA,0,88,88
+Poland,Poland,1979,POL,290,POL,616,eca,3,NA,2,0,88,0
+Poland,Poland,1980,POL,290,POL,616,eca,3,NA,3,0,88,0
+Poland,Poland,1981,POL,290,POL,616,eca,3,NA,2,0,88,0
+Poland,Poland,1982,POL,290,POL,616,eca,3,NA,3,0,88,0
+Poland,Poland,1983,POL,290,POL,616,eca,3,NA,3,0,88,0
+Poland,Poland,1984,POL,290,POL,616,eca,3,NA,3,0,88,0
+Poland,Poland,1985,POL,290,POL,616,eca,3,NA,3,0,88,0
+Poland,Poland,1986,POL,290,POL,616,eca,3,NA,3,0,88,0
+Poland,Poland,1987,POL,290,POL,616,eca,3,NA,3,0,88,0
+Poland,Poland,1988,POL,290,POL,616,eca,2,NA,2,0,88,0
+Poland,Poland,1989,POL,290,POL,616,eca,2,NA,2,0,99,0
+Poland,Poland,1990,POL,290,POL,616,eca,2,NA,2,0,88,0
+Poland,Poland,1991,POL,290,POL,616,eca,2,NA,2,0,88,0
+Poland,Poland,1992,POL,290,POL,616,eca,1,NA,2,0,88,0
+Poland,Poland,1993,POL,290,POL,616,eca,1,NA,1,0,88,0
+Poland,Poland,1994,POL,290,POL,616,eca,1,NA,1,0,88,0
+Poland,Poland,1995,POL,290,POL,616,eca,1,NA,1,0,88,0
+Poland,Poland,1996,POL,290,POL,616,eca,NA,NA,1,88,88,0
+Poland,Poland,1997,POL,290,POL,616,eca,NA,NA,1,88,88,0
+Poland,Poland,1998,POL,290,POL,616,eca,NA,NA,2,88,88,0
+Poland,Poland,1999,POL,290,POL,616,eca,1,NA,2,0,88,0
+Poland,Poland,2000,POL,290,POL,616,eca,2,NA,1,0,88,0
+Poland,Poland,2001,POL,290,POL,616,eca,2,NA,1,0,88,0
+Poland,Poland,2002,POL,290,POL,616,eca,NA,NA,2,88,88,0
+Poland,Poland,2003,POL,290,POL,616,eca,1,NA,1,0,88,0
+Poland,Poland,2004,POL,290,POL,616,eca,2,NA,2,0,88,0
+Poland,Poland,2005,POL,290,POL,616,eca,1,NA,2,0,88,0
+Poland,Poland,2006,POL,290,POL,616,eca,2,NA,1,0,88,0
+Poland,Poland,2007,POL,290,POL,616,eca,2,NA,2,0,88,0
+Poland,Poland,2008,POL,290,POL,616,eca,1,NA,2,0,88,0
+Poland,Poland,2009,POL,290,POL,616,eca,1,NA,2,0,88,0
+Poland,Poland,2010,POL,290,POL,616,eca,1,NA,2,0,88,0
+Poland,Poland,2011,POL,290,POL,616,eca,1,NA,2,0,88,0
+Poland,Poland,2012,POL,290,POL,616,eca,1,NA,2,0,88,0
+Poland,Poland,2013,POL,290,POL,616,eca,NA,1,1,88,0,0
+Poland,Poland,2014,POL,290,POL,616,eca,1,NA,1,0,88,0
+Poland,Poland,2015,POL,290,POL,616,eca,1,NA,1,0,88,0
+Poland,Poland,2016,POL,290,POL,616,eca,2,NA,1,0,88,0
+Poland,Poland,2017,POL,290,POL,616,eca,2,NA,1,0,88,0
+Poland,Poland,2018,POL,290,POL,616,eca,NA,NA,2,88,88,0
+Poland,Poland,2019,POL,290,POL,616,eca,2,NA,1,0,88,0
+Poland,Poland,2020,POL,290,POL,616,eca,2,2,2,0,0,0
+Poland,Poland,2021,POL,290,POL,616,eca,2,2,2,0,0,0
+Poland,Poland,2022,POL,290,POL,616,eca,2,2,2,0,0,0
+Poland,Poland,2023,POL,290,POL,616,eca,2,2,2,0,0,0
+Poland,Poland,2024,POL,290,POL,616,eca,2,2,1,0,0,0

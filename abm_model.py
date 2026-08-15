@@ -43,7 +43,8 @@ class StateResponseModel(mesa.Model):
                  worker_calibration=None, monopsony_power=0.0,
                  mode='free', historical_data=None,
                  initial_gini=0.4, initial_avg_wage=20.0,
-                 market_return_mean=0.02, market_return_std=0.08, seed=None):
+                 market_return_mean=0.02, market_return_std=0.08, seed=None,
+                 redistribution_enabled=True):
         super().__init__(seed=seed)
         self.random_gen = np.random.default_rng(seed)
 
@@ -114,7 +115,8 @@ class StateResponseModel(mesa.Model):
         residuals = response_residuals if response_residuals is not None else np.array([0.0])
         self.state = State(self, response_fn, response_params, regime=regime,
                             residuals=residuals, domain_bounds=response_domain_bounds,
-                            rng=self.random_gen)
+                            rng=self.random_gen,
+                            redistribution_enabled=redistribution_enabled)
 
         # --- data collection ---
         self.datacollector = mesa.DataCollector(
@@ -126,9 +128,18 @@ class StateResponseModel(mesa.Model):
                 "protest_share": lambda m: float(np.mean(
                     [w.is_protesting for w in m.workers])),
                 "mean_grievance": lambda m: float(np.mean([w.grievance for w in m.workers])),
+                "repression_bound_share": lambda m: float(np.mean(
+                    [w.repression_binding() for w in m.workers])),
                 "redistribution": lambda m: m.state.redistribution,
                 "total_firm_profit": lambda m: float(sum(f.profit for f in m.firms)),
                 "regime": lambda m: m.state.regime,
+                "gini_recipients": lambda m: m._last_gini_recipients,
+                "gini_non_recipients": lambda m: m._last_gini_non_recipients,
+                "mean_transfer_per_recipient": lambda m: m._last_mean_transfer_recipients,
+                "n_recipients": lambda m: m._last_n_recipients,
+                "wage_var_share": lambda m: m._last_wage_var_share,
+                "transfer_var_share": lambda m: m._last_transfer_var_share,
+                "owner_var_share": lambda m: m._last_owner_var_share,
             }
         )
 
@@ -149,14 +160,52 @@ class StateResponseModel(mesa.Model):
         return self.random_gen.choice(pool) if len(pool) else None
 
     @staticmethod
+    def _income_variance_shares(wages, transfers, owner_incomes):
+        """
+        What share of total cross-sectional income VARIANCE (the quantity
+        Gini is ultimately summarizing) comes from each income source this
+        tick: wages, transfers, owner (capital) income. Computed via each
+        component's contribution to total variance under Var(A+B+C) =
+        Var(A)+Var(B)+Var(C)+2*Cov terms -- reported as each component's
+        own variance as a fraction of total variance of the summed
+        series, not a full covariance decomposition (simpler, and the
+        covariance cross-terms are small here since transfers/owner-income
+        are drawn from largely disjoint populations).
+        """
+        wages = np.asarray(wages, dtype=float)
+        transfers = np.asarray(transfers, dtype=float)
+        owner = np.asarray(owner_incomes, dtype=float)
+
+        # pad shorter arrays with zeros so all three represent the same
+        # total population length for a fair variance comparison
+        n = max(len(wages), len(transfers), len(owner))
+        wages = np.pad(wages, (0, n - len(wages)))
+        transfers = np.pad(transfers, (0, n - len(transfers)))
+        owner = np.pad(owner, (0, n - len(owner)))
+
+        total = wages + transfers + owner
+        total_var = np.var(total)
+        if total_var <= 0:
+            return dict(wage_share=np.nan, transfer_share=np.nan, owner_share=np.nan)
+
+        return dict(
+            wage_share=float(np.var(wages) / total_var),
+            transfer_share=float(np.var(transfers) / total_var),
+            owner_share=float(np.var(owner) / total_var),
+        )
+
+    @staticmethod
     def _compute_gini(wages):
         """Standard discrete Gini from a wage array; used only in 'free' mode."""
-        x = np.sort(np.asarray(wages, dtype=float))
+        x = np.sort(np.clip(np.asarray(wages, dtype=float), 0.0, None))
         n = len(x)
         if n == 0 or x.sum() <= 0:
             return 0.0
         cum = np.cumsum(x)
-        return float((n + 1 - 2 * np.sum(cum) / cum[-1]) / n)
+        gini = float((n + 1 - 2 * np.sum(cum) / cum[-1]) / n)
+        assert -1e-9 <= gini <= 1.0 + 1e-9, f"Gini out of bounds: {gini}" #small recipient subset edge case
+        gini = float(np.clip(gini, 0.0, 1.0))
+        return gini
 
     def _pull_historical_row(self):
         idx = min(self._historical_row_index, len(self.historical_data) - 1)
@@ -171,6 +220,17 @@ class StateResponseModel(mesa.Model):
         self.market_return = float(
             self.random_gen.normal(self.market_return_mean, self.market_return_std)
         )
+
+        # Targeting diagnostic defaults -- overwritten below in 'free' mode
+        # only (historical mode has no comparable free-market Gini
+        # decomposition to compute this against).
+        self._last_gini_recipients = np.nan
+        self._last_gini_non_recipients = np.nan
+        self._last_mean_transfer_recipients = np.nan
+        self._last_n_recipients = 0
+        self._last_wage_var_share = np.nan
+        self._last_transfer_var_share = np.nan
+        self._last_owner_var_share = np.nan
 
         # 1. firms clear the labor market first
         for f in self.firms:
@@ -195,10 +255,46 @@ class StateResponseModel(mesa.Model):
             # so this is where the biggest share of the earlier Gini gap
             # (simulated ~0.12-0.20 vs. real ~0.35-0.42) is meant to close.
             incomes = (
-                [w.wage + w.investment_income for w in self.workers]
+                [w.wage + w.investment_income + w.transfer_income for w in self.workers]
                 + [f.owner_income + f.owner_investment_income for f in self.firms]
             )
             self.gini = self._compute_gini(incomes)
+
+            # Targeting diagnostic: split Gini into "recipients" (workers
+            # carrying a nonzero transfer_income assigned by LAST tick's
+            # State.redistribute() -- this tick's call hasn't happened yet,
+            # it's step 3 below) vs everyone else. Tests whether a rising
+            # Gini is concentrated within the transfer-recipient group
+            # (fixed bottom-quartile-by-wage, same ~250 workers every tick)
+            # rather than distributed broadly -- see chat notes on the
+            # dose-response result.
+            recipient_mask = [w.transfer_income > 0 for w in self.workers]
+            recipient_incomes = [
+                w.wage + w.investment_income + w.transfer_income
+                for w, is_r in zip(self.workers, recipient_mask) if is_r
+            ]
+            non_recipient_incomes = (
+                [w.wage + w.investment_income
+                 for w, is_r in zip(self.workers, recipient_mask) if not is_r]
+                + [f.owner_income + f.owner_investment_income for f in self.firms]
+            )
+            self._last_gini_recipients = self._compute_gini(recipient_incomes)
+            self._last_gini_non_recipients = self._compute_gini(non_recipient_incomes)
+            self._last_mean_transfer_recipients = (
+                float(np.mean([w.transfer_income for w in self.workers if w.transfer_income > 0]))
+                if any(recipient_mask) else 0.0
+            )
+            self._last_n_recipients = int(sum(recipient_mask))
+            # Variance decomposition: is measured Gini dominated by owner/
+            # capital-income variance, or by wage or transfer variance?
+            var_shares = self._income_variance_shares(
+                wages=[w.wage + w.investment_income for w in self.workers],
+                transfers=[w.transfer_income for w in self.workers],
+                owner_incomes=[f.owner_income + f.owner_investment_income for f in self.firms],
+            )
+            self._last_wage_var_share = var_shares["wage_share"]
+            self._last_transfer_var_share = var_shares["transfer_share"]
+            self._last_owner_var_share = var_shares["owner_share"]
             # crude endogenous growth proxy: normalized mean firm profit.
             # Not a real GDP estimate -- flagged here rather than dressed
             # up as one; fine for regime-comparison experiments where
@@ -218,6 +314,13 @@ class StateResponseModel(mesa.Model):
         self.state.decide_policy(lag_periods=1)
         self.state.redistribute(self.workers)
 
+        tier_wages = {}
+        for w in self.workers:
+            tier_wages.setdefault(w.occupation, []).append(w.wage)
+        self.tier_avg_wage = {
+            tier: float(np.mean(wages)) for tier, wages in tier_wages.items()
+        }
+
         # 4. workers react to this tick's just-updated state
         for w in self.workers:
             w.step()
@@ -229,7 +332,8 @@ class StateResponseModel(mesa.Model):
     @classmethod
     def from_calibrated_data(cls, csv_path="results/us_state_response_data.csv",
                               regime=Regime.REPRESENTATIVE,
-                              n_workers=1000, n_firms=100, mode="free", seed=None):
+                              n_workers=1000, n_firms=100, mode="free", seed=None,
+                              redistribution_enabled=True):
         """
         Convenience constructor: runs the state.py fitting pipeline
         (StateResponseFitter + BayesianVAR) once and wires the results
@@ -274,6 +378,7 @@ class StateResponseModel(mesa.Model):
             worker_calibration=worker_calibration,
             mode=mode, historical_data=historical_data,
             initial_gini=initial_gini, initial_avg_wage=20.0, seed=seed,
+            redistribution_enabled=redistribution_enabled,
         )
         return model, fitter, bvar
 

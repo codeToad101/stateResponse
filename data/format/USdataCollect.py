@@ -19,7 +19,7 @@ import warnings
 warnings.filterwarnings('ignore')
 from datetime import datetime
 from pathlib import Path
-from secret import FRED_API_KEY
+from data.format.secret import FRED_API_KEY
 import warnings
 warnings.filterwarnings('ignore')
 
@@ -182,8 +182,8 @@ class ManualDataTranslator:
                 fill_method='ffill', fill_gaps_with_zero=False
             )
             
-            self.translated_series['workers_affected'] = workers_aligned
-            self.translated_series['days_idle'] = days_aligned
+            self.translated_series.setdefault('United States', {})['workers_affected'] = workers_aligned
+            self.translated_series.setdefault('United States', {})['days_idle'] = days_aligned
             
             return (workers_aligned, days_aligned)
         
@@ -236,7 +236,7 @@ class ManualDataTranslator:
             
             aligned = self._align_to_quarterly(series, series_name,
                                                fill_method='ffill', fill_gaps_with_zero=False)
-            self.translated_series[series_name] = aligned
+            self.translated_series.setdefault('United States', {})[series_name] = aligned
             
             print(f"  ✓ {filename} (US only) → {series_name} ({len(series)} years)")
             return aligned
@@ -245,23 +245,50 @@ class ManualDataTranslator:
             print(f"  ✗ {filename}: {str(e)[:50]}")
             return None
 
-    def ingest_and_adjust_fiscal_year(self, filename, date_col, value_col, 
-                                    series_name, file_type='xlsx', 
+    def ingest_and_adjust_fiscal_year(self, filename, date_col=None, value_col=None, 
+                                    series_name=None, file_type='xlsx', 
                                     sheet_name=None, encoding='utf-8', skip_rows=0,
-                                    is_fiscal_year=True):
+                                    is_fiscal_year=True, country="United States",
+                                    wide_year_columns=False, country_col="Country Name",
+                                    country_filter=None):
         """
         Ingest annual data (fiscal or calendar year), adjust if FY, then align to quarterly.
         Single flow with consistent diagnostics from _align_to_quarterly().
         
         Args:
             filename: str
-            date_col: str, column name with dates
-            value_col: str or list, column(s) with values
+            date_col: str, column name with dates. Not used when
+                wide_year_columns=True (see below).
+            value_col: str or list, column(s) with values. Not used when
+                wide_year_columns=True.
             series_name: str
             file_type: 'xlsx' or 'csv'
             sheet_name: str (only if xlsx)
             encoding: str (only if csv)
             skip_rows: int (only if csv)
+            country: str, defaults to "United States" so existing calls are
+                unaffected. Stored in self.diagnostics[series_name] so the
+                final long-format assembly step knows which country each
+                series belongs to -- doesn't change any ingestion behavior.
+            wide_year_columns: bool, default False. Set True for World
+                Bank-style files where there's no date_col at all -- each
+                YEAR is its own column (e.g. "1990", "1991", ... "2023"),
+                and rows are countries. When True, date_col/value_col are
+                ignored; instead the row matching country_filter in
+                country_col is located, every column that parses as a
+                bare 4-digit year is treated as one (year, value) point,
+                and everything downstream (FY adjustment, quarterly
+                alignment) runs exactly as it does for the normal
+                long/date_col format -- this only changes how the raw
+                (year, value) pairs get extracted.
+            country_col: str, column holding country names. Only used
+                when wide_year_columns=True. World Bank exports typically
+                use "Country Name".
+            country_filter: str, matched as a case-insensitive SUBSTRING
+                against country_col (e.g. "Egypt" will match World Bank's
+                "Egypt, Arab Rep."). Takes the first match, so make sure
+                your file is trimmed enough that the substring can't hit
+                more than one row. Required when wide_year_columns=True.
         
         Returns:
             pd.Series aligned to quarterly (or None if failed)
@@ -290,32 +317,72 @@ class ManualDataTranslator:
             
             # Clean columns
             df.columns = [str(c).strip() for c in df.columns]
-            
-            # Parse values (handle % and commas)
-            if isinstance(value_col, list):
-                data_values = df[value_col].sum(axis=1, skipna=True).values
+
+            if wide_year_columns:
+                # ===== WORLD BANK-STYLE WIDE FORMAT =====
+                # No date_col -- extract (year, value) pairs directly from
+                # the row matching country_filter, then feed the same
+                # series_annual variable into the unchanged FY/quarterly
+                # logic below.
+                if country_col not in df.columns:
+                    print(f"  ✗ {filename}: country_col '{country_col}' not found "
+                          f"(have: {list(df.columns)[:8]}...)")
+                    return None
+                if country_filter is None:
+                    print(f"  ✗ {filename}: wide_year_columns=True requires country_filter")
+                    return None
+
+                row = df[df[country_col].astype(str).str.contains(
+                    re.escape(country_filter), case=False, na=False
+                )]
+                if len(row) == 0:
+                    print(f"  ✗ {filename}: no row where {country_col} contains '{country_filter}'")
+                    return None
+                row = row.iloc[0]
+
+                year_cols = [c for c in df.columns if re.match(r'^\d{4}$', str(c).strip())]
+                dates, data_values = [], []
+                for yc in year_cols:
+                    v = pd.to_numeric(str(row[yc]).replace(',', '').replace('%', ''),
+                                       errors='coerce')
+                    if pd.notna(v):
+                        dates.append(pd.Timestamp(f"{yc}-01-01"))
+                        data_values.append(v)
+
+                series_annual = pd.Series(data_values, index=pd.DatetimeIndex(dates))
+                if len(series_annual) == 0:
+                    print(f"  ✗ {filename}: no valid year columns for '{country_filter}'")
+                    return None
+                print(f"  ✓ {filename} (wide format, {country_filter}) → "
+                      f"{len(series_annual)} year columns found")
+
             else:
-                values_raw = df[value_col].astype(str).str.replace('%', '').str.replace(',', '')
-                data_values = pd.to_numeric(values_raw, errors='coerce').values
-            
-            # Parse dates
-            raw_col = df[date_col]
-            if pd.api.types.is_numeric_dtype(raw_col) or raw_col.astype(str).str.match(r'^\d{4}$').all():
-                # bare year integers (e.g. 1970, 1971...) -> treat as Jan 1 of that year
-                dates = pd.to_datetime(raw_col.astype(int).astype(str) + '-01-01', errors='coerce')
-            else:
-                dates = pd.to_datetime(raw_col, errors='coerce')
-            
-            # Remove NaN rows
-            mask = dates.notna() & pd.Series(data_values).notna()
-            dates = dates[mask]
-            data_values = pd.Series(data_values)[mask].values
-            
-            series_annual = pd.Series(data_values, index=dates)
-            
-            if len(series_annual) == 0:
-                print(f"  ✗ {filename}: No valid data after parsing")
-                return None
+                # ===== ORIGINAL LONG FORMAT (date_col + value_col) =====
+                # Parse values (handle % and commas)
+                if isinstance(value_col, list):
+                    data_values = df[value_col].sum(axis=1, skipna=True).values
+                else:
+                    values_raw = df[value_col].astype(str).str.replace('%', '').str.replace(',', '')
+                    data_values = pd.to_numeric(values_raw, errors='coerce').values
+                
+                # Parse dates
+                raw_col = df[date_col]
+                if pd.api.types.is_numeric_dtype(raw_col) or raw_col.astype(str).str.match(r'^\d{4}$').all():
+                    # bare year integers (e.g. 1970, 1971...) -> treat as Jan 1 of that year
+                    dates = pd.to_datetime(raw_col.astype(int).astype(str) + '-01-01', errors='coerce')
+                else:
+                    dates = pd.to_datetime(raw_col, errors='coerce')
+                
+                # Remove NaN rows
+                mask = dates.notna() & pd.Series(data_values).notna()
+                dates = dates[mask]
+                data_values = pd.Series(data_values)[mask].values
+                
+                series_annual = pd.Series(data_values, index=dates)
+                
+                if len(series_annual) == 0:
+                    print(f"  ✗ {filename}: No valid data after parsing")
+                    return None
             
             # ===== DETECT & ADJUST FISCAL YEAR =====
             # Heuristic: if year values suggest FY (Oct-Sept), adjust to CY
@@ -339,7 +406,9 @@ class ManualDataTranslator:
             )
             
             # Store in translated series
-            self.translated_series[series_name] = aligned
+            self.translated_series.setdefault(country, {})[series_name] = aligned
+            if series_name in self.diagnostics:
+                self.diagnostics[series_name]['country'] = country
             
             print(f"  ✓ {filename} → {series_name} ({len(series_annual)} years{adj_note})")
             
@@ -365,33 +434,83 @@ class ManualDataTranslator:
             print(f"  Date range: {diag['date_range']}")
         
         print("\n" + "="*80)
+
+    def defaultIngestion(self, country = "United States"):
+        self.ingest_and_adjust_fiscal_year(
+            filename="gdp_nonUS.csv",
+            series_name="gdp_billions", #not yet in billions needs to be translated..
+            file_type='csv',
+            is_fiscal_year=False,
+            country=country,
+            wide_year_columns=True,
+            country_filter=country
+        )
+        self.translated_series[country]['gdp_billions'] = self.translated_series[country]['gdp_billions'] / 1e9
+        self.ingest_and_adjust_fiscal_year(
+            filename="political-violence.csv",
+            date_col="Year",
+            value_col="PTS_A",
+            series_name="political_violence_score",
+            file_type='csv',
+            is_fiscal_year=False,
+            country=country
+        )
+        self.ingest_and_adjust_fiscal_year(
+            filename="swiid_gini.csv",
+            date_col="year",
+            value_col="gini_disp",
+            series_name="gini_coefficient",
+            file_type='csv',
+            is_fiscal_year=False,
+            country=country
+        )
+        self.ingest_and_adjust_fiscal_year(
+            filename="tax_GDPpct_nonUS.csv",
+            series_name="fed_tax_revenue_pct_gdp",
+            file_type='csv',
+            is_fiscal_year=False,
+            country=country,
+            wide_year_columns=True,
+            country_filter=country
+        )
+        self.ingest_and_adjust_fiscal_year(
+            filename="unemployment_nonUS.csv",
+            series_name="unemployment_rate_pct",
+            file_type='csv',
+            is_fiscal_year=False,
+            country=country,
+            wide_year_columns=True,
+            country_filter=country
+        )
+
     
-    def validate_alignment(self, reference_series_name=None):
-        """Check for major misalignments between series."""
+    def validate_alignment(self, reference_series_name=None, country="United States"):
+        """Check for major misalignments between series, for one country."""
         print("\n" + "-"*80)
         print("ALIGNMENT VALIDATION")
         print("-"*80)
         
-        if not self.translated_series:
-            print("No series ingested yet.")
+        series_dict = self.translated_series.get(country, {})
+        if not series_dict:
+            print(f"No series ingested yet for {country}.")
             return
         
         # Use first series as reference if not specified
         if reference_series_name is None:
-            reference_series_name = list(self.translated_series.keys())[0]
+            reference_series_name = list(series_dict.keys())[0]
         
-        if reference_series_name not in self.translated_series:
+        if reference_series_name not in series_dict:
             print(f"Reference series {reference_series_name} not found. Available:")
-            for name in self.translated_series.keys():
+            for name in series_dict.keys():
                 print(f"  - {name}")
             return
         
-        ref_series = self.translated_series[reference_series_name]
+        ref_series = series_dict[reference_series_name]
         ref_coverage = ref_series.notna().sum()
         
         print(f"Reference series: {reference_series_name} ({ref_coverage} quarters)")
         
-        for series_name, series in self.translated_series.items():
+        for series_name, series in series_dict.items():
             if series_name == reference_series_name:
                 continue
             
@@ -408,14 +527,31 @@ class ManualDataTranslator:
         
         print("-"*80 + "\n")
     
-    def merge_into_dataframe(self, existing_df):
-        """Merge all translated series into existing DataFrame."""
+    def merge_into_dataframe(self, existing_df, country="United States"):
+        """Merge one country's translated series into existing DataFrame."""
         merged = existing_df.copy()
         
-        for series_name, series in self.translated_series.items():
+        for series_name, series in self.translated_series.get(country, {}).items():
             merged[series_name] = series
         
         return merged
+
+    def compute_pct_gdp(self, country, numerator_series_name, output_series_name="redist_gdp_pct"):
+        """
+        Computes numerator / gdp_billions * 100 for one country using
+        series already sitting in self.translated_series -- no separate
+        GDP file needed, reuses whatever defaultIngestion() already
+        pulled for that country.
+        """
+        cs = self.translated_series.get(country, {})
+        if numerator_series_name not in cs or 'gdp_billions' not in cs:
+            print(f"  ⚠ compute_pct_gdp({country}): missing '{numerator_series_name}' "
+                  f"or 'gdp_billions' -- skipped, nothing fabricated.")
+            return
+        pct = cs[numerator_series_name] / cs['gdp_billions'] * 100
+        self.translated_series[country][output_series_name] = pct
+        print(f"  ✓ {country}: {output_series_name} computed in-line from "
+              f"{numerator_series_name} / gdp_billions")
 
 
 class USStateResponseDataCollector:
@@ -740,6 +876,39 @@ class USStateResponseDataCollector:
 
         self._log(f"✓ Strike severity recalculated → {output_col} "
                 f"(range: {self.data[output_col].min():.3f}-{self.data[output_col].max():.3f})")
+
+    def calculate_participation_rate(self, workers_affected_col,
+                                       output_col='protest_participation_rate'):
+        """
+        Raw strike participation rate (workers_affected / labor_force),
+        stored alongside protest_intensity_score rather than replacing it.
+
+        protest_intensity_score is log-transformed and min-max rescaled
+        across the series (see calculate_strike_severity) -- useful for
+        the state's response-function fit, but its mean is an artifact of
+        rescaling, not a real-world magnitude, so it isn't comparable to
+        the ABM's simulated protest_share (a literal fraction of workers
+        protesting per tick). This column is the actual comparable rate,
+        left unscaled/untransformed so it can be used directly as a
+        calibration target.
+        """
+        if 'civilian_labor_force_thousands' not in self.data.columns:
+            self._log("Participation rate calc requires civilian_labor_force_thousands", "WARN")
+            return
+
+        if workers_affected_col not in self.data.columns:
+            self._log(f"Strike column {workers_affected_col} not found", "WARN")
+            return
+
+        labor_force = self.data['civilian_labor_force_thousands'] * 1000
+
+        self.data[output_col] = (
+            self.data[workers_affected_col] / labor_force
+        ).clip(0, 1)
+
+        self._log(f"✓ Participation rate calculated → {output_col} "
+                  f"(mean: {self.data[output_col].mean():.5f}, "
+                  f"range: {self.data[output_col].min():.5f}-{self.data[output_col].max():.5f})")
     
     def validate_data(self):
         """Check for issues, report coverage"""
@@ -953,6 +1122,93 @@ def run_manual_ingestion(collector_data, data_dir="data/raw/"):
         series_name="civil_unrest_events",
         country_filter="United States"
     )
+
+    translator.defaultIngestion(country="Chile")
+    translator.ingest_and_adjust_fiscal_year(
+        filename="oecd.csv",
+        date_col="Year",
+        value_col="Public social expenditure as a share of GDP",
+        series_name="redist_gdp_pct",
+        file_type='csv',
+        is_fiscal_year=False,
+        country_col="Entity",
+        country="Chile",
+        country_filter="Chile"
+    )
+    translator.defaultIngestion(country="Germany")
+    translator.ingest_and_adjust_fiscal_year(
+        filename="oecd.csv",
+        date_col="Year",
+        value_col="Public social expenditure as a share of GDP",
+        series_name="redist_gdp_pct",
+        file_type='csv',
+        is_fiscal_year=False,
+        country_col="Entity",
+        country="Germany",
+        country_filter="Germany"
+    )
+    translator.defaultIngestion(country="Egypt")
+    translator.ingest_and_adjust_fiscal_year(
+        filename="welfare_expenditure.csv",
+        date_col="Year",
+        value_col="value",
+        series_name="redist_usd_bn",
+        file_type='csv',
+        is_fiscal_year=False,
+        country_col="Country",
+        country="Egypt",
+        country_filter="Egypt"
+    )
+    translator.compute_pct_gdp(country="Egypt", numerator_series_name="redist_usd_bn")
+    translator.defaultIngestion(country="United Kingdom")
+    translator.ingest_and_adjust_fiscal_year(
+        filename="oecd.csv",
+        date_col="Year",
+        value_col="Public social expenditure as a share of GDP",
+        series_name="redist_gdp_pct",
+        file_type='csv',
+        is_fiscal_year=False,
+        country_col="Entity",
+        country="United Kingdom",
+        country_filter="United Kingdom"
+    )
+    translator.defaultIngestion(country="Russia")
+    translator.ingest_and_adjust_fiscal_year(
+        filename="welfare_expenditure.csv",
+        date_col="Year",
+        value_col="value",
+        series_name="redist_gdp_pct",
+        file_type='csv',
+        is_fiscal_year=False,
+        country_col="Country",
+        country="Russia",
+        country_filter="Russia"
+    )
+    translator.defaultIngestion(country="South Africa")
+    translator.ingest_and_adjust_fiscal_year(
+        filename="welfare_expenditure.csv",
+        date_col="Year",
+        value_col="value",
+        series_name="redist_gdp_pct",
+        file_type='csv',
+        is_fiscal_year=False,
+        country_col="Country",
+        country="South Africa",
+        country_filter="South Africa"
+    )
+    translator.defaultIngestion(country="Korea")
+    translator.ingest_and_adjust_fiscal_year(
+        filename="oecd.csv",
+        date_col="Year",
+        value_col="Public social expenditure as a share of GDP",
+        series_name="redist_gdp_pct",
+        file_type='csv',
+        is_fiscal_year=False,
+        country_col="Entity",
+        country="Korea",
+        country_filter="Korea"
+    )
+    translator.defaultIngestion(country="Poland")
     
     # ===== VALIDATION =====
     print("\n")
@@ -970,67 +1226,184 @@ def run_manual_ingestion(collector_data, data_dir="data/raw/"):
     print(f"  Shape: {merged_df.shape}")
     print(f"  Date range: {merged_df.index.min().date()} to {merged_df.index.max().date()}")
     
-    return merged_df
+    return merged_df, translator
+
 
 # ============================================================================
-# USAGE EXAMPLE
+# FINAL ASSEMBLY: long-format combine (country, year, label, value)
 # ============================================================================
+# Everything above this line is unchanged from the original US pipeline
+# (only addition: ingest_and_adjust_fiscal_year now takes an optional
+# `country` param, default "United States", so nothing existing breaks).
+#
+# Non-US countries are all manually collected -- no FRED/API calls for
+# them anywhere below. This section just melts wide data (US quarterly,
+# or a country's own wide/annual frame) into one tidy long table.
+# ============================================================================
+
+def melt_to_long_format(df, country, label_col_name='label'):
+    """
+    Melts a wide dataframe (columns = variables, index = date or year) into
+    long format: country, year, label, value.
+
+    If df's index looks quarterly (has a .quarter attribute via DatetimeIndex),
+    collapses to annual (mean of the year's quarters) first, so US data ends
+    up on the same annual grain as every manually-collected country -- no
+    non-US source here is finer than annual anyway.
+
+    Drops NaN rows (a missing quarter/year for a given label is just absent
+    from the output, not filled or interpolated here).
+    """
+    d = df.copy()
+
+    if isinstance(d.index, pd.DatetimeIndex):
+        d['year'] = d.index.year
+        d = d.groupby('year').mean(numeric_only=True).reset_index()
+    elif 'year' not in d.columns:
+        raise ValueError("df needs either a DatetimeIndex or a 'year' column")
+
+    long_df = d.melt(id_vars='year', var_name=label_col_name, value_name='value')
+    long_df = long_df.dropna(subset=['value'])
+    long_df.insert(0, 'country', country)
+    return long_df[['country', 'year', label_col_name, 'value']]
+
+
+def load_manual_country_csv(filepath, country, year_col="Year", value_col="value",
+                             country_col="Country", label="redistribution_pct_gdp",
+                             min_year=None, max_year=None):
+    """
+    Reads a manually-maintained multi-country CSV (e.g.
+    welfare_expenditures.csv), filters to one country, and returns rows
+    already in the long format: country, year, label, value.
+
+    Handles a raw value cell that's a plain number OR has a trailing
+    currency-style 'bn' suffix (e.g. Egypt's "310.862bn") -- strips commas/%
+    /'bn' before parsing. No FRED/API call, this is manual-data-only, and no
+    interpolation across missing years -- a gap stays a gap.
+
+    min_year/max_year: optional hard bounds, e.g. min_year=1992 for Russia
+    to keep pre-1991 Soviet-era rows out even though the source CSV's
+    country label ("Soviet Union / Russia") spans both eras.
+    """
+    filepath = Path(filepath)
+    if not filepath.exists():
+        print(f"  ✗ {filepath}: not found (manual data only, nothing auto-fetched)")
+        return pd.DataFrame(columns=['country', 'year', 'label', 'value'])
+
+    df = pd.read_csv(filepath)
+    df.columns = [str(c).strip() for c in df.columns]
+    sub = df[df[country_col] == country].copy()
+
+    def _parse(raw):
+        if pd.isna(raw):
+            return np.nan
+        s = str(raw).strip().replace(',', '').replace('%', '')
+        s = re.sub(r'bn$', '', s, flags=re.IGNORECASE).strip()
+        try:
+            return float(s)
+        except ValueError:
+            return np.nan
+
+    sub['year'] = pd.to_numeric(sub[year_col], errors='coerce')
+    sub['value'] = sub[value_col].apply(_parse)
+    sub = sub.dropna(subset=['year', 'value'])
+    if min_year is not None:
+        sub = sub[sub['year'] >= min_year]
+    if max_year is not None:
+        sub = sub[sub['year'] <= max_year]
+
+    sub['year'] = sub['year'].astype(int)
+    sub['label'] = label
+    sub['country'] = country
+    print(f"  ✓ {filepath.name} ({country}) → {len(sub)} year(s)")
+    return sub[['country', 'year', 'label', 'value']]
+
+
+def convert_egypt_to_pct_gdp(egypt_usd_bn_long, gdp_usd_csv):
+    """
+    Egypt-specific in-line %GDP calc -- the one genuinely different
+    operation among the non-US countries (FX-converted USD spending /
+    Egypt GDP in current USD), so it stays a separate small function
+    rather than a parameter to the generic loader above.
+
+    egypt_usd_bn_long: long-format df (country/year/label/value) of
+    Egypt's redistribution in USD billions, e.g. from
+    load_manual_country_csv(..., label='redistribution_usd_bn').
+    gdp_usd_csv: path to a simple Year,value CSV of Egypt GDP in current
+    USD (billions). If not found, returns an empty frame rather than
+    fabricating a %GDP figure.
+    """
+    gdp_path = Path(gdp_usd_csv)
+    if not gdp_path.exists():
+        print(f"  ⚠ {gdp_path}: not found -- Egypt redistribution_pct_gdp "
+              f"skipped, not fabricated. Add this file (Year, value in "
+              f"current USD) and re-run.")
+        return pd.DataFrame(columns=['country', 'year', 'label', 'value'])
+
+    gdp = pd.read_csv(gdp_path)
+    gdp.columns = [str(c).strip() for c in gdp.columns]
+    gdp_map = dict(zip(pd.to_numeric(gdp['Year'], errors='coerce'),
+                        pd.to_numeric(gdp['value'], errors='coerce')))
+
+    out = egypt_usd_bn_long.copy()
+    out['value'] = out.apply(
+        lambda r: (r['value'] / gdp_map[r['year']] * 100)
+        if r['year'] in gdp_map and gdp_map[r['year']] else np.nan,
+        axis=1
+    )
+    out['label'] = 'redistribution_pct_gdp'
+    out = out.dropna(subset=['value'])
+    print(f"  ✓ Egypt redistribution_pct_gdp computed in-line for {len(out)} year(s)")
+    return out
+
 
 if __name__ == "__main__":
-    
+
     collector = USStateResponseDataCollector(
         start_year=1960,
         end_year=2025,
         api_key=FRED_API_KEY
     )
-    
-    # Run automated collection (pulls what's available from FRED)
-    collector.run_collection()
 
-    # Step 2: Clean & align
+    collector.run_collection()
     collector.clean_and_align()
     collector.calculate_derived_metrics()
-    collector.validate_data()
 
-    # Step 3: Ingest manual data
-    merged = run_manual_ingestion(collector.data, data_dir="data/raw/")
+    merged, translator = run_manual_ingestion(collector.data, data_dir="data/raw/")
     collector.data = merged
 
-    # Step 4: Calculate strike severity
     if 'workers_affected' in merged.columns:
         collector.calculate_strike_severity('workers_affected', 'days_idle')
+        collector.calculate_participation_rate('workers_affected')
 
-    # Step 5: Export & inspect
+    collector.validate_data()
     collector.export_data("results/us_state_response_data.csv")
 
-    # Check shape & coverage
-    print(f"\n✓ Final shape: {merged.shape}")
-    print(f"\nColumn coverage:")
-    print(merged.notna().sum() / len(merged) * 100)
-    
-    # ===== MANUAL DATA UPLOAD SECTION (Once you've collected external data) =====
-    # 
-    # Example: Add Gini data manually
-    # gini_dates = pd.date_range('1960-01', '2025-12', freq='Y')  # Annual
-    # gini_values = [0.394, 0.397, ...]  # Your data
-    # collector.add_manual_data('gini_coefficient', gini_dates, gini_values)
-    # 
-    # Example: Add wage percentiles
-    # collector.add_manual_data('wage_p10', dates_annual, values_p10)
-    # collector.add_manual_data('wage_p50', dates_annual, values_p50)
-    # collector.add_manual_data('wage_p90', dates_annual, values_p90)
-    # 
-    # Example: Add protest data
-    # collector.add_manual_data('strikes_per_quarter', dates_quarterly, strike_counts)
-    # 
-    # ===== THEN RUN AGGREGATION =====
-    # collector.aggregate_redistribution()
-    # collector.clean_and_align()
-    # collector.calculate_derived_metrics()
-    # collector.validate_data()
-    # collector.export_data("results/us_state_response_data.csv")
-    # 
-    # print("\n✓ Ready for state response function fitting!")
-    # print(f"  Shape: {collector.data.shape}")
-    # print(f"\nFirst few rows:")
-    # print(collector.data.head())
+    # ===== FINAL ASSEMBLY: long-format combine =====
+    print("\n" + "=" * 70)
+    print("FINAL LONG-FORMAT ASSEMBLY (country, year, label, value)")
+    print("=" * 70)
+
+    us_long = melt_to_long_format(collector.data, country="United States")
+
+    # Every non-US country's data now lives in translator.translated_series,
+    # keyed by country -- build one wide frame per country and melt it,
+    # instead of re-reading CSVs a second time through a separate path.
+    combined_frames = [us_long]
+    for country, series_dict in translator.translated_series.items():
+        if country == "United States":
+            continue  # already in us_long via collector.data above
+        if not series_dict:
+            continue  # e.g. Poland -- deliberately no numeric series
+        country_df = pd.DataFrame(series_dict)
+        combined_frames.append(melt_to_long_format(country_df, country=country))
+
+    combined_long = pd.concat(combined_frames, ignore_index=True)
+
+    combined_long = combined_long.sort_values(['country', 'label', 'year']).reset_index(drop=True)
+    combined_long.to_csv("results/combined_long_panel.csv", index=False)
+
+    print(f"\n  Countries: {sorted(combined_long['country'].unique())}")
+    print(f"  Labels: {sorted(combined_long['label'].unique())}")
+    print(f"  Rows: {len(combined_long)}")
+    print(f"  Saved to: results/combined_long_panel.csv")

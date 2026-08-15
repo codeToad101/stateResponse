@@ -2,5 +2,9 @@
 .env/
 .DS_Store
 data/format/secret.py
-data/format/__pycache__/
 __pycache__/
+diagnostics.py
+calibrate_protest_threshold.py
+notes.txt
+sources.txt
+tempHandoff.txt
