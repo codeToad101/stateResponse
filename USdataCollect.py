@@ -194,23 +194,35 @@ class ManualDataTranslator:
             return None
     
     def ingest_cntsdata_protests(self, filename, sheet_name, year_col, 
-                                 value_cols, series_name, country_filter='United States'):
+                                 value_cols, series_name, country_filter='United States',
+                                 country="United States"):
         """
-        Ingest CNTSDATA protest events (multi-country dataset).
-        Filters to US, sums specified event types.
+        Ingest event-level protest data (multi-country dataset, e.g.
+        CNTSDATA or Mass Mobilization Project), aggregated to an annual
+        count/sum by summing value_cols per year.
+
+        country_filter: value to match in the file's country column
+            (case-insensitive check across 'Country'/'country'/
+            'country_name' -- whichever exists).
+        country: str, defaults to "United States" so the original US
+            CNTSDATA call is unaffected. Determines which key this
+            series is stored under in self.translated_series.
         """
         filepath = self.data_dir / filename
         try:
             df = pd.read_excel(filepath, sheet_name=sheet_name)
             
-            # Filter to US
-            if 'Country' in df.columns:
-                df = df[df['Country'] == country_filter].copy()
-            elif 'country_name' in df.columns:
-                df = df[df['country_name'] == country_filter].copy()
+            # Filter to one country -- check common column-name variants
+            country_col = next((c for c in ['Country', 'country', 'country_name']
+                                 if c in df.columns), None)
+            if country_col is None:
+                print(f"  ✗ {filename}: no recognizable country column found")
+                return None
+            labels = [country_filter] if isinstance(country_filter, str) else list(country_filter)
+            df = df[df[country_col].astype(str).str.strip().isin(labels)].copy()
             
             if len(df) == 0:
-                print(f"  ⚠ {filename}: No US records found")
+                print(f"  ⚠ {filename}: No records found for '{country_filter}'")
                 return None
             
             # Parse year
@@ -236,13 +248,162 @@ class ManualDataTranslator:
             
             aligned = self._align_to_quarterly(series, series_name,
                                                fill_method='ffill', fill_gaps_with_zero=False)
-            self.translated_series.setdefault('United States', {})[series_name] = aligned
+            self.translated_series.setdefault(country, {})[series_name] = aligned
             
-            print(f"  ✓ {filename} (US only) → {series_name} ({len(series)} years)")
+            print(f"  ✓ {filename} ({country}) → {series_name} ({len(series)} years)")
             return aligned
         
         except Exception as e:
             print(f"  ✗ {filename}: {str(e)[:50]}")
+            return None
+
+    def ingest_south_africa_protests(self, filename, series_name="civil_unrest_events",
+                                      historical_sheet="Historical", data_sheet="Data"):
+        """
+        South Africa-specific: combines two structurally different sheets
+        from the same file into one annual civil-unrest event-count series.
+          - 'Historical' sheet: event-level rows, one per protest,
+            1950-1990 -- aggregated via count of rows per starty.
+          - 'Data' sheet: Country/Month/Year/Events, monthly, 1997-2026 --
+            aggregated via sum of Events per Year (annual total, not the
+            monthly average, since these are counts).
+        Both measure the same underlying thing (civil unrest events), so
+        they're concatenated into one series rather than kept separate.
+        1991-1996 has NO source data in either sheet -- left genuinely
+        missing here, not fabricated; downstream _align_to_quarterly's
+        ffill will bridge it the same way it bridges every other gap in
+        this pipeline, so behavior stays consistent with the rest of the
+        script rather than being a special case.
+        South Africa-only: not generalized, since no other country in
+        this project uses this two-sheet source shape.
+        """
+        filepath = self.data_dir / filename
+        try:
+            hist = pd.read_excel(filepath, sheet_name=historical_sheet)
+            hist_annual = hist.groupby('starty').size()
+            hist_annual.index = pd.to_datetime(hist_annual.index.astype(int).astype(str) + '-01-01')
+
+            data = pd.read_excel(filepath, sheet_name=data_sheet)
+            data_annual = data.groupby('Year')['Events'].sum()
+            data_annual.index = pd.to_datetime(data_annual.index.astype(int).astype(str) + '-01-01')
+
+            combined = pd.concat([hist_annual, data_annual]).sort_index()
+            combined = combined[~combined.index.duplicated(keep='first')]
+
+            aligned = self._align_to_quarterly(combined, series_name,
+                                               fill_method='ffill', fill_gaps_with_zero=False)
+            self.translated_series.setdefault('South Africa', {})[series_name] = aligned
+
+            print(f"  ✓ {filename} (South Africa, Historical+Data) → {series_name} "
+                  f"({len(combined)} years, {combined.index.min().year}-{combined.index.max().year}, "
+                  f"gap 1991-1996 has no source data)")
+            return aligned
+
+        except Exception as e:
+            print(f"  ✗ {filename}: {str(e)[:60]}")
+            import traceback
+            traceback.print_exc()
+            return None
+
+    def ingest_russia_protests(self, filename, series_name="civil_unrest_events",
+                                sheet1="Sheet1", sheet2="Sheet2", sheet3="Sheet3"):
+        """
+        Russia-specific: combines three sheets from one file into one
+        continuous annual civil-unrest event-count series.
+          - Sheet1: Mass Mobilization Project-style rows, country labeled
+            'USSR' (1990-91) or 'Russia' (1992-2020) -- both summed
+            together. PRIORITY source for 1990-1992.
+          - Sheet2 + Sheet3: Beissinger "Demonstrations and Mass Violent
+            Events in the USSR, 1987-1992"
+            (mbeissinger.scholar.princeton.edu) -- one sheet protests,
+            one riots, event-level via STARTDATE. TRUNCATED to years
+            < 1990 only, since Sheet1 takes priority for 1990-1992 to
+            avoid counting the same unrest across two overlapping
+            sources. Per explicit decision, not an oversight.
+        Combined series: 1986-2020, annual event counts.
+        """
+        filepath = self.data_dir / filename
+        try:
+            s1 = pd.read_excel(filepath, sheet_name=sheet1)
+            s1 = s1[s1['country'].astype(str).str.strip().isin(['USSR', 'Russia'])]
+            s1_annual = s1.groupby('year').size()
+
+            s2 = pd.read_excel(filepath, sheet_name=sheet2)
+            s2['year'] = pd.to_datetime(s2['STARTDATE']).dt.year
+            s2_annual = s2[s2['year'] < 1990].groupby('year').size()
+
+            s3 = pd.read_excel(filepath, sheet_name=sheet3)
+            s3['year'] = pd.to_datetime(s3['STARTDATE']).dt.year
+            s3_annual = s3[s3['year'] < 1990].groupby('year').size()
+
+            combined = s1_annual.add(s2_annual, fill_value=0).add(s3_annual, fill_value=0)
+            combined.index = pd.to_datetime(combined.index.astype(int).astype(str) + '-01-01')
+            combined = combined.sort_index()
+
+            aligned = self._align_to_quarterly(combined, series_name,
+                                               fill_method='ffill', fill_gaps_with_zero=False)
+            self.translated_series.setdefault('Russia', {})[series_name] = aligned
+
+            print(f"  ✓ {filename} (Soviet Union/Russia, Sheet1 priority 1990+, "
+                  f"Sheet2+3 pre-1990 only) → {series_name} "
+                  f"({len(combined)} years, {combined.index.min().year}-{combined.index.max().year})")
+            return aligned
+
+        except Exception as e:
+            print(f"  ✗ {filename}: {str(e)[:60]}")
+            import traceback
+            traceback.print_exc()
+            return None
+
+    def ingest_dca_mmp_protests(self, filename, country, dca_labels, mmp_labels,
+                                 series_name="civil_unrest_events",
+                                 sheet1="Sheet1", sheet2="Sheet2", overlap_year=1990):
+        """
+        Shared handler for the DCA-style daily-coded Sheet1 + MMP-style
+        Sheet2 file shape (used by Germany and Poland so far -- same
+        structure, different country labels).
+          - Sheet1 (DCA-style): daily rows 1980-1995ish. A row is a real
+            event exactly when 'Country' (stripped of whitespace) is in
+            dca_labels -- verified for Germany that this aligns with
+            'Action' non-null and excludes all 'no event' filler rows;
+            Poland has a couple of stray other-country rows this also
+            excludes.
+          - Sheet2 (MMP-style): country in mmp_labels (list, to handle
+            split labels like Russia's USSR/Russia or Germany's
+            East/West -- pass a single-item list for countries with one
+            label, e.g. Poland).
+          - Sheet2 takes PRIORITY for years >= overlap_year; Sheet1 is
+            truncated to years < overlap_year, avoiding double-counting
+            the same unrest from two different coding methodologies.
+        """
+        filepath = self.data_dir / filename
+        try:
+            s1 = pd.read_excel(filepath, sheet_name=sheet1)
+            s1['Country'] = s1['Country'].astype(str).str.strip()
+            s1 = s1[s1['Country'].isin(dca_labels)].copy()
+            s1['year'] = pd.to_datetime(s1['Date'] if 'Date' in s1.columns else s1['Event Date']).dt.year
+            s1_annual = s1[s1['year'] < overlap_year].groupby('year').size()
+
+            s2 = pd.read_excel(filepath, sheet_name=sheet2)
+            s2 = s2[s2['country'].isin(mmp_labels)]
+            s2_annual = s2.groupby('year').size()
+
+            combined = s1_annual.add(s2_annual, fill_value=0).sort_index()
+            combined.index = pd.to_datetime(combined.index.astype(int).astype(str) + '-01-01')
+
+            aligned = self._align_to_quarterly(combined, series_name,
+                                               fill_method='ffill', fill_gaps_with_zero=False)
+            self.translated_series.setdefault(country, {})[series_name] = aligned
+
+            print(f"  ✓ {filename} ({country}, Sheet2 priority {overlap_year}+, "
+                  f"Sheet1 pre-{overlap_year} only) → {series_name} "
+                  f"({len(combined)} years, {combined.index.min().year}-{combined.index.max().year})")
+            return aligned
+
+        except Exception as e:
+            print(f"  ✗ {filename}: {str(e)[:60]}")
+            import traceback
+            traceback.print_exc()
             return None
 
     def ingest_and_adjust_fiscal_year(self, filename, date_col=None, value_col=None, 
@@ -358,11 +519,39 @@ class ManualDataTranslator:
 
             else:
                 # ===== ORIGINAL LONG FORMAT (date_col + value_col) =====
-                # Parse values (handle % and commas)
+                # If this is a multi-country file (welfare_expenditure.csv's
+                # "Country", oecd.csv's "Entity"), filter to ONE country
+                # before parsing. Previously this branch ignored
+                # country_col/country_filter entirely -- ANY call passing
+                # them here (all your non-US welfare_expenditure.csv /
+                # oecd.csv calls) was silently parsing every country's
+                # rows into one mixed series and storing it under whichever
+                # country= you happened to pass. country_col only matches
+                # something for multi-country files -- US-only files (no
+                # such column) are unaffected, so nothing breaks there.
+                if country_col in df.columns and country_filter is not None:
+                    before_n = len(df)
+                    df = df[df[country_col].astype(str).str.contains(
+                        re.escape(country_filter), case=False, na=False
+                    )]
+                    df = df.reset_index(drop=True)
+                    print(f"  ✓ {filename}: filtered {before_n} → {len(df)} rows "
+                          f"where {country_col} contains '{country_filter}'")
+                    if len(df) == 0:
+                        print(f"  ✗ {filename}: no rows left after filtering to '{country_filter}'")
+                        return None
+
+                # Parse values (handle %, commas, and a trailing currency-
+                # style 'bn' suffix, e.g. Egypt's "52.3492bn")
                 if isinstance(value_col, list):
                     data_values = df[value_col].sum(axis=1, skipna=True).values
                 else:
-                    values_raw = df[value_col].astype(str).str.replace('%', '').str.replace(',', '')
+                    print(f"  DEBUG {filename} ({country}): raw {value_col!r} sample:")
+                    print(df[value_col].head(10))
+                    values_raw = (df[value_col].astype(str)
+                                  .str.replace('%', '', regex=False)
+                                  .str.replace(',', '', regex=False)
+                                  .str.replace(r'bn$', '', regex=True, flags=re.IGNORECASE))
                     data_values = pd.to_numeric(values_raw, errors='coerce').values
                 
                 # Parse dates
@@ -429,20 +618,20 @@ class ManualDataTranslator:
             traceback.print_exc()
             return None
     
-    def print_diagnostics(self):
-        """Print alignment diagnostics."""
-        print("\n" + "="*80)
-        print("DATA INGESTION DIAGNOSTICS")
-        print("="*80)
+    # def print_diagnostics(self): this doesn't work
+    #     """Print alignment diagnostics."""
+    #     print("\n" + "="*80)
+    #     print("DATA INGESTION DIAGNOSTICS")
+    #     print("="*80)
         
-        for series_name, diag in self.diagnostics.items():
-            print(f"\n{series_name}:")
-            print(f"  Original records: {diag['n_original']}")
-            print(f"  Aligned quarters: {diag['n_aligned']}")
-            print(f"  Coverage: {diag['coverage_pct']:.1f}%")
-            print(f"  Date range: {diag['date_range']}")
+    #     for series_name, diag in self.diagnostics.items():
+    #         print(f"\n{series_name}:")
+    #         print(f"  Original records: {diag['n_original']}")
+    #         print(f"  Aligned quarters: {diag['n_aligned']}")
+    #         print(f"  Coverage: {diag['coverage_pct']:.1f}%")
+    #         print(f"  Date range: {diag['date_range']}")
         
-        print("\n" + "="*80)
+    #     print("\n" + "="*80)
 
     def defaultIngestion(self, country = "United States"):
         self.ingest_and_adjust_fiscal_year(
@@ -452,6 +641,7 @@ class ManualDataTranslator:
             is_fiscal_year=False,
             country=country,
             wide_year_columns=True,
+            country_col="Country Name",
             country_filter=country
         )
         self.translated_series[country]['gdp_billions'] = self.translated_series[country]['gdp_billions'] / 1e9
@@ -462,7 +652,9 @@ class ManualDataTranslator:
             series_name="political_violence_score",
             file_type='csv',
             is_fiscal_year=False,
-            country=country
+            country=country,
+            country_col="Country",
+            country_filter=country
         )
         self.ingest_and_adjust_fiscal_year(
             filename="swiid_gini.csv",
@@ -471,7 +663,9 @@ class ManualDataTranslator:
             series_name="gini_coefficient",
             file_type='csv',
             is_fiscal_year=False,
-            country=country
+            country=country,
+            country_col="country",
+            country_filter=country
         )
         self.ingest_and_adjust_fiscal_year(
             filename="tax_GDPpct_nonUS.csv",
@@ -480,6 +674,7 @@ class ManualDataTranslator:
             is_fiscal_year=False,
             country=country,
             wide_year_columns=True,
+            country_col="Country Name",
             country_filter=country
         )
         self.ingest_and_adjust_fiscal_year(
@@ -1123,6 +1318,16 @@ def run_manual_ingestion(collector_data, data_dir="data/raw/"):
         cutover_year=1988
     )
 
+    translator.ingest_and_adjust_fiscal_year(
+        filename="political-violence.csv",
+        date_col="Year",
+        value_col="PTS_A",
+        series_name="political_violence_score",
+        file_type='csv',
+        is_fiscal_year=False,
+        country="United States"
+    )
+
     translator.ingest_cntsdata_protests(
         filename="CNTSDATA.xlsx",
         sheet_name="2026 Data",
@@ -1144,6 +1349,15 @@ def run_manual_ingestion(collector_data, data_dir="data/raw/"):
         country="Chile",
         country_filter="Chile"
     )
+    translator.ingest_cntsdata_protests(
+        filename="Chile_protests.xlsx",
+        sheet_name="Sheet1",
+        year_col="year",
+        value_cols=["protest"],
+        series_name="civil_unrest_events",
+        country_filter="Chile",
+        country="Chile"
+    )
     translator.defaultIngestion(country="Germany")
     translator.ingest_and_adjust_fiscal_year(
         filename="oecd.csv",
@@ -1156,9 +1370,15 @@ def run_manual_ingestion(collector_data, data_dir="data/raw/"):
         country="Germany",
         country_filter="Germany"
     )
+    translator.ingest_dca_mmp_protests(
+        filename="Germany_protests.xlsx",
+        country="Germany",
+        dca_labels=["FR Germany", "GDR"],
+        mmp_labels=["Germany", "Germany East", "Germany West"]
+    )
     translator.defaultIngestion(country="Egypt")
     translator.ingest_and_adjust_fiscal_year(
-        filename="welfare_expenditure.csv",
+        filename="welfare_expenditures.csv",
         date_col="Year",
         value_col="value",
         series_name="redist_usd_bn",
@@ -1169,6 +1389,15 @@ def run_manual_ingestion(collector_data, data_dir="data/raw/"):
         country_filter="Egypt"
     )
     translator.compute_pct_gdp(country="Egypt", numerator_series_name="redist_usd_bn")
+    translator.ingest_cntsdata_protests(
+        filename="Egypt_protests.xlsx",
+        sheet_name="Sheet1",
+        year_col="year",
+        value_cols=["protest"],
+        series_name="civil_unrest_events",
+        country_filter="Egypt",
+        country="Egypt"
+    )
     translator.defaultIngestion(country="United Kingdom")
     translator.ingest_and_adjust_fiscal_year(
         filename="oecd.csv",
@@ -1181,9 +1410,21 @@ def run_manual_ingestion(collector_data, data_dir="data/raw/"):
         country="United Kingdom",
         country_filter="United Kingdom"
     )
+    translator.ingest_south_africa_protests(
+        filename="south_africa_demonstration_by_month.xlsx"
+    )
+    translator.ingest_cntsdata_protests(
+        filename="uk_protests.xlsx",
+        sheet_name="Sheet1",
+        year_col="year",
+        value_cols=["protest"],   # every row = 1 protest event; summing gives annual event count
+        series_name="civil_unrest_events",
+        country_filter="United Kingdom",
+        country="United Kingdom"
+    )
     translator.defaultIngestion(country="Russia")
     translator.ingest_and_adjust_fiscal_year(
-        filename="welfare_expenditure.csv",
+        filename="welfare_expenditures.csv",
         date_col="Year",
         value_col="value",
         series_name="redist_gdp_pct",
@@ -1193,9 +1434,10 @@ def run_manual_ingestion(collector_data, data_dir="data/raw/"):
         country="Russia",
         country_filter="Russia"
     )
+    translator.ingest_russia_protests(filename="Russia_protests.xlsx")
     translator.defaultIngestion(country="South Africa")
     translator.ingest_and_adjust_fiscal_year(
-        filename="welfare_expenditure.csv",
+        filename="welfare_expenditures.csv",
         date_col="Year",
         value_col="value",
         series_name="redist_gdp_pct",
@@ -1217,11 +1459,26 @@ def run_manual_ingestion(collector_data, data_dir="data/raw/"):
         country="Korea",
         country_filter="Korea"
     )
+    translator.ingest_cntsdata_protests(
+        filename="korea_protests.xlsx",
+        sheet_name="Sheet1",
+        year_col="year",
+        value_cols=["protest"],
+        series_name="civil_unrest_events",
+        country_filter="South Korea",
+        country="Korea"
+    )
     translator.defaultIngestion(country="Poland")
+    translator.ingest_dca_mmp_protests(
+        filename="Poland_protests.xlsx",
+        country="Poland",
+        dca_labels=["Poland"],
+        mmp_labels=["Poland"]
+    )
     
     # ===== VALIDATION =====
     print("\n")
-    translator.print_diagnostics()
+    #translator.print_diagnostics()
     translator.validate_alignment(reference_series_name="gini_coefficient")
     
     # ===== MERGE =====
@@ -1275,6 +1532,24 @@ def melt_to_long_format(df, country, label_col_name='label'):
     long_df = long_df.dropna(subset=['value'])
     long_df.insert(0, 'country', country)
     return long_df[['country', 'year', label_col_name, 'value']]
+
+def trim_ffill_tails(df, value_col='value', group_cols=('country', 'label'), year_col='year'):
+    """
+    Within each (country, label) group, collapses any run of consecutive
+    IDENTICAL values down to just its first real year, dropping the rest.
+    This is exactly what a _align_to_quarterly ffill artifact looks like
+    once melted back to annual (a real value repeated because nothing
+    new was observed) -- catches both trailing ffill tails (e.g. Russia/
+    Egypt/South Africa's last few years) and mid-series gaps ffilled
+    forward (e.g. South Africa's 1991-96 protest gap) in one pass.
+    A genuine coincidental exact-float repeat in real annual data is
+    effectively impossible at this precision, so this is safe.
+    """
+    out = []
+    for _, g in df.sort_values(list(group_cols) + [year_col]).groupby(list(group_cols)):
+        is_dup_run = g[value_col].eq(g[value_col].shift())
+        out.append(g[~is_dup_run])
+    return pd.concat(out, ignore_index=True)
 
 
 def load_manual_country_csv(filepath, country, year_col="Year", value_col="value",
@@ -1380,6 +1655,8 @@ if __name__ == "__main__":
 
     merged, translator = run_manual_ingestion(collector.data, data_dir="data/raw/")
     collector.data = merged
+    collector.aggregate_redistribution()
+    collector.data = collector.data.rename(columns={'redistribution_pct_gdp': 'redist_gdp_pct'})
 
     if 'workers_affected' in merged.columns:
         collector.calculate_strike_severity('workers_affected', 'days_idle')
@@ -1410,6 +1687,7 @@ if __name__ == "__main__":
     combined_long = pd.concat(combined_frames, ignore_index=True)
 
     combined_long = combined_long.sort_values(['country', 'label', 'year']).reset_index(drop=True)
+    combined_long = trim_ffill_tails(combined_long)
     combined_long.to_csv("results/combined_long_panel.csv", index=False)
 
     print(f"\n  Countries: {sorted(combined_long['country'].unique())}")

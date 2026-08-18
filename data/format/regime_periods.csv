@@ -1,0 +1,19 @@
+country,start_year,end_year,regime_label,confidence,note
+South Africa,1960,1994,dictatorship,high,Apartheid state; end at first democratic election (Apr 1994)
+South Africa,1994,2026,representative,medium,Post-apartheid democracy; not reviewed for captured-state drift
+Poland,1960,1989,dictatorship,high,Communist-era PRL; end at Round Table Agreement / Solidarity transition
+Poland,1989,2026,representative,medium,Post-1989 democracy; EU accession 2004 not separately flagged
+Chile,1960,1973,representative,medium,Pre-coup; not reviewed for captured-state drift
+Chile,1973,1990,dictatorship,high,Pinochet military government; end at return to civilian rule (Mar 1990)
+Chile,1990,2026,representative,medium,Post-1990 democracy; not reviewed for captured-state drift
+Korea,1960,1987,dictatorship,medium,Authoritarian rule (Rhee/Park/Chun eras) pre-democratization; internal periodization not attempted here
+Korea,1987,2026,representative,medium,Post-1987 democratization (direct presidential elections); not reviewed for captured-state drift
+Germany,1960,1990,representative,low,"West Germany only in source data pre-unification; East Germany (GDR, dictatorship) not separately represented in this panel's series -- flag, don't guess a blended label"
+Germany,1990,2026,representative,medium,Post-reunification; not reviewed for captured-state drift
+Russia,1960,1991,dictatorship,high,Soviet era
+Russia,1992,2026,captured,low,"Post-Soviet Russia; widely debated where on the representative-to-captured-to-authoritarian spectrum it sits and when it crossed -- deliberately not pinned to a specific year, review manually before using"
+Egypt,1960,2011,dictatorship,medium,"Pre-Arab Spring; Mubarak-era (1981-2011) is the best-covered part of this range, earlier Nasser/Sadat years less reviewed"
+Egypt,2011,2013,representative,low,"Brief post-revolution period; contested characterization, review manually"
+Egypt,2013,2026,dictatorship,medium,Post-2013; review manually before relying on this label
+United Kingdom,1960,2026,representative,low,"No transition applied -- deliberately left as one long span rather than guessing at a captured/representative boundary; this is exactly the kind of ambiguous case flagged for manual review, not a claim that nothing changed"
+United States,1960,2026,representative,low,"Same as UK -- no transition applied; whether/when the US drifted toward captured is an open question this file is not attempting to answer, left for manual review"

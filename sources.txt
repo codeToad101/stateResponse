@@ -9,7 +9,10 @@ police violence data: politicalterrorscale.org
 gini across non-US: fsolt.org/swiid
 Data sources: OECD (2025)OECD (1985)Lindert (2004) – with major processing by Our World in Data for social spending in non-US areas
 https://data.worldbank.org/ for most non-us : (NY.GDP.MKTP.CD, SL.UEM.TOTL.ZS, GC.TAX.TOTL.GD.ZS, NY.GDP.MKTP.KD.ZG)
-
+https://discuss-data.net/dataset/b5d726ff-8ed8-45bd-b7e4-b8a5538e4428/files/
+https://dataverse.harvard.edu/dataset.xhtml?persistentId=doi:10.7910/DVN/HTTWYL
+https://mbeissinger.scholar.princeton.edu/demonstrations-and-mass-violent-events-ussr-1987-1992
+https://scholarworks.wmich.edu/cgi/viewcontent.cgi?article=1195&context=jssw
 eitc: Source: Internal Revenue Service, Statistics of Income Division, Table 2.5:  Returns with 
 Earned Income Credit and Table A: Selected Income and Tax Items for Selected Years (in 
 Current and Constant Dollars). January 2024.
@@ -80,9 +83,18 @@ SOURCES = [
 ]
 
 policy feedback literature, e.g. Pierson 1993 on path dependence in welfare states
-
 Piketty r>g, Kuran preference falsification, Clark & Oswald reference wage, Dosi et al. 2020, Kaplan & Violante hand-to-mouth, Litterman/Bańbura-Giannone-Reichlin BVAR shrinkage, Burnham & Anderson AIC model selection, Newey-West 1994, Watts-Strogatz, Epstein 2002/generative social science)
+Granovetter 1978; Epstein 2002 civil-violence model
 
-social data for -->
-USSR/russia:
-https://scholarworks.wmich.edu/cgi/viewcontent.cgi?article=1195&context=jssw
+--- Worker.py revolt mechanism (global-games coordination) ---
+Granovetter, M. (1978). "Threshold Models of Collective Behavior." AJS 83(6).
+Epstein, J.M. (2002). "Modeling Civil Violence: An Agent-Based Computational Approach." PNAS 99(suppl 3).
+Morris, S. & Shin, H.S. (1998). "Unique Equilibrium in a Model of Self-Fulfilling Currency Attacks." AER 88(3).
+Morris, S. & Shin, H.S. (2003). "Global Games: Theory and Applications." In Advances in Economics and Econometrics (8th World Congress).
+Edmond, C. (2013). "Information Manipulation, Coordination, and Regime Change." Review of Economic Studies 80(4).
+Kuran, T. (1989). "Sparks and Prairie Fires: A Theory of Unanticipated Political Revolution." Public Choice 61(1).
+Kuran, T. (1991). "Now Out of Never: The Element of Surprise in the East European Revolution of 1989." World Politics 44(1).
+
+(reference / considered but not adopted directly:)
+Acemoglu, D. & Robinson, J.A. (2001). "A Theory of Political Transitions." AER 91(4).
+Acemoglu, D. & Robinson, J.A. (2006). Economic Origins of Dictatorship and Democracy. Cambridge UP.

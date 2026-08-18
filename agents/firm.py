@@ -37,7 +37,7 @@ class Firm(mesa.Agent):
                  owner_investment_threshold_multiple=1.0,
                  owner_propensity_alpha=5.0, owner_propensity_beta=2.0,
                  owner_idiosyncratic_return_std=0.04,
-                 rng=None):
+                 protest_output_penalty=0.5, rng=None):
         super().__init__(model)
         self.random_gen = rng if rng is not None else np.random.default_rng()
 
@@ -87,6 +87,16 @@ class Firm(mesa.Agent):
         # heuristic target, not derived from an optimization -- bounded
         # rationality: firms aim for "reasonably profitable," not optimal
         self.target_profit = 0.05 * capital
+
+        # Free, uncalibrated parameter -- same posture as Worker's sigma/
+        # theta weights: undefended design choice, candidate for a
+        # sensitivity sweep, not presented as fitted. 0.5 = a protesting
+        # employee contributes half their normal output that tick (partial
+        # disruption -- not everyone counted in protest_intensity_score is
+        # in a full-day work stoppage); 1.0 would model a full strike,
+        # 0.0 would silently contradict the strike-based data source this
+        # whole model calibrates against.
+        self.protest_output_penalty = float(np.clip(protest_output_penalty, 0.0, 1.0))
 
         # Productivity-linked pay anchor: derived from the SAME
         # production function used in _compute_output_and_profit
@@ -184,12 +194,22 @@ class Firm(mesa.Agent):
                 # forever otherwise)
 
     def _compute_output_and_profit(self):
-        output = sum(w.skill * self.productivity * self.productivity_scale
-                     for w in self.employees)
+        """
+        Closes a real gap: without this, Firm was blind to whether its own
+        workforce was protesting at all -- profit/hiring never reacted to
+        it, so the protest -> economic disruption -> profit -> layoffs ->
+        further grievance loop implied by the strike-derived historical
+        data (and the Epstein-style ABM framing this project is built on)
+        simply didn't exist on the Firm side.
+        """
+        output = sum(
+            w.skill * self.productivity * self.productivity_scale *
+            (1 - self.protest_output_penalty if w.is_protesting else 1.0)
+            for w in self.employees
+        )
         wage_costs = sum(w.wage for w in self.employees)
         depreciation = 0.01 * self.capital
         self.profit = output - wage_costs - depreciation
-        # capital-income channel: floored at 0, see __init__ docstring
         self.owner_income = max(self.profit, 0.0) * self.profit_share_to_owner
 
     def _update_owner_wealth_and_investment(self, market_return):

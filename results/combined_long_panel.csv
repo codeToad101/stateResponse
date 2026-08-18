@@ -1,4 +1,33 @@
 country,year,label,value
+Chile,1990,civil_unrest_events,2.0
+Chile,1991,civil_unrest_events,5.0
+Chile,1993,civil_unrest_events,2.0
+Chile,1994,civil_unrest_events,9.0
+Chile,1995,civil_unrest_events,4.0
+Chile,1996,civil_unrest_events,8.0
+Chile,1997,civil_unrest_events,7.0
+Chile,1998,civil_unrest_events,2.0
+Chile,1999,civil_unrest_events,4.0
+Chile,2000,civil_unrest_events,5.0
+Chile,2001,civil_unrest_events,9.0
+Chile,2002,civil_unrest_events,11.0
+Chile,2003,civil_unrest_events,5.0
+Chile,2004,civil_unrest_events,3.0
+Chile,2005,civil_unrest_events,2.0
+Chile,2006,civil_unrest_events,12.0
+Chile,2007,civil_unrest_events,6.0
+Chile,2008,civil_unrest_events,10.0
+Chile,2009,civil_unrest_events,4.0
+Chile,2010,civil_unrest_events,7.0
+Chile,2011,civil_unrest_events,9.0
+Chile,2012,civil_unrest_events,5.0
+Chile,2013,civil_unrest_events,2.0
+Chile,2014,civil_unrest_events,1.0
+Chile,2016,civil_unrest_events,6.0
+Chile,2017,civil_unrest_events,3.0
+Chile,2018,civil_unrest_events,7.0
+Chile,2019,civil_unrest_events,15.0
+Chile,2020,civil_unrest_events,0.0
 Chile,1972,fed_tax_revenue_pct_gdp,15.9224229894982
 Chile,1973,fed_tax_revenue_pct_gdp,17.0051881634313
 Chile,1974,fed_tax_revenue_pct_gdp,15.9688988775224
@@ -52,7 +81,6 @@ Chile,2021,fed_tax_revenue_pct_gdp,19.6648734895169
 Chile,2022,fed_tax_revenue_pct_gdp,21.345490267732
 Chile,2023,fed_tax_revenue_pct_gdp,17.7043787454348
 Chile,2024,fed_tax_revenue_pct_gdp,18.2645857950519
-Chile,2025,fed_tax_revenue_pct_gdp,18.2645857950519
 Chile,1960,gdp_billions,4.2111036767402705
 Chile,1961,gdp_billions,4.9485645509104605
 Chile,1962,gdp_billions,5.76597114447142
@@ -119,188 +147,107 @@ Chile,2022,gdp_billions,301.099244104003
 Chile,2023,gdp_billions,335.80274536638
 Chile,2024,gdp_billions,329.260633698726
 Chile,2025,gdp_billions,357.371159574862
-Chile,1960,gini_coefficient,30.049999999999997
-Chile,1961,gini_coefficient,28.866666666666664
-Chile,1962,gini_coefficient,28.866666666666664
-Chile,1963,gini_coefficient,29.066666666666666
-Chile,1964,gini_coefficient,29.233333333333334
-Chile,1965,gini_coefficient,29.325
-Chile,1966,gini_coefficient,29.25
-Chile,1967,gini_coefficient,29.200000000000003
-Chile,1968,gini_coefficient,32.18
-Chile,1969,gini_coefficient,32.22
-Chile,1970,gini_coefficient,32.44
-Chile,1971,gini_coefficient,32.6
-Chile,1972,gini_coefficient,32.58
-Chile,1973,gini_coefficient,32.54
-Chile,1974,gini_coefficient,32.68
-Chile,1975,gini_coefficient,36.48571428571429
-Chile,1976,gini_coefficient,36.47142857142857
-Chile,1977,gini_coefficient,36.42857142857143
-Chile,1978,gini_coefficient,36.42857142857143
-Chile,1979,gini_coefficient,36.614285714285714
-Chile,1980,gini_coefficient,35.2375
-Chile,1981,gini_coefficient,35.4625
-Chile,1982,gini_coefficient,35.7125
-Chile,1983,gini_coefficient,35.099999999999994
-Chile,1984,gini_coefficient,34.97777777777778
-Chile,1985,gini_coefficient,34.97777777777778
-Chile,1986,gini_coefficient,35.21111111111111
-Chile,1987,gini_coefficient,35.31111111111111
-Chile,1988,gini_coefficient,34.260000000000005
-Chile,1989,gini_coefficient,34.35
-Chile,1990,gini_coefficient,34.33
-Chile,1991,gini_coefficient,35.63333333333333
-Chile,1992,gini_coefficient,36.166666666666664
-Chile,1993,gini_coefficient,36.97777777777778
-Chile,1994,gini_coefficient,37.51111111111111
-Chile,1995,gini_coefficient,37.82222222222222
-Chile,1996,gini_coefficient,37.78888888888889
-Chile,1997,gini_coefficient,37.855555555555554
-Chile,1998,gini_coefficient,37.922222222222224
-Chile,1999,gini_coefficient,38.02222222222222
-Chile,2000,gini_coefficient,38.2
-Chile,2001,gini_coefficient,38.233333333333334
-Chile,2002,gini_coefficient,38.099999999999994
-Chile,2003,gini_coefficient,38.111111111111114
-Chile,2004,gini_coefficient,38.099999999999994
-Chile,2005,gini_coefficient,38.099999999999994
-Chile,2006,gini_coefficient,37.98888888888889
-Chile,2007,gini_coefficient,37.87777777777777
-Chile,2008,gini_coefficient,37.82222222222222
-Chile,2009,gini_coefficient,37.644444444444446
-Chile,2010,gini_coefficient,37.422222222222224
-Chile,2011,gini_coefficient,37.5
-Chile,2012,gini_coefficient,37.3
-Chile,2013,gini_coefficient,37.2
-Chile,2014,gini_coefficient,37.05555555555556
-Chile,2015,gini_coefficient,36.97777777777778
-Chile,2016,gini_coefficient,37.0
-Chile,2017,gini_coefficient,36.94444444444444
-Chile,2018,gini_coefficient,37.06666666666667
-Chile,2019,gini_coefficient,36.96666666666667
-Chile,2020,gini_coefficient,36.82222222222222
-Chile,2021,gini_coefficient,36.68888888888889
-Chile,2022,gini_coefficient,36.68888888888889
-Chile,2023,gini_coefficient,33.5875
-Chile,2024,gini_coefficient,36.45
-Chile,2025,gini_coefficient,36.45
-Chile,1976,political_violence_score,2.8
-Chile,1977,political_violence_score,2.8
-Chile,1978,political_violence_score,2.6
-Chile,1979,political_violence_score,2.6
-Chile,1980,political_violence_score,2.5
-Chile,1981,political_violence_score,2.7
-Chile,1982,political_violence_score,2.6
-Chile,1983,political_violence_score,2.8
-Chile,1984,political_violence_score,2.6
-Chile,1985,political_violence_score,2.6
-Chile,1986,political_violence_score,2.888888888888889
-Chile,1987,political_violence_score,2.8
-Chile,1988,political_violence_score,2.5
-Chile,1989,political_violence_score,2.3
-Chile,1990,political_violence_score,2.2
-Chile,1991,political_violence_score,2.7777777777777777
-Chile,1992,political_violence_score,2.4444444444444446
-Chile,1993,political_violence_score,2.2222222222222223
-Chile,1994,political_violence_score,2.6666666666666665
-Chile,1995,political_violence_score,2.4444444444444446
-Chile,1996,political_violence_score,2.7142857142857144
-Chile,1997,political_violence_score,2.4285714285714284
-Chile,1998,political_violence_score,2.375
-Chile,1999,political_violence_score,2.0
-Chile,2000,political_violence_score,2.4444444444444446
-Chile,2001,political_violence_score,2.6666666666666665
-Chile,2002,political_violence_score,2.75
-Chile,2003,political_violence_score,2.4444444444444446
-Chile,2004,political_violence_score,2.5555555555555554
-Chile,2005,political_violence_score,2.3333333333333335
-Chile,2006,political_violence_score,2.5555555555555554
-Chile,2007,political_violence_score,2.5555555555555554
-Chile,2008,political_violence_score,2.4444444444444446
-Chile,2009,political_violence_score,2.5555555555555554
-Chile,2010,political_violence_score,2.111111111111111
-Chile,2011,political_violence_score,2.2222222222222223
-Chile,2012,political_violence_score,2.2222222222222223
-Chile,2013,political_violence_score,2.2222222222222223
-Chile,2014,political_violence_score,2.2222222222222223
-Chile,2015,political_violence_score,2.0
-Chile,2016,political_violence_score,2.4444444444444446
-Chile,2017,political_violence_score,2.5555555555555554
-Chile,2018,political_violence_score,4.0
-Chile,2019,political_violence_score,2.888888888888889
-Chile,2020,political_violence_score,2.5555555555555554
-Chile,2021,political_violence_score,2.5555555555555554
-Chile,2022,political_violence_score,2.6666666666666665
-Chile,2023,political_violence_score,2.6
-Chile,2024,political_violence_score,2.5555555555555554
-Chile,2025,political_violence_score,2.5555555555555554
-Chile,1960,redist_gdp_pct,10.691770533333333
-Chile,1961,redist_gdp_pct,10.948257333333332
-Chile,1962,redist_gdp_pct,11.059931999999998
-Chile,1963,redist_gdp_pct,11.375360233333334
-Chile,1964,redist_gdp_pct,11.123909833333334
-Chile,1965,redist_gdp_pct,11.5943398
-Chile,1966,redist_gdp_pct,11.779151666666666
-Chile,1967,redist_gdp_pct,12.699709333333333
-Chile,1968,redist_gdp_pct,12.920217766666667
-Chile,1969,redist_gdp_pct,12.773282333333334
-Chile,1970,redist_gdp_pct,13.002480333333333
-Chile,1971,redist_gdp_pct,13.446698166666666
-Chile,1972,redist_gdp_pct,13.990301
-Chile,1973,redist_gdp_pct,14.026002
-Chile,1974,redist_gdp_pct,15.398722999999999
-Chile,1975,redist_gdp_pct,17.172529333333333
-Chile,1976,redist_gdp_pct,17.206447999999998
-Chile,1977,redist_gdp_pct,17.058683666666667
-Chile,1978,redist_gdp_pct,16.863939333333335
-Chile,1979,redist_gdp_pct,16.740230666666665
-Chile,1980,redist_gdp_pct,17.171666666666667
-Chile,1981,redist_gdp_pct,17.986
-Chile,1982,redist_gdp_pct,18.291666666666668
-Chile,1983,redist_gdp_pct,18.509666666666668
-Chile,1984,redist_gdp_pct,18.117
-Chile,1985,redist_gdp_pct,18.141333333333336
-Chile,1986,redist_gdp_pct,17.024
-Chile,1987,redist_gdp_pct,16.471
-Chile,1988,redist_gdp_pct,15.815
-Chile,1989,redist_gdp_pct,15.246
-Chile,1990,redist_gdp_pct,13.007
-Chile,1991,redist_gdp_pct,14.658000000000001
-Chile,1992,redist_gdp_pct,15.8785
-Chile,1993,redist_gdp_pct,16.091
-Chile,1994,redist_gdp_pct,15.7575
-Chile,1995,redist_gdp_pct,15.8185
-Chile,1996,redist_gdp_pct,16.049
-Chile,1997,redist_gdp_pct,15.826
-Chile,1998,redist_gdp_pct,15.999
-Chile,1999,redist_gdp_pct,16.25016666666667
-Chile,2000,redist_gdp_pct,15.568166666666665
-Chile,2001,redist_gdp_pct,15.990666666666668
-Chile,2002,redist_gdp_pct,16.253333333333334
-Chile,2003,redist_gdp_pct,16.542
-Chile,2004,redist_gdp_pct,16.3815
-Chile,2005,redist_gdp_pct,16.3585
-Chile,2006,redist_gdp_pct,16.13
-Chile,2007,redist_gdp_pct,15.903666666666666
-Chile,2008,redist_gdp_pct,16.619
-Chile,2009,redist_gdp_pct,18.524166666666666
-Chile,2010,redist_gdp_pct,18.280833333333334
-Chile,2011,redist_gdp_pct,17.702666666666666
-Chile,2012,redist_gdp_pct,17.81266666666667
-Chile,2013,redist_gdp_pct,17.937
-Chile,2014,redist_gdp_pct,17.8655
-Chile,2015,redist_gdp_pct,18.000833333333333
-Chile,2016,redist_gdp_pct,18.162499999999998
-Chile,2017,redist_gdp_pct,18.1005
-Chile,2018,redist_gdp_pct,18.043833333333335
-Chile,2019,redist_gdp_pct,18.483999999999998
-Chile,2020,redist_gdp_pct,22.100666666666665
-Chile,2021,redist_gdp_pct,21.975333333333335
-Chile,2022,redist_gdp_pct,19.7855
-Chile,2023,redist_gdp_pct,19.888333333333332
-Chile,2024,redist_gdp_pct,21.51525
-Chile,2025,redist_gdp_pct,21.51525
+Chile,1968,gini_coefficient,44.8
+Chile,1969,gini_coefficient,45.1
+Chile,1970,gini_coefficient,45.3
+Chile,1971,gini_coefficient,45.5
+Chile,1972,gini_coefficient,45.8
+Chile,1973,gini_coefficient,46.1
+Chile,1974,gini_coefficient,46.4
+Chile,1975,gini_coefficient,46.7
+Chile,1976,gini_coefficient,47.0
+Chile,1977,gini_coefficient,47.3
+Chile,1978,gini_coefficient,47.6
+Chile,1979,gini_coefficient,47.9
+Chile,1980,gini_coefficient,48.2
+Chile,1981,gini_coefficient,48.6
+Chile,1982,gini_coefficient,48.9
+Chile,1983,gini_coefficient,49.2
+Chile,1984,gini_coefficient,49.4
+Chile,1985,gini_coefficient,49.7
+Chile,1986,gini_coefficient,50.2
+Chile,1987,gini_coefficient,50.7
+Chile,1989,gini_coefficient,50.6
+Chile,1991,gini_coefficient,50.5
+Chile,1992,gini_coefficient,50.6
+Chile,1993,gini_coefficient,50.7
+Chile,1997,gini_coefficient,50.8
+Chile,2001,gini_coefficient,50.5
+Chile,2002,gini_coefficient,50.2
+Chile,2003,gini_coefficient,49.9
+Chile,2004,gini_coefficient,49.3
+Chile,2005,gini_coefficient,48.6
+Chile,2006,gini_coefficient,48.0
+Chile,2007,gini_coefficient,47.8
+Chile,2008,gini_coefficient,47.6
+Chile,2009,gini_coefficient,47.4
+Chile,2010,gini_coefficient,47.0
+Chile,2011,gini_coefficient,46.7
+Chile,2012,gini_coefficient,46.4
+Chile,2013,gini_coefficient,46.1
+Chile,2014,gini_coefficient,45.8
+Chile,2015,gini_coefficient,45.5
+Chile,2016,gini_coefficient,45.7
+Chile,2017,gini_coefficient,45.9
+Chile,2018,gini_coefficient,46.2
+Chile,2019,gini_coefficient,46.5
+Chile,2020,gini_coefficient,46.8
+Chile,2021,gini_coefficient,45.2
+Chile,2022,gini_coefficient,43.6
+Chile,2023,gini_coefficient,43.5
+Chile,2024,gini_coefficient,43.4
+Chile,1976,political_violence_score,4.0
+Chile,1978,political_violence_score,5.0
+Chile,1979,political_violence_score,4.0
+Chile,1981,political_violence_score,5.0
+Chile,1982,political_violence_score,4.0
+Chile,1988,political_violence_score,3.0
+Chile,1994,political_violence_score,2.0
+Chile,2004,political_violence_score,1.0
+Chile,2006,political_violence_score,2.0
+Chile,2010,political_violence_score,1.0
+Chile,2011,political_violence_score,2.0
+Chile,2019,political_violence_score,4.0
+Chile,2020,political_violence_score,3.0
+Chile,2023,political_violence_score,2.0
+Chile,1986,redist_gdp_pct,13.311
+Chile,1987,redist_gdp_pct,11.496
+Chile,1988,redist_gdp_pct,10.237
+Chile,1989,redist_gdp_pct,9.667
+Chile,1990,redist_gdp_pct,9.558
+Chile,1991,redist_gdp_pct,9.569
+Chile,1992,redist_gdp_pct,9.139
+Chile,1993,redist_gdp_pct,9.257
+Chile,1994,redist_gdp_pct,8.974
+Chile,1995,redist_gdp_pct,10.745
+Chile,1996,redist_gdp_pct,11.619
+Chile,1997,redist_gdp_pct,11.326
+Chile,1998,redist_gdp_pct,11.707
+Chile,1999,redist_gdp_pct,12.486
+Chile,2000,redist_gdp_pct,10.214
+Chile,2001,redist_gdp_pct,9.899
+Chile,2002,redist_gdp_pct,9.915
+Chile,2003,redist_gdp_pct,9.764
+Chile,2004,redist_gdp_pct,9.177
+Chile,2005,redist_gdp_pct,8.829
+Chile,2006,redist_gdp_pct,8.212
+Chile,2007,redist_gdp_pct,8.389
+Chile,2008,redist_gdp_pct,9.527
+Chile,2009,redist_gdp_pct,11.46
+Chile,2010,redist_gdp_pct,10.543
+Chile,2011,redist_gdp_pct,10.074
+Chile,2012,redist_gdp_pct,10.133
+Chile,2013,redist_gdp_pct,10.087
+Chile,2014,redist_gdp_pct,10.371
+Chile,2015,redist_gdp_pct,10.901
+Chile,2016,redist_gdp_pct,11.129
+Chile,2017,redist_gdp_pct,11.416
+Chile,2018,redist_gdp_pct,11.386
+Chile,2019,redist_gdp_pct,11.656
+Chile,2020,redist_gdp_pct,15.501
+Chile,2021,redist_gdp_pct,19.585
+Chile,2022,redist_gdp_pct,12.313
+Chile,2023,redist_gdp_pct,12.882
 Chile,1991,unemployment_rate_pct,5.23
 Chile,1992,unemployment_rate_pct,4.35
 Chile,1993,unemployment_rate_pct,4.49
@@ -336,12 +283,36 @@ Chile,2022,unemployment_rate_pct,8.249
 Chile,2023,unemployment_rate_pct,9.013
 Chile,2024,unemployment_rate_pct,8.718
 Chile,2025,unemployment_rate_pct,8.974
+Egypt,1990,civil_unrest_events,2.0
+Egypt,1992,civil_unrest_events,1.0
+Egypt,1993,civil_unrest_events,3.0
+Egypt,1995,civil_unrest_events,0.0
+Egypt,2000,civil_unrest_events,1.0
+Egypt,2001,civil_unrest_events,0.0
+Egypt,2002,civil_unrest_events,3.0
+Egypt,2003,civil_unrest_events,0.0
+Egypt,2004,civil_unrest_events,3.0
+Egypt,2005,civil_unrest_events,6.0
+Egypt,2006,civil_unrest_events,3.0
+Egypt,2007,civil_unrest_events,0.0
+Egypt,2008,civil_unrest_events,4.0
+Egypt,2009,civil_unrest_events,0.0
+Egypt,2010,civil_unrest_events,3.0
+Egypt,2011,civil_unrest_events,20.0
+Egypt,2012,civil_unrest_events,14.0
+Egypt,2013,civil_unrest_events,22.0
+Egypt,2014,civil_unrest_events,18.0
+Egypt,2015,civil_unrest_events,5.0
+Egypt,2016,civil_unrest_events,6.0
+Egypt,2017,civil_unrest_events,3.0
+Egypt,2018,civil_unrest_events,0.0
+Egypt,2019,civil_unrest_events,4.0
+Egypt,2020,civil_unrest_events,0.0
 Egypt,1975,fed_tax_revenue_pct_gdp,20.5216145931482
 Egypt,1976,fed_tax_revenue_pct_gdp,17.3313844226352
 Egypt,1977,fed_tax_revenue_pct_gdp,25.5179722042899
 Egypt,1978,fed_tax_revenue_pct_gdp,23.0710966447624
 Egypt,1979,fed_tax_revenue_pct_gdp,21.285197869102
-Egypt,1980,fed_tax_revenue_pct_gdp,21.285197869102
 Egypt,1981,fed_tax_revenue_pct_gdp,26.2442996941523
 Egypt,1982,fed_tax_revenue_pct_gdp,21.6957605985037
 Egypt,1983,fed_tax_revenue_pct_gdp,21.0827067669173
@@ -359,10 +330,6 @@ Egypt,1994,fed_tax_revenue_pct_gdp,19.0474285714286
 Egypt,1995,fed_tax_revenue_pct_gdp,17.6230392156863
 Egypt,1996,fed_tax_revenue_pct_gdp,17.4629468177855
 Egypt,1997,fed_tax_revenue_pct_gdp,15.9646483640466
-Egypt,1998,fed_tax_revenue_pct_gdp,15.9646483640466
-Egypt,1999,fed_tax_revenue_pct_gdp,15.9646483640466
-Egypt,2000,fed_tax_revenue_pct_gdp,15.9646483640466
-Egypt,2001,fed_tax_revenue_pct_gdp,15.9646483640466
 Egypt,2002,fed_tax_revenue_pct_gdp,13.4077593032462
 Egypt,2003,fed_tax_revenue_pct_gdp,13.3499401197605
 Egypt,2004,fed_tax_revenue_pct_gdp,13.8359777457243
@@ -377,16 +344,6 @@ Egypt,2012,fed_tax_revenue_pct_gdp,12.3849047590613
 Egypt,2013,fed_tax_revenue_pct_gdp,13.4980649322726
 Egypt,2014,fed_tax_revenue_pct_gdp,12.2201408450704
 Egypt,2015,fed_tax_revenue_pct_gdp,12.5192110970171
-Egypt,2016,fed_tax_revenue_pct_gdp,12.5192110970171
-Egypt,2017,fed_tax_revenue_pct_gdp,12.5192110970171
-Egypt,2018,fed_tax_revenue_pct_gdp,12.5192110970171
-Egypt,2019,fed_tax_revenue_pct_gdp,12.5192110970171
-Egypt,2020,fed_tax_revenue_pct_gdp,12.5192110970171
-Egypt,2021,fed_tax_revenue_pct_gdp,12.5192110970171
-Egypt,2022,fed_tax_revenue_pct_gdp,12.5192110970171
-Egypt,2023,fed_tax_revenue_pct_gdp,12.5192110970171
-Egypt,2024,fed_tax_revenue_pct_gdp,12.5192110970171
-Egypt,2025,fed_tax_revenue_pct_gdp,12.5192110970171
 Egypt,1960,gdp_billions,4.20627035222633
 Egypt,1961,gdp_billions,4.494575611212889
 Egypt,1962,gdp_billions,4.03546202739753
@@ -453,122 +410,88 @@ Egypt,2022,gdp_billions,476.747720364742
 Egypt,2023,gdp_billions,395.926071447591
 Egypt,2024,gdp_billions,389.05991059309997
 Egypt,2025,gdp_billions,365.254630179737
-Egypt,1960,gini_coefficient,30.049999999999997
-Egypt,1961,gini_coefficient,28.866666666666664
-Egypt,1962,gini_coefficient,28.866666666666664
-Egypt,1963,gini_coefficient,29.066666666666666
-Egypt,1964,gini_coefficient,29.233333333333334
-Egypt,1965,gini_coefficient,29.325
-Egypt,1966,gini_coefficient,29.25
-Egypt,1967,gini_coefficient,29.200000000000003
-Egypt,1968,gini_coefficient,32.18
-Egypt,1969,gini_coefficient,32.22
-Egypt,1970,gini_coefficient,32.44
-Egypt,1971,gini_coefficient,32.6
-Egypt,1972,gini_coefficient,32.58
-Egypt,1973,gini_coefficient,32.54
-Egypt,1974,gini_coefficient,32.68
-Egypt,1975,gini_coefficient,36.48571428571429
-Egypt,1976,gini_coefficient,36.47142857142857
-Egypt,1977,gini_coefficient,36.42857142857143
-Egypt,1978,gini_coefficient,36.42857142857143
-Egypt,1979,gini_coefficient,36.614285714285714
-Egypt,1980,gini_coefficient,35.2375
-Egypt,1981,gini_coefficient,35.4625
-Egypt,1982,gini_coefficient,35.7125
-Egypt,1983,gini_coefficient,35.099999999999994
-Egypt,1984,gini_coefficient,34.97777777777778
-Egypt,1985,gini_coefficient,34.97777777777778
-Egypt,1986,gini_coefficient,35.21111111111111
-Egypt,1987,gini_coefficient,35.31111111111111
-Egypt,1988,gini_coefficient,34.260000000000005
-Egypt,1989,gini_coefficient,34.35
-Egypt,1990,gini_coefficient,34.33
-Egypt,1991,gini_coefficient,35.63333333333333
-Egypt,1992,gini_coefficient,36.166666666666664
-Egypt,1993,gini_coefficient,36.97777777777778
-Egypt,1994,gini_coefficient,37.51111111111111
-Egypt,1995,gini_coefficient,37.82222222222222
-Egypt,1996,gini_coefficient,37.78888888888889
-Egypt,1997,gini_coefficient,37.855555555555554
-Egypt,1998,gini_coefficient,37.922222222222224
-Egypt,1999,gini_coefficient,38.02222222222222
-Egypt,2000,gini_coefficient,38.2
-Egypt,2001,gini_coefficient,38.233333333333334
-Egypt,2002,gini_coefficient,38.099999999999994
-Egypt,2003,gini_coefficient,38.111111111111114
-Egypt,2004,gini_coefficient,38.099999999999994
-Egypt,2005,gini_coefficient,38.099999999999994
-Egypt,2006,gini_coefficient,37.98888888888889
-Egypt,2007,gini_coefficient,37.87777777777777
-Egypt,2008,gini_coefficient,37.82222222222222
-Egypt,2009,gini_coefficient,37.644444444444446
-Egypt,2010,gini_coefficient,37.422222222222224
-Egypt,2011,gini_coefficient,37.5
-Egypt,2012,gini_coefficient,37.3
-Egypt,2013,gini_coefficient,37.2
-Egypt,2014,gini_coefficient,37.05555555555556
-Egypt,2015,gini_coefficient,36.97777777777778
-Egypt,2016,gini_coefficient,37.0
-Egypt,2017,gini_coefficient,36.94444444444444
-Egypt,2018,gini_coefficient,37.06666666666667
-Egypt,2019,gini_coefficient,36.96666666666667
-Egypt,2020,gini_coefficient,36.82222222222222
-Egypt,2021,gini_coefficient,36.68888888888889
-Egypt,2022,gini_coefficient,36.68888888888889
-Egypt,2023,gini_coefficient,33.5875
-Egypt,2024,gini_coefficient,36.45
-Egypt,2025,gini_coefficient,36.45
-Egypt,1976,political_violence_score,2.8
-Egypt,1977,political_violence_score,2.8
-Egypt,1978,political_violence_score,2.6
-Egypt,1979,political_violence_score,2.6
-Egypt,1980,political_violence_score,2.5
-Egypt,1981,political_violence_score,2.7
-Egypt,1982,political_violence_score,2.6
-Egypt,1983,political_violence_score,2.8
-Egypt,1984,political_violence_score,2.6
-Egypt,1985,political_violence_score,2.6
-Egypt,1986,political_violence_score,2.888888888888889
-Egypt,1987,political_violence_score,2.8
-Egypt,1988,political_violence_score,2.5
-Egypt,1989,political_violence_score,2.3
-Egypt,1990,political_violence_score,2.2
-Egypt,1991,political_violence_score,2.7777777777777777
-Egypt,1992,political_violence_score,2.4444444444444446
-Egypt,1993,political_violence_score,2.2222222222222223
-Egypt,1994,political_violence_score,2.6666666666666665
-Egypt,1995,political_violence_score,2.4444444444444446
-Egypt,1996,political_violence_score,2.7142857142857144
-Egypt,1997,political_violence_score,2.4285714285714284
-Egypt,1998,political_violence_score,2.375
-Egypt,1999,political_violence_score,2.0
-Egypt,2000,political_violence_score,2.4444444444444446
-Egypt,2001,political_violence_score,2.6666666666666665
-Egypt,2002,political_violence_score,2.75
-Egypt,2003,political_violence_score,2.4444444444444446
-Egypt,2004,political_violence_score,2.5555555555555554
-Egypt,2005,political_violence_score,2.3333333333333335
-Egypt,2006,political_violence_score,2.5555555555555554
-Egypt,2007,political_violence_score,2.5555555555555554
-Egypt,2008,political_violence_score,2.4444444444444446
-Egypt,2009,political_violence_score,2.5555555555555554
-Egypt,2010,political_violence_score,2.111111111111111
-Egypt,2011,political_violence_score,2.2222222222222223
-Egypt,2012,political_violence_score,2.2222222222222223
-Egypt,2013,political_violence_score,2.2222222222222223
-Egypt,2014,political_violence_score,2.2222222222222223
-Egypt,2015,political_violence_score,2.0
-Egypt,2016,political_violence_score,2.4444444444444446
-Egypt,2017,political_violence_score,2.5555555555555554
+Egypt,1975,gini_coefficient,33.0
+Egypt,1976,gini_coefficient,32.9
+Egypt,1978,gini_coefficient,32.8
+Egypt,1981,gini_coefficient,32.7
+Egypt,1983,gini_coefficient,32.6
+Egypt,1985,gini_coefficient,32.5
+Egypt,1988,gini_coefficient,32.4
+Egypt,1991,gini_coefficient,32.3
+Egypt,1992,gini_coefficient,32.4
+Egypt,1994,gini_coefficient,32.3
+Egypt,1996,gini_coefficient,32.5
+Egypt,1997,gini_coefficient,32.6
+Egypt,1999,gini_coefficient,32.7
+Egypt,2000,gini_coefficient,32.9
+Egypt,2001,gini_coefficient,32.7
+Egypt,2002,gini_coefficient,32.5
+Egypt,2003,gini_coefficient,32.2
+Egypt,2004,gini_coefficient,32.0
+Egypt,2005,gini_coefficient,31.8
+Egypt,2006,gini_coefficient,31.5
+Egypt,2007,gini_coefficient,31.2
+Egypt,2008,gini_coefficient,30.8
+Egypt,2010,gini_coefficient,30.4
+Egypt,2011,gini_coefficient,30.1
+Egypt,2012,gini_coefficient,29.8
+Egypt,2013,gini_coefficient,30.0
+Egypt,2014,gini_coefficient,30.2
+Egypt,2015,gini_coefficient,30.3
+Egypt,2016,gini_coefficient,30.1
+Egypt,2017,gini_coefficient,29.9
+Egypt,2018,gini_coefficient,30.3
+Egypt,2019,gini_coefficient,30.2
+Egypt,2020,gini_coefficient,30.6
+Egypt,2021,gini_coefficient,30.9
+Egypt,2022,gini_coefficient,31.5
+Egypt,2023,gini_coefficient,32.0
+Egypt,1976,political_violence_score,3.0
+Egypt,1989,political_violence_score,4.0
+Egypt,1990,political_violence_score,3.0
+Egypt,1991,political_violence_score,4.0
+Egypt,1992,political_violence_score,3.0
+Egypt,1993,political_violence_score,4.0
+Egypt,1998,political_violence_score,3.0
+Egypt,2001,political_violence_score,4.0
+Egypt,2005,political_violence_score,3.0
+Egypt,2006,political_violence_score,4.0
+Egypt,2012,political_violence_score,3.0
+Egypt,2014,political_violence_score,4.0
+Egypt,2017,political_violence_score,5.0
 Egypt,2018,political_violence_score,4.0
-Egypt,2019,political_violence_score,2.888888888888889
-Egypt,2020,political_violence_score,2.5555555555555554
-Egypt,2021,political_violence_score,2.5555555555555554
-Egypt,2022,political_violence_score,2.6666666666666665
-Egypt,2023,political_violence_score,2.6
-Egypt,2024,political_violence_score,2.5555555555555554
-Egypt,2025,political_violence_score,2.5555555555555554
+Egypt,2019,political_violence_score,5.0
+Egypt,2020,political_violence_score,4.0
+Egypt,2010,redist_gdp_pct,23.905527266699817
+Egypt,2011,redist_gdp_pct,24.825281234045633
+Egypt,2012,redist_gdp_pct,24.567235922851822
+Egypt,2013,redist_gdp_pct,25.894094280799806
+Egypt,2014,redist_gdp_pct,24.643645751173743
+Egypt,2015,redist_gdp_pct,20.326364212938337
+Egypt,2016,redist_gdp_pct,14.719106351959844
+Egypt,2017,redist_gdp_pct,16.67103717278922
+Egypt,2018,redist_gdp_pct,17.449631981055276
+Egypt,2019,redist_gdp_pct,14.400470872051484
+Egypt,2020,redist_gdp_pct,12.634092204921501
+Egypt,2021,redist_gdp_pct,11.427849446954129
+Egypt,2022,redist_gdp_pct,7.939073095313988
+Egypt,2023,redist_gdp_pct,7.629025259580133
+Egypt,2024,redist_gdp_pct,7.763662916067019
+Egypt,2025,redist_gdp_pct,8.26965560577189
+Egypt,2010,redist_usd_bn,52.3492
+Egypt,2011,redist_usd_bn,58.5851
+Egypt,2012,redist_usd_bn,68.57124999999999
+Egypt,2013,redist_usd_bn,74.6874
+Egypt,2014,redist_usd_bn,75.30985
+Egypt,2015,redist_usd_bn,66.94825
+Egypt,2016,redist_usd_bn,48.93245
+Egypt,2017,redist_usd_bn,41.404650000000004
+Egypt,2018,redist_usd_bn,45.820750000000004
+Egypt,2019,redist_usd_bn,45.89125
+Egypt,2020,redist_usd_bn,48.4919
+Egypt,2021,redist_usd_bn,48.53085
+Egypt,2022,redist_usd_bn,37.84935
+Egypt,2023,redist_usd_bn,30.2053
 Egypt,1991,unemployment_rate_pct,9.38
 Egypt,1992,unemployment_rate_pct,8.92
 Egypt,1993,unemployment_rate_pct,10.92
@@ -604,6 +527,46 @@ Egypt,2022,unemployment_rate_pct,6.546
 Egypt,2023,unemployment_rate_pct,6.753
 Egypt,2024,unemployment_rate_pct,6.817
 Egypt,2025,unemployment_rate_pct,6.781
+Germany,1980,civil_unrest_events,430.0
+Germany,1981,civil_unrest_events,560.0
+Germany,1982,civil_unrest_events,226.0
+Germany,1983,civil_unrest_events,421.0
+Germany,1984,civil_unrest_events,437.0
+Germany,1985,civil_unrest_events,327.0
+Germany,1986,civil_unrest_events,350.0
+Germany,1987,civil_unrest_events,317.0
+Germany,1988,civil_unrest_events,340.0
+Germany,1989,civil_unrest_events,815.0
+Germany,1990,civil_unrest_events,18.0
+Germany,1991,civil_unrest_events,15.0
+Germany,1992,civil_unrest_events,9.0
+Germany,1993,civil_unrest_events,13.0
+Germany,1994,civil_unrest_events,2.0
+Germany,1995,civil_unrest_events,4.0
+Germany,1996,civil_unrest_events,7.0
+Germany,1997,civil_unrest_events,10.0
+Germany,1998,civil_unrest_events,6.0
+Germany,1999,civil_unrest_events,4.0
+Germany,2000,civil_unrest_events,11.0
+Germany,2001,civil_unrest_events,10.0
+Germany,2002,civil_unrest_events,3.0
+Germany,2003,civil_unrest_events,5.0
+Germany,2004,civil_unrest_events,12.0
+Germany,2005,civil_unrest_events,4.0
+Germany,2006,civil_unrest_events,2.0
+Germany,2007,civil_unrest_events,6.0
+Germany,2008,civil_unrest_events,1.0
+Germany,2009,civil_unrest_events,5.0
+Germany,2010,civil_unrest_events,12.0
+Germany,2011,civil_unrest_events,8.0
+Germany,2012,civil_unrest_events,5.0
+Germany,2014,civil_unrest_events,15.0
+Germany,2015,civil_unrest_events,62.0
+Germany,2016,civil_unrest_events,48.0
+Germany,2017,civil_unrest_events,46.0
+Germany,2018,civil_unrest_events,23.0
+Germany,2019,civil_unrest_events,4.0
+Germany,2020,civil_unrest_events,2.0
 Germany,1972,fed_tax_revenue_pct_gdp,10.7447372460267
 Germany,1973,fed_tax_revenue_pct_gdp,10.8795347401674
 Germany,1974,fed_tax_revenue_pct_gdp,10.4369869044173
@@ -657,7 +620,6 @@ Germany,2021,fed_tax_revenue_pct_gdp,11.4694189021112
 Germany,2022,fed_tax_revenue_pct_gdp,11.2560065573935
 Germany,2023,fed_tax_revenue_pct_gdp,10.6875057770109
 Germany,2024,fed_tax_revenue_pct_gdp,10.890812364142
-Germany,2025,fed_tax_revenue_pct_gdp,10.890812364142
 Germany,1960,gdp_billions,84.6198458812608
 Germany,1961,gdp_billions,96.5582040431028
 Germany,1962,gdp_billions,105.895435234343
@@ -724,188 +686,139 @@ Germany,2022,gdp_billions,4201.02170647862
 Germany,2023,gdp_billions,4562.20753249028
 Germany,2024,gdp_billions,4685.59257780469
 Germany,2025,gdp_billions,5050.92292504705
-Germany,1960,gini_coefficient,30.049999999999997
-Germany,1961,gini_coefficient,28.866666666666664
-Germany,1962,gini_coefficient,28.866666666666664
-Germany,1963,gini_coefficient,29.066666666666666
-Germany,1964,gini_coefficient,29.233333333333334
-Germany,1965,gini_coefficient,29.325
-Germany,1966,gini_coefficient,29.25
-Germany,1967,gini_coefficient,29.200000000000003
-Germany,1968,gini_coefficient,32.18
-Germany,1969,gini_coefficient,32.22
-Germany,1970,gini_coefficient,32.44
-Germany,1971,gini_coefficient,32.6
-Germany,1972,gini_coefficient,32.58
-Germany,1973,gini_coefficient,32.54
-Germany,1974,gini_coefficient,32.68
-Germany,1975,gini_coefficient,36.48571428571429
-Germany,1976,gini_coefficient,36.47142857142857
-Germany,1977,gini_coefficient,36.42857142857143
-Germany,1978,gini_coefficient,36.42857142857143
-Germany,1979,gini_coefficient,36.614285714285714
-Germany,1980,gini_coefficient,35.2375
-Germany,1981,gini_coefficient,35.4625
-Germany,1982,gini_coefficient,35.7125
-Germany,1983,gini_coefficient,35.099999999999994
-Germany,1984,gini_coefficient,34.97777777777778
-Germany,1985,gini_coefficient,34.97777777777778
-Germany,1986,gini_coefficient,35.21111111111111
-Germany,1987,gini_coefficient,35.31111111111111
-Germany,1988,gini_coefficient,34.260000000000005
-Germany,1989,gini_coefficient,34.35
-Germany,1990,gini_coefficient,34.33
-Germany,1991,gini_coefficient,35.63333333333333
-Germany,1992,gini_coefficient,36.166666666666664
-Germany,1993,gini_coefficient,36.97777777777778
-Germany,1994,gini_coefficient,37.51111111111111
-Germany,1995,gini_coefficient,37.82222222222222
-Germany,1996,gini_coefficient,37.78888888888889
-Germany,1997,gini_coefficient,37.855555555555554
-Germany,1998,gini_coefficient,37.922222222222224
-Germany,1999,gini_coefficient,38.02222222222222
-Germany,2000,gini_coefficient,38.2
-Germany,2001,gini_coefficient,38.233333333333334
-Germany,2002,gini_coefficient,38.099999999999994
-Germany,2003,gini_coefficient,38.111111111111114
-Germany,2004,gini_coefficient,38.099999999999994
-Germany,2005,gini_coefficient,38.099999999999994
-Germany,2006,gini_coefficient,37.98888888888889
-Germany,2007,gini_coefficient,37.87777777777777
-Germany,2008,gini_coefficient,37.82222222222222
-Germany,2009,gini_coefficient,37.644444444444446
-Germany,2010,gini_coefficient,37.422222222222224
-Germany,2011,gini_coefficient,37.5
-Germany,2012,gini_coefficient,37.3
-Germany,2013,gini_coefficient,37.2
-Germany,2014,gini_coefficient,37.05555555555556
-Germany,2015,gini_coefficient,36.97777777777778
-Germany,2016,gini_coefficient,37.0
-Germany,2017,gini_coefficient,36.94444444444444
-Germany,2018,gini_coefficient,37.06666666666667
-Germany,2019,gini_coefficient,36.96666666666667
-Germany,2020,gini_coefficient,36.82222222222222
-Germany,2021,gini_coefficient,36.68888888888889
-Germany,2022,gini_coefficient,36.68888888888889
-Germany,2023,gini_coefficient,33.5875
-Germany,2024,gini_coefficient,36.45
-Germany,2025,gini_coefficient,36.45
-Germany,1976,political_violence_score,2.8
-Germany,1977,political_violence_score,2.8
-Germany,1978,political_violence_score,2.6
-Germany,1979,political_violence_score,2.6
-Germany,1980,political_violence_score,2.5
-Germany,1981,political_violence_score,2.7
-Germany,1982,political_violence_score,2.6
-Germany,1983,political_violence_score,2.8
-Germany,1984,political_violence_score,2.6
-Germany,1985,political_violence_score,2.6
-Germany,1986,political_violence_score,2.888888888888889
-Germany,1987,political_violence_score,2.8
-Germany,1988,political_violence_score,2.5
-Germany,1989,political_violence_score,2.3
-Germany,1990,political_violence_score,2.2
-Germany,1991,political_violence_score,2.7777777777777777
-Germany,1992,political_violence_score,2.4444444444444446
-Germany,1993,political_violence_score,2.2222222222222223
-Germany,1994,political_violence_score,2.6666666666666665
-Germany,1995,political_violence_score,2.4444444444444446
-Germany,1996,political_violence_score,2.7142857142857144
-Germany,1997,political_violence_score,2.4285714285714284
-Germany,1998,political_violence_score,2.375
-Germany,1999,political_violence_score,2.0
-Germany,2000,political_violence_score,2.4444444444444446
-Germany,2001,political_violence_score,2.6666666666666665
-Germany,2002,political_violence_score,2.75
-Germany,2003,political_violence_score,2.4444444444444446
-Germany,2004,political_violence_score,2.5555555555555554
-Germany,2005,political_violence_score,2.3333333333333335
-Germany,2006,political_violence_score,2.5555555555555554
-Germany,2007,political_violence_score,2.5555555555555554
-Germany,2008,political_violence_score,2.4444444444444446
-Germany,2009,political_violence_score,2.5555555555555554
-Germany,2010,political_violence_score,2.111111111111111
-Germany,2011,political_violence_score,2.2222222222222223
-Germany,2012,political_violence_score,2.2222222222222223
-Germany,2013,political_violence_score,2.2222222222222223
-Germany,2014,political_violence_score,2.2222222222222223
-Germany,2015,political_violence_score,2.0
-Germany,2016,political_violence_score,2.4444444444444446
-Germany,2017,political_violence_score,2.5555555555555554
-Germany,2018,political_violence_score,4.0
-Germany,2019,political_violence_score,2.888888888888889
-Germany,2020,political_violence_score,2.5555555555555554
-Germany,2021,political_violence_score,2.5555555555555554
-Germany,2022,political_violence_score,2.6666666666666665
-Germany,2023,political_violence_score,2.6
-Germany,2024,political_violence_score,2.5555555555555554
-Germany,2025,political_violence_score,2.5555555555555554
-Germany,1960,redist_gdp_pct,10.691770533333333
-Germany,1961,redist_gdp_pct,10.948257333333332
-Germany,1962,redist_gdp_pct,11.059931999999998
-Germany,1963,redist_gdp_pct,11.375360233333334
-Germany,1964,redist_gdp_pct,11.123909833333334
-Germany,1965,redist_gdp_pct,11.5943398
-Germany,1966,redist_gdp_pct,11.779151666666666
-Germany,1967,redist_gdp_pct,12.699709333333333
-Germany,1968,redist_gdp_pct,12.920217766666667
-Germany,1969,redist_gdp_pct,12.773282333333334
-Germany,1970,redist_gdp_pct,13.002480333333333
-Germany,1971,redist_gdp_pct,13.446698166666666
-Germany,1972,redist_gdp_pct,13.990301
-Germany,1973,redist_gdp_pct,14.026002
-Germany,1974,redist_gdp_pct,15.398722999999999
-Germany,1975,redist_gdp_pct,17.172529333333333
-Germany,1976,redist_gdp_pct,17.206447999999998
-Germany,1977,redist_gdp_pct,17.058683666666667
-Germany,1978,redist_gdp_pct,16.863939333333335
-Germany,1979,redist_gdp_pct,16.740230666666665
-Germany,1980,redist_gdp_pct,17.171666666666667
-Germany,1981,redist_gdp_pct,17.986
-Germany,1982,redist_gdp_pct,18.291666666666668
-Germany,1983,redist_gdp_pct,18.509666666666668
-Germany,1984,redist_gdp_pct,18.117
-Germany,1985,redist_gdp_pct,18.141333333333336
-Germany,1986,redist_gdp_pct,17.024
-Germany,1987,redist_gdp_pct,16.471
-Germany,1988,redist_gdp_pct,15.815
-Germany,1989,redist_gdp_pct,15.246
-Germany,1990,redist_gdp_pct,13.007
-Germany,1991,redist_gdp_pct,14.658000000000001
-Germany,1992,redist_gdp_pct,15.8785
-Germany,1993,redist_gdp_pct,16.091
-Germany,1994,redist_gdp_pct,15.7575
-Germany,1995,redist_gdp_pct,15.8185
-Germany,1996,redist_gdp_pct,16.049
-Germany,1997,redist_gdp_pct,15.826
-Germany,1998,redist_gdp_pct,15.999
-Germany,1999,redist_gdp_pct,16.25016666666667
-Germany,2000,redist_gdp_pct,15.568166666666665
-Germany,2001,redist_gdp_pct,15.990666666666668
-Germany,2002,redist_gdp_pct,16.253333333333334
-Germany,2003,redist_gdp_pct,16.542
-Germany,2004,redist_gdp_pct,16.3815
-Germany,2005,redist_gdp_pct,16.3585
-Germany,2006,redist_gdp_pct,16.13
-Germany,2007,redist_gdp_pct,15.903666666666666
-Germany,2008,redist_gdp_pct,16.619
-Germany,2009,redist_gdp_pct,18.524166666666666
-Germany,2010,redist_gdp_pct,18.280833333333334
-Germany,2011,redist_gdp_pct,17.702666666666666
-Germany,2012,redist_gdp_pct,17.81266666666667
-Germany,2013,redist_gdp_pct,17.937
-Germany,2014,redist_gdp_pct,17.8655
-Germany,2015,redist_gdp_pct,18.000833333333333
-Germany,2016,redist_gdp_pct,18.162499999999998
-Germany,2017,redist_gdp_pct,18.1005
-Germany,2018,redist_gdp_pct,18.043833333333335
-Germany,2019,redist_gdp_pct,18.483999999999998
-Germany,2020,redist_gdp_pct,22.100666666666665
-Germany,2021,redist_gdp_pct,21.975333333333335
-Germany,2022,redist_gdp_pct,19.7855
-Germany,2023,redist_gdp_pct,19.888333333333332
-Germany,2024,redist_gdp_pct,21.51525
-Germany,2025,redist_gdp_pct,21.51525
+Germany,1960,gini_coefficient,27.2
+Germany,1961,gini_coefficient,27.6
+Germany,1962,gini_coefficient,27.9
+Germany,1963,gini_coefficient,28.3
+Germany,1964,gini_coefficient,28.6
+Germany,1965,gini_coefficient,28.7
+Germany,1966,gini_coefficient,28.8
+Germany,1967,gini_coefficient,29.0
+Germany,1968,gini_coefficient,29.1
+Germany,1969,gini_coefficient,28.9
+Germany,1970,gini_coefficient,28.8
+Germany,1971,gini_coefficient,28.3
+Germany,1972,gini_coefficient,27.9
+Germany,1973,gini_coefficient,27.4
+Germany,1974,gini_coefficient,28.1
+Germany,1975,gini_coefficient,27.9
+Germany,1976,gini_coefficient,27.4
+Germany,1977,gini_coefficient,26.9
+Germany,1978,gini_coefficient,26.4
+Germany,1979,gini_coefficient,26.5
+Germany,1980,gini_coefficient,26.7
+Germany,1981,gini_coefficient,26.5
+Germany,1982,gini_coefficient,26.2
+Germany,1983,gini_coefficient,26.0
+Germany,1984,gini_coefficient,25.7
+Germany,1985,gini_coefficient,25.4
+Germany,1986,gini_coefficient,25.0
+Germany,1987,gini_coefficient,25.2
+Germany,1988,gini_coefficient,25.3
+Germany,1989,gini_coefficient,25.6
+Germany,1990,gini_coefficient,25.8
+Germany,1991,gini_coefficient,26.2
+Germany,1992,gini_coefficient,26.1
+Germany,1993,gini_coefficient,25.8
+Germany,1995,gini_coefficient,25.6
+Germany,1996,gini_coefficient,25.3
+Germany,1997,gini_coefficient,25.2
+Germany,1998,gini_coefficient,25.4
+Germany,1999,gini_coefficient,25.9
+Germany,2000,gini_coefficient,26.1
+Germany,2001,gini_coefficient,26.7
+Germany,2002,gini_coefficient,26.9
+Germany,2003,gini_coefficient,27.0
+Germany,2004,gini_coefficient,27.3
+Germany,2005,gini_coefficient,28.2
+Germany,2006,gini_coefficient,28.5
+Germany,2007,gini_coefficient,28.6
+Germany,2008,gini_coefficient,28.5
+Germany,2010,gini_coefficient,28.6
+Germany,2011,gini_coefficient,28.7
+Germany,2012,gini_coefficient,28.9
+Germany,2013,gini_coefficient,29.1
+Germany,2014,gini_coefficient,29.0
+Germany,2015,gini_coefficient,29.2
+Germany,2016,gini_coefficient,29.4
+Germany,2017,gini_coefficient,29.6
+Germany,2018,gini_coefficient,30.0
+Germany,2019,gini_coefficient,30.3
+Germany,2020,gini_coefficient,30.6
+Germany,2021,gini_coefficient,31.0
+Germany,2023,gini_coefficient,30.9
+Germany,1990,political_violence_score,1.0
+Germany,1994,political_violence_score,3.0
+Germany,1995,political_violence_score,2.0
+Germany,1996,political_violence_score,1.0
+Germany,2001,political_violence_score,2.0
+Germany,2006,political_violence_score,1.0
+Germany,2024,political_violence_score,2.0
+Germany,1960,redist_gdp_pct,15.369004
+Germany,1961,redist_gdp_pct,15.304998
+Germany,1962,redist_gdp_pct,15.388236
+Germany,1963,redist_gdp_pct,15.828846
+Germany,1964,redist_gdp_pct,15.354482
+Germany,1965,redist_gdp_pct,16.084034
+Germany,1966,redist_gdp_pct,16.293688
+Germany,1967,redist_gdp_pct,17.689854
+Germany,1968,redist_gdp_pct,17.47867
+Germany,1969,redist_gdp_pct,16.950384
+Germany,1970,redist_gdp_pct,16.568996
+Germany,1971,redist_gdp_pct,17.315866
+Germany,1972,redist_gdp_pct,17.964119
+Germany,1973,redist_gdp_pct,18.296705
+Germany,1974,redist_gdp_pct,19.96038
+Germany,1975,redist_gdp_pct,23.057457
+Germany,1976,redist_gdp_pct,22.730425
+Germany,1977,redist_gdp_pct,22.577394
+Germany,1978,redist_gdp_pct,22.024511
+Germany,1979,redist_gdp_pct,21.587797
+Germany,1980,redist_gdp_pct,21.788
+Germany,1981,redist_gdp_pct,22.446
+Germany,1982,redist_gdp_pct,22.433
+Germany,1983,redist_gdp_pct,22.14
+Germany,1984,redist_gdp_pct,21.881
+Germany,1985,redist_gdp_pct,22.228
+Germany,1986,redist_gdp_pct,22.247
+Germany,1987,redist_gdp_pct,22.715
+Germany,1988,redist_gdp_pct,22.705
+Germany,1989,redist_gdp_pct,21.643
+Germany,1990,redist_gdp_pct,21.354
+Germany,1991,redist_gdp_pct,22.476
+Germany,1992,redist_gdp_pct,24.188
+Germany,1993,redist_gdp_pct,24.934
+Germany,1994,redist_gdp_pct,25.102
+Germany,1995,redist_gdp_pct,25.649
+Germany,1996,redist_gdp_pct,26.216
+Germany,1997,redist_gdp_pct,25.691
+Germany,1998,redist_gdp_pct,25.593
+Germany,1999,redist_gdp_pct,25.599
+Germany,2000,redist_gdp_pct,25.506
+Germany,2001,redist_gdp_pct,25.492
+Germany,2002,redist_gdp_pct,26.141
+Germany,2003,redist_gdp_pct,26.545
+Germany,2004,redist_gdp_pct,25.937
+Germany,2005,redist_gdp_pct,26.22
+Germany,2006,redist_gdp_pct,24.927
+Germany,2007,redist_gdp_pct,24.044
+Germany,2008,redist_gdp_pct,24.193
+Germany,2009,redist_gdp_pct,27.427
+Germany,2010,redist_gdp_pct,26.685
+Germany,2011,redist_gdp_pct,25.385
+Germany,2012,redist_gdp_pct,25.285
+Germany,2013,redist_gdp_pct,25.492
+Germany,2014,redist_gdp_pct,25.43
+Germany,2015,redist_gdp_pct,25.721
+Germany,2016,redist_gdp_pct,25.922
+Germany,2017,redist_gdp_pct,25.938
+Germany,2018,redist_gdp_pct,26.041
+Germany,2019,redist_gdp_pct,26.409
+Germany,2020,redist_gdp_pct,29.471
+Germany,2021,redist_gdp_pct,28.867
+Germany,2022,redist_gdp_pct,27.718
+Germany,2023,redist_gdp_pct,27.293
+Germany,2024,redist_gdp_pct,27.854
 Germany,1991,unemployment_rate_pct,5.316
 Germany,1992,unemployment_rate_pct,6.323
 Germany,1993,unemployment_rate_pct,7.675
@@ -941,6 +854,35 @@ Germany,2022,unemployment_rate_pct,3.137
 Germany,2023,unemployment_rate_pct,3.071
 Germany,2024,unemployment_rate_pct,3.4
 Germany,2025,unemployment_rate_pct,3.711
+Korea,1990,civil_unrest_events,25.0
+Korea,1991,civil_unrest_events,18.0
+Korea,1992,civil_unrest_events,10.0
+Korea,1993,civil_unrest_events,8.0
+Korea,1994,civil_unrest_events,9.0
+Korea,1995,civil_unrest_events,7.0
+Korea,1996,civil_unrest_events,9.0
+Korea,1997,civil_unrest_events,16.0
+Korea,1998,civil_unrest_events,12.0
+Korea,1999,civil_unrest_events,19.0
+Korea,2000,civil_unrest_events,28.0
+Korea,2001,civil_unrest_events,16.0
+Korea,2002,civil_unrest_events,13.0
+Korea,2003,civil_unrest_events,26.0
+Korea,2004,civil_unrest_events,31.0
+Korea,2005,civil_unrest_events,15.0
+Korea,2006,civil_unrest_events,17.0
+Korea,2007,civil_unrest_events,11.0
+Korea,2008,civil_unrest_events,14.0
+Korea,2009,civil_unrest_events,9.0
+Korea,2010,civil_unrest_events,1.0
+Korea,2011,civil_unrest_events,3.0
+Korea,2012,civil_unrest_events,0.0
+Korea,2014,civil_unrest_events,4.0
+Korea,2015,civil_unrest_events,11.0
+Korea,2016,civil_unrest_events,3.0
+Korea,2018,civil_unrest_events,5.0
+Korea,2019,civil_unrest_events,2.0
+Korea,2020,civil_unrest_events,1.0
 Korea,1972,fed_tax_revenue_pct_gdp,11.0233667585281
 Korea,1973,fed_tax_revenue_pct_gdp,10.3330120997966
 Korea,1974,fed_tax_revenue_pct_gdp,11.3902305432455
@@ -994,7 +936,6 @@ Korea,2021,fed_tax_revenue_pct_gdp,15.6673866200663
 Korea,2022,fed_tax_revenue_pct_gdp,17.1586747410902
 Korea,2023,fed_tax_revenue_pct_gdp,14.5990997893708
 Korea,2024,fed_tax_revenue_pct_gdp,13.2937188380388
-Korea,2025,fed_tax_revenue_pct_gdp,13.2937188380388
 Korea,1960,gdp_billions,3.97306930693069
 Korea,1961,gdp_billions,2.42724476066918
 Korea,1962,gdp_billions,2.8269230769230798
@@ -1061,188 +1002,110 @@ Korea,2022,gdp_billions,1799.36311686652
 Korea,2023,gdp_billions,1844.80093439154
 Korea,2024,gdp_billions,1875.3882094068001
 Korea,2025,gdp_billions,1872.37496155315
-Korea,1960,gini_coefficient,30.049999999999997
-Korea,1961,gini_coefficient,28.866666666666664
-Korea,1962,gini_coefficient,28.866666666666664
-Korea,1963,gini_coefficient,29.066666666666666
-Korea,1964,gini_coefficient,29.233333333333334
-Korea,1965,gini_coefficient,29.325
-Korea,1966,gini_coefficient,29.25
-Korea,1967,gini_coefficient,29.200000000000003
-Korea,1968,gini_coefficient,32.18
-Korea,1969,gini_coefficient,32.22
-Korea,1970,gini_coefficient,32.44
-Korea,1971,gini_coefficient,32.6
-Korea,1972,gini_coefficient,32.58
-Korea,1973,gini_coefficient,32.54
-Korea,1974,gini_coefficient,32.68
-Korea,1975,gini_coefficient,36.48571428571429
-Korea,1976,gini_coefficient,36.47142857142857
-Korea,1977,gini_coefficient,36.42857142857143
-Korea,1978,gini_coefficient,36.42857142857143
-Korea,1979,gini_coefficient,36.614285714285714
-Korea,1980,gini_coefficient,35.2375
-Korea,1981,gini_coefficient,35.4625
-Korea,1982,gini_coefficient,35.7125
-Korea,1983,gini_coefficient,35.099999999999994
-Korea,1984,gini_coefficient,34.97777777777778
-Korea,1985,gini_coefficient,34.97777777777778
-Korea,1986,gini_coefficient,35.21111111111111
-Korea,1987,gini_coefficient,35.31111111111111
-Korea,1988,gini_coefficient,34.260000000000005
-Korea,1989,gini_coefficient,34.35
-Korea,1990,gini_coefficient,34.33
-Korea,1991,gini_coefficient,35.63333333333333
-Korea,1992,gini_coefficient,36.166666666666664
-Korea,1993,gini_coefficient,36.97777777777778
-Korea,1994,gini_coefficient,37.51111111111111
-Korea,1995,gini_coefficient,37.82222222222222
-Korea,1996,gini_coefficient,37.78888888888889
-Korea,1997,gini_coefficient,37.855555555555554
-Korea,1998,gini_coefficient,37.922222222222224
-Korea,1999,gini_coefficient,38.02222222222222
-Korea,2000,gini_coefficient,38.2
-Korea,2001,gini_coefficient,38.233333333333334
-Korea,2002,gini_coefficient,38.099999999999994
-Korea,2003,gini_coefficient,38.111111111111114
-Korea,2004,gini_coefficient,38.099999999999994
-Korea,2005,gini_coefficient,38.099999999999994
-Korea,2006,gini_coefficient,37.98888888888889
-Korea,2007,gini_coefficient,37.87777777777777
-Korea,2008,gini_coefficient,37.82222222222222
-Korea,2009,gini_coefficient,37.644444444444446
-Korea,2010,gini_coefficient,37.422222222222224
-Korea,2011,gini_coefficient,37.5
-Korea,2012,gini_coefficient,37.3
-Korea,2013,gini_coefficient,37.2
-Korea,2014,gini_coefficient,37.05555555555556
-Korea,2015,gini_coefficient,36.97777777777778
-Korea,2016,gini_coefficient,37.0
-Korea,2017,gini_coefficient,36.94444444444444
-Korea,2018,gini_coefficient,37.06666666666667
-Korea,2019,gini_coefficient,36.96666666666667
-Korea,2020,gini_coefficient,36.82222222222222
-Korea,2021,gini_coefficient,36.68888888888889
-Korea,2022,gini_coefficient,36.68888888888889
-Korea,2023,gini_coefficient,33.5875
-Korea,2024,gini_coefficient,36.45
-Korea,2025,gini_coefficient,36.45
-Korea,1976,political_violence_score,2.8
-Korea,1977,political_violence_score,2.8
-Korea,1978,political_violence_score,2.6
-Korea,1979,political_violence_score,2.6
-Korea,1980,political_violence_score,2.5
-Korea,1981,political_violence_score,2.7
-Korea,1982,political_violence_score,2.6
-Korea,1983,political_violence_score,2.8
-Korea,1984,political_violence_score,2.6
-Korea,1985,political_violence_score,2.6
-Korea,1986,political_violence_score,2.888888888888889
-Korea,1987,political_violence_score,2.8
-Korea,1988,political_violence_score,2.5
-Korea,1989,political_violence_score,2.3
-Korea,1990,political_violence_score,2.2
-Korea,1991,political_violence_score,2.7777777777777777
-Korea,1992,political_violence_score,2.4444444444444446
-Korea,1993,political_violence_score,2.2222222222222223
-Korea,1994,political_violence_score,2.6666666666666665
-Korea,1995,political_violence_score,2.4444444444444446
-Korea,1996,political_violence_score,2.7142857142857144
-Korea,1997,political_violence_score,2.4285714285714284
-Korea,1998,political_violence_score,2.375
-Korea,1999,political_violence_score,2.0
-Korea,2000,political_violence_score,2.4444444444444446
-Korea,2001,political_violence_score,2.6666666666666665
-Korea,2002,political_violence_score,2.75
-Korea,2003,political_violence_score,2.4444444444444446
-Korea,2004,political_violence_score,2.5555555555555554
-Korea,2005,political_violence_score,2.3333333333333335
-Korea,2006,political_violence_score,2.5555555555555554
-Korea,2007,political_violence_score,2.5555555555555554
-Korea,2008,political_violence_score,2.4444444444444446
-Korea,2009,political_violence_score,2.5555555555555554
-Korea,2010,political_violence_score,2.111111111111111
-Korea,2011,political_violence_score,2.2222222222222223
-Korea,2012,political_violence_score,2.2222222222222223
-Korea,2013,political_violence_score,2.2222222222222223
-Korea,2014,political_violence_score,2.2222222222222223
-Korea,2015,political_violence_score,2.0
-Korea,2016,political_violence_score,2.4444444444444446
-Korea,2017,political_violence_score,2.5555555555555554
-Korea,2018,political_violence_score,4.0
-Korea,2019,political_violence_score,2.888888888888889
-Korea,2020,political_violence_score,2.5555555555555554
-Korea,2021,political_violence_score,2.5555555555555554
-Korea,2022,political_violence_score,2.6666666666666665
-Korea,2023,political_violence_score,2.6
-Korea,2024,political_violence_score,2.5555555555555554
-Korea,2025,political_violence_score,2.5555555555555554
-Korea,1960,redist_gdp_pct,10.691770533333333
-Korea,1961,redist_gdp_pct,10.948257333333332
-Korea,1962,redist_gdp_pct,11.059931999999998
-Korea,1963,redist_gdp_pct,11.375360233333334
-Korea,1964,redist_gdp_pct,11.123909833333334
-Korea,1965,redist_gdp_pct,11.5943398
-Korea,1966,redist_gdp_pct,11.779151666666666
-Korea,1967,redist_gdp_pct,12.699709333333333
-Korea,1968,redist_gdp_pct,12.920217766666667
-Korea,1969,redist_gdp_pct,12.773282333333334
-Korea,1970,redist_gdp_pct,13.002480333333333
-Korea,1971,redist_gdp_pct,13.446698166666666
-Korea,1972,redist_gdp_pct,13.990301
-Korea,1973,redist_gdp_pct,14.026002
-Korea,1974,redist_gdp_pct,15.398722999999999
-Korea,1975,redist_gdp_pct,17.172529333333333
-Korea,1976,redist_gdp_pct,17.206447999999998
-Korea,1977,redist_gdp_pct,17.058683666666667
-Korea,1978,redist_gdp_pct,16.863939333333335
-Korea,1979,redist_gdp_pct,16.740230666666665
-Korea,1980,redist_gdp_pct,17.171666666666667
-Korea,1981,redist_gdp_pct,17.986
-Korea,1982,redist_gdp_pct,18.291666666666668
-Korea,1983,redist_gdp_pct,18.509666666666668
-Korea,1984,redist_gdp_pct,18.117
-Korea,1985,redist_gdp_pct,18.141333333333336
-Korea,1986,redist_gdp_pct,17.024
-Korea,1987,redist_gdp_pct,16.471
-Korea,1988,redist_gdp_pct,15.815
-Korea,1989,redist_gdp_pct,15.246
-Korea,1990,redist_gdp_pct,13.007
-Korea,1991,redist_gdp_pct,14.658000000000001
-Korea,1992,redist_gdp_pct,15.8785
-Korea,1993,redist_gdp_pct,16.091
-Korea,1994,redist_gdp_pct,15.7575
-Korea,1995,redist_gdp_pct,15.8185
-Korea,1996,redist_gdp_pct,16.049
-Korea,1997,redist_gdp_pct,15.826
-Korea,1998,redist_gdp_pct,15.999
-Korea,1999,redist_gdp_pct,16.25016666666667
-Korea,2000,redist_gdp_pct,15.568166666666665
-Korea,2001,redist_gdp_pct,15.990666666666668
-Korea,2002,redist_gdp_pct,16.253333333333334
-Korea,2003,redist_gdp_pct,16.542
-Korea,2004,redist_gdp_pct,16.3815
-Korea,2005,redist_gdp_pct,16.3585
-Korea,2006,redist_gdp_pct,16.13
-Korea,2007,redist_gdp_pct,15.903666666666666
-Korea,2008,redist_gdp_pct,16.619
-Korea,2009,redist_gdp_pct,18.524166666666666
-Korea,2010,redist_gdp_pct,18.280833333333334
-Korea,2011,redist_gdp_pct,17.702666666666666
-Korea,2012,redist_gdp_pct,17.81266666666667
-Korea,2013,redist_gdp_pct,17.937
-Korea,2014,redist_gdp_pct,17.8655
-Korea,2015,redist_gdp_pct,18.000833333333333
-Korea,2016,redist_gdp_pct,18.162499999999998
-Korea,2017,redist_gdp_pct,18.1005
-Korea,2018,redist_gdp_pct,18.043833333333335
-Korea,2019,redist_gdp_pct,18.483999999999998
-Korea,2020,redist_gdp_pct,22.100666666666665
-Korea,2021,redist_gdp_pct,21.975333333333335
-Korea,2022,redist_gdp_pct,19.7855
-Korea,2023,redist_gdp_pct,19.888333333333332
-Korea,2024,redist_gdp_pct,21.51525
-Korea,2025,redist_gdp_pct,21.51525
+Korea,1965,gini_coefficient,30.0
+Korea,1967,gini_coefficient,30.1
+Korea,1969,gini_coefficient,30.2
+Korea,1971,gini_coefficient,30.5
+Korea,1972,gini_coefficient,30.7
+Korea,1973,gini_coefficient,31.0
+Korea,1974,gini_coefficient,31.3
+Korea,1975,gini_coefficient,31.6
+Korea,1976,gini_coefficient,31.9
+Korea,1977,gini_coefficient,32.1
+Korea,1978,gini_coefficient,32.4
+Korea,1979,gini_coefficient,32.6
+Korea,1980,gini_coefficient,32.8
+Korea,1981,gini_coefficient,33.1
+Korea,1982,gini_coefficient,33.4
+Korea,1983,gini_coefficient,33.6
+Korea,1984,gini_coefficient,33.7
+Korea,1986,gini_coefficient,33.8
+Korea,1987,gini_coefficient,33.7
+Korea,1988,gini_coefficient,33.4
+Korea,1989,gini_coefficient,33.3
+Korea,1990,gini_coefficient,32.7
+Korea,1991,gini_coefficient,32.3
+Korea,1992,gini_coefficient,32.0
+Korea,1993,gini_coefficient,31.9
+Korea,1994,gini_coefficient,32.0
+Korea,1995,gini_coefficient,32.2
+Korea,1996,gini_coefficient,32.6
+Korea,1997,gini_coefficient,33.0
+Korea,1998,gini_coefficient,33.6
+Korea,1999,gini_coefficient,33.7
+Korea,2000,gini_coefficient,33.3
+Korea,2001,gini_coefficient,33.2
+Korea,2002,gini_coefficient,32.9
+Korea,2003,gini_coefficient,32.4
+Korea,2004,gini_coefficient,32.0
+Korea,2005,gini_coefficient,31.7
+Korea,2006,gini_coefficient,31.2
+Korea,2007,gini_coefficient,31.5
+Korea,2008,gini_coefficient,31.6
+Korea,2009,gini_coefficient,31.8
+Korea,2010,gini_coefficient,31.7
+Korea,2011,gini_coefficient,32.6
+Korea,2012,gini_coefficient,31.7
+Korea,2013,gini_coefficient,31.9
+Korea,2014,gini_coefficient,31.3
+Korea,2015,gini_coefficient,32.2
+Korea,2016,gini_coefficient,34.1
+Korea,2017,gini_coefficient,34.6
+Korea,2018,gini_coefficient,34.2
+Korea,2019,gini_coefficient,33.7
+Korea,2020,gini_coefficient,33.2
+Korea,2021,gini_coefficient,32.7
+Korea,2022,gini_coefficient,31.5
+Korea,2023,gini_coefficient,31.4
+Korea,1976,political_violence_score,3.0
+Korea,1983,political_violence_score,4.0
+Korea,1984,political_violence_score,3.0
+Korea,1993,political_violence_score,2.0
+Korea,1994,political_violence_score,3.0
+Korea,1997,political_violence_score,2.0
+Korea,2002,political_violence_score,3.0
+Korea,2003,political_violence_score,2.0
+Korea,2009,political_violence_score,3.0
+Korea,2010,political_violence_score,1.0
+Korea,2012,political_violence_score,2.0
+Korea,2015,political_violence_score,1.0
+Korea,2016,political_violence_score,2.0
+Korea,2019,political_violence_score,1.0
+Korea,1990,redist_gdp_pct,2.548
+Korea,1991,redist_gdp_pct,2.455
+Korea,1992,redist_gdp_pct,2.667
+Korea,1993,redist_gdp_pct,2.738
+Korea,1994,redist_gdp_pct,2.733
+Korea,1995,redist_gdp_pct,2.906
+Korea,1996,redist_gdp_pct,3.049
+Korea,1997,redist_gdp_pct,3.281
+Korea,1998,redist_gdp_pct,4.55
+Korea,1999,redist_gdp_pct,5.423
+Korea,2000,redist_gdp_pct,4.245
+Korea,2001,redist_gdp_pct,4.489
+Korea,2002,redist_gdp_pct,4.361
+Korea,2003,redist_gdp_pct,4.626
+Korea,2004,redist_gdp_pct,5.185
+Korea,2005,redist_gdp_pct,5.507
+Korea,2006,redist_gdp_pct,6.272
+Korea,2007,redist_gdp_pct,6.342
+Korea,2008,redist_gdp_pct,6.806
+Korea,2009,redist_gdp_pct,7.589
+Korea,2010,redist_gdp_pct,7.373
+Korea,2011,redist_gdp_pct,7.337
+Korea,2012,redist_gdp_pct,7.825
+Korea,2013,redist_gdp_pct,8.297
+Korea,2014,redist_gdp_pct,8.633
+Korea,2015,redist_gdp_pct,9.052
+Korea,2016,redist_gdp_pct,9.247
+Korea,2017,redist_gdp_pct,9.473
+Korea,2018,redist_gdp_pct,10.172
+Korea,2019,redist_gdp_pct,11.423
+Korea,2020,redist_gdp_pct,14.876
+Korea,2021,redist_gdp_pct,15.222
+Korea,2022,redist_gdp_pct,16.235
+Korea,2023,redist_gdp_pct,15.359
+Korea,2024,redist_gdp_pct,15.326
 Korea,1991,unemployment_rate_pct,2.407
 Korea,1992,unemployment_rate_pct,2.513
 Korea,1993,unemployment_rate_pct,2.878
@@ -1278,6 +1141,42 @@ Korea,2022,unemployment_rate_pct,2.857
 Korea,2023,unemployment_rate_pct,2.675
 Korea,2024,unemployment_rate_pct,2.784
 Korea,2025,unemployment_rate_pct,2.683
+Poland,1980,civil_unrest_events,440.0
+Poland,1981,civil_unrest_events,1578.0
+Poland,1982,civil_unrest_events,860.0
+Poland,1983,civil_unrest_events,472.0
+Poland,1984,civil_unrest_events,562.0
+Poland,1985,civil_unrest_events,284.0
+Poland,1986,civil_unrest_events,303.0
+Poland,1987,civil_unrest_events,242.0
+Poland,1988,civil_unrest_events,403.0
+Poland,1989,civil_unrest_events,662.0
+Poland,1990,civil_unrest_events,4.0
+Poland,1991,civil_unrest_events,2.0
+Poland,1992,civil_unrest_events,3.0
+Poland,1993,civil_unrest_events,1.0
+Poland,1994,civil_unrest_events,2.0
+Poland,1995,civil_unrest_events,5.0
+Poland,1996,civil_unrest_events,21.0
+Poland,1997,civil_unrest_events,13.0
+Poland,1998,civil_unrest_events,16.0
+Poland,1999,civil_unrest_events,2.0
+Poland,2001,civil_unrest_events,1.0
+Poland,2002,civil_unrest_events,4.0
+Poland,2003,civil_unrest_events,3.0
+Poland,2004,civil_unrest_events,1.0
+Poland,2007,civil_unrest_events,2.0
+Poland,2008,civil_unrest_events,1.0
+Poland,2010,civil_unrest_events,2.0
+Poland,2011,civil_unrest_events,1.0
+Poland,2012,civil_unrest_events,3.0
+Poland,2014,civil_unrest_events,1.0
+Poland,2015,civil_unrest_events,3.0
+Poland,2016,civil_unrest_events,9.0
+Poland,2017,civil_unrest_events,6.0
+Poland,2018,civil_unrest_events,7.0
+Poland,2019,civil_unrest_events,5.0
+Poland,2020,civil_unrest_events,1.0
 Poland,1994,fed_tax_revenue_pct_gdp,22.7826807304818
 Poland,1995,fed_tax_revenue_pct_gdp,22.2838435133567
 Poland,1996,fed_tax_revenue_pct_gdp,21.572394641671
@@ -1308,8 +1207,6 @@ Poland,2020,fed_tax_revenue_pct_gdp,17.291144093996
 Poland,2021,fed_tax_revenue_pct_gdp,18.9590677200004
 Poland,2022,fed_tax_revenue_pct_gdp,17.1225309189416
 Poland,2023,fed_tax_revenue_pct_gdp,17.9988487014512
-Poland,2024,fed_tax_revenue_pct_gdp,17.9988487014512
-Poland,2025,fed_tax_revenue_pct_gdp,17.9988487014512
 Poland,1990,gdp_billions,65.9777482105263
 Poland,1991,gdp_billions,85.5009359349901
 Poland,1992,gdp_billions,94.3370506932727
@@ -1346,122 +1243,54 @@ Poland,2022,gdp_billions,695.607470875276
 Poland,2023,gdp_billions,812.4511933961429
 Poland,2024,gdp_billions,917.767106146761
 Poland,2025,gdp_billions,1035.49178419744
-Poland,1960,gini_coefficient,30.049999999999997
-Poland,1961,gini_coefficient,28.866666666666664
-Poland,1962,gini_coefficient,28.866666666666664
-Poland,1963,gini_coefficient,29.066666666666666
-Poland,1964,gini_coefficient,29.233333333333334
-Poland,1965,gini_coefficient,29.325
-Poland,1966,gini_coefficient,29.25
-Poland,1967,gini_coefficient,29.200000000000003
-Poland,1968,gini_coefficient,32.18
-Poland,1969,gini_coefficient,32.22
-Poland,1970,gini_coefficient,32.44
-Poland,1971,gini_coefficient,32.6
-Poland,1972,gini_coefficient,32.58
-Poland,1973,gini_coefficient,32.54
-Poland,1974,gini_coefficient,32.68
-Poland,1975,gini_coefficient,36.48571428571429
-Poland,1976,gini_coefficient,36.47142857142857
-Poland,1977,gini_coefficient,36.42857142857143
-Poland,1978,gini_coefficient,36.42857142857143
-Poland,1979,gini_coefficient,36.614285714285714
-Poland,1980,gini_coefficient,35.2375
-Poland,1981,gini_coefficient,35.4625
-Poland,1982,gini_coefficient,35.7125
-Poland,1983,gini_coefficient,35.099999999999994
-Poland,1984,gini_coefficient,34.97777777777778
-Poland,1985,gini_coefficient,34.97777777777778
-Poland,1986,gini_coefficient,35.21111111111111
-Poland,1987,gini_coefficient,35.31111111111111
-Poland,1988,gini_coefficient,34.260000000000005
-Poland,1989,gini_coefficient,34.35
-Poland,1990,gini_coefficient,34.33
-Poland,1991,gini_coefficient,35.63333333333333
-Poland,1992,gini_coefficient,36.166666666666664
-Poland,1993,gini_coefficient,36.97777777777778
-Poland,1994,gini_coefficient,37.51111111111111
-Poland,1995,gini_coefficient,37.82222222222222
-Poland,1996,gini_coefficient,37.78888888888889
-Poland,1997,gini_coefficient,37.855555555555554
-Poland,1998,gini_coefficient,37.922222222222224
-Poland,1999,gini_coefficient,38.02222222222222
-Poland,2000,gini_coefficient,38.2
-Poland,2001,gini_coefficient,38.233333333333334
-Poland,2002,gini_coefficient,38.099999999999994
-Poland,2003,gini_coefficient,38.111111111111114
-Poland,2004,gini_coefficient,38.099999999999994
-Poland,2005,gini_coefficient,38.099999999999994
-Poland,2006,gini_coefficient,37.98888888888889
-Poland,2007,gini_coefficient,37.87777777777777
-Poland,2008,gini_coefficient,37.82222222222222
-Poland,2009,gini_coefficient,37.644444444444446
-Poland,2010,gini_coefficient,37.422222222222224
-Poland,2011,gini_coefficient,37.5
-Poland,2012,gini_coefficient,37.3
-Poland,2013,gini_coefficient,37.2
-Poland,2014,gini_coefficient,37.05555555555556
-Poland,2015,gini_coefficient,36.97777777777778
-Poland,2016,gini_coefficient,37.0
-Poland,2017,gini_coefficient,36.94444444444444
-Poland,2018,gini_coefficient,37.06666666666667
-Poland,2019,gini_coefficient,36.96666666666667
-Poland,2020,gini_coefficient,36.82222222222222
-Poland,2021,gini_coefficient,36.68888888888889
-Poland,2022,gini_coefficient,36.68888888888889
-Poland,2023,gini_coefficient,33.5875
-Poland,2024,gini_coefficient,36.45
-Poland,2025,gini_coefficient,36.45
-Poland,1976,political_violence_score,2.8
-Poland,1977,political_violence_score,2.8
-Poland,1978,political_violence_score,2.6
-Poland,1979,political_violence_score,2.6
-Poland,1980,political_violence_score,2.5
-Poland,1981,political_violence_score,2.7
-Poland,1982,political_violence_score,2.6
-Poland,1983,political_violence_score,2.8
-Poland,1984,political_violence_score,2.6
-Poland,1985,political_violence_score,2.6
-Poland,1986,political_violence_score,2.888888888888889
-Poland,1987,political_violence_score,2.8
-Poland,1988,political_violence_score,2.5
-Poland,1989,political_violence_score,2.3
-Poland,1990,political_violence_score,2.2
-Poland,1991,political_violence_score,2.7777777777777777
-Poland,1992,political_violence_score,2.4444444444444446
-Poland,1993,political_violence_score,2.2222222222222223
-Poland,1994,political_violence_score,2.6666666666666665
-Poland,1995,political_violence_score,2.4444444444444446
-Poland,1996,political_violence_score,2.7142857142857144
-Poland,1997,political_violence_score,2.4285714285714284
-Poland,1998,political_violence_score,2.375
-Poland,1999,political_violence_score,2.0
-Poland,2000,political_violence_score,2.4444444444444446
-Poland,2001,political_violence_score,2.6666666666666665
-Poland,2002,political_violence_score,2.75
-Poland,2003,political_violence_score,2.4444444444444446
-Poland,2004,political_violence_score,2.5555555555555554
-Poland,2005,political_violence_score,2.3333333333333335
-Poland,2006,political_violence_score,2.5555555555555554
-Poland,2007,political_violence_score,2.5555555555555554
-Poland,2008,political_violence_score,2.4444444444444446
-Poland,2009,political_violence_score,2.5555555555555554
-Poland,2010,political_violence_score,2.111111111111111
-Poland,2011,political_violence_score,2.2222222222222223
-Poland,2012,political_violence_score,2.2222222222222223
-Poland,2013,political_violence_score,2.2222222222222223
-Poland,2014,political_violence_score,2.2222222222222223
-Poland,2015,political_violence_score,2.0
-Poland,2016,political_violence_score,2.4444444444444446
-Poland,2017,political_violence_score,2.5555555555555554
-Poland,2018,political_violence_score,4.0
-Poland,2019,political_violence_score,2.888888888888889
-Poland,2020,political_violence_score,2.5555555555555554
-Poland,2021,political_violence_score,2.5555555555555554
-Poland,2022,political_violence_score,2.6666666666666665
-Poland,2023,political_violence_score,2.6
-Poland,2024,political_violence_score,2.5555555555555554
-Poland,2025,political_violence_score,2.5555555555555554
+Poland,1983,gini_coefficient,29.1
+Poland,1984,gini_coefficient,27.4
+Poland,1985,gini_coefficient,26.0
+Poland,1986,gini_coefficient,26.5
+Poland,1987,gini_coefficient,25.7
+Poland,1988,gini_coefficient,25.8
+Poland,1989,gini_coefficient,25.9
+Poland,1990,gini_coefficient,25.1
+Poland,1991,gini_coefficient,25.5
+Poland,1992,gini_coefficient,26.6
+Poland,1993,gini_coefficient,28.0
+Poland,1994,gini_coefficient,29.3
+Poland,1995,gini_coefficient,30.8
+Poland,1996,gini_coefficient,29.8
+Poland,1998,gini_coefficient,29.2
+Poland,1999,gini_coefficient,29.1
+Poland,2000,gini_coefficient,29.8
+Poland,2001,gini_coefficient,30.2
+Poland,2002,gini_coefficient,30.6
+Poland,2003,gini_coefficient,31.2
+Poland,2004,gini_coefficient,31.5
+Poland,2005,gini_coefficient,31.3
+Poland,2006,gini_coefficient,31.0
+Poland,2007,gini_coefficient,31.1
+Poland,2008,gini_coefficient,31.0
+Poland,2010,gini_coefficient,31.1
+Poland,2011,gini_coefficient,31.3
+Poland,2012,gini_coefficient,31.4
+Poland,2014,gini_coefficient,30.9
+Poland,2015,gini_coefficient,30.2
+Poland,2016,gini_coefficient,28.9
+Poland,2017,gini_coefficient,28.6
+Poland,2018,gini_coefficient,28.7
+Poland,2020,gini_coefficient,29.0
+Poland,2021,gini_coefficient,29.4
+Poland,2023,gini_coefficient,29.2
+Poland,1976,political_violence_score,3.0
+Poland,1978,political_violence_score,2.0
+Poland,1979,political_violence_score,3.0
+Poland,1988,political_violence_score,2.0
+Poland,1992,political_violence_score,1.0
+Poland,2000,political_violence_score,2.0
+Poland,2003,political_violence_score,1.0
+Poland,2004,political_violence_score,2.0
+Poland,2005,political_violence_score,1.0
+Poland,2006,political_violence_score,2.0
+Poland,2008,political_violence_score,1.0
+Poland,2016,political_violence_score,2.0
 Poland,1991,unemployment_rate_pct,13.621
 Poland,1992,unemployment_rate_pct,13.645
 Poland,1993,unemployment_rate_pct,14.393
@@ -1497,6 +1326,38 @@ Poland,2022,unemployment_rate_pct,2.811
 Poland,2023,unemployment_rate_pct,2.743
 Poland,2024,unemployment_rate_pct,2.807
 Poland,2025,unemployment_rate_pct,2.976
+Russia,1986,civil_unrest_events,3.0
+Russia,1987,civil_unrest_events,75.0
+Russia,1988,civil_unrest_events,663.0
+Russia,1989,civil_unrest_events,1546.0
+Russia,1990,civil_unrest_events,45.0
+Russia,1991,civil_unrest_events,15.0
+Russia,1992,civil_unrest_events,11.0
+Russia,1993,civil_unrest_events,7.0
+Russia,1994,civil_unrest_events,5.0
+Russia,1996,civil_unrest_events,6.0
+Russia,1997,civil_unrest_events,1.0
+Russia,1998,civil_unrest_events,7.0
+Russia,1999,civil_unrest_events,2.0
+Russia,2000,civil_unrest_events,3.0
+Russia,2002,civil_unrest_events,1.0
+Russia,2004,civil_unrest_events,5.0
+Russia,2005,civil_unrest_events,12.0
+Russia,2006,civil_unrest_events,4.0
+Russia,2007,civil_unrest_events,7.0
+Russia,2008,civil_unrest_events,4.0
+Russia,2009,civil_unrest_events,5.0
+Russia,2010,civil_unrest_events,16.0
+Russia,2011,civil_unrest_events,11.0
+Russia,2012,civil_unrest_events,19.0
+Russia,2013,civil_unrest_events,8.0
+Russia,2014,civil_unrest_events,10.0
+Russia,2015,civil_unrest_events,5.0
+Russia,2016,civil_unrest_events,7.0
+Russia,2017,civil_unrest_events,14.0
+Russia,2018,civil_unrest_events,11.0
+Russia,2019,civil_unrest_events,14.0
+Russia,2020,civil_unrest_events,1.0
 Russia,1999,fed_tax_revenue_pct_gdp,11.2428726496447
 Russia,2000,fed_tax_revenue_pct_gdp,13.7255344540838
 Russia,2001,fed_tax_revenue_pct_gdp,15.778699595813
@@ -1523,7 +1384,6 @@ Russia,2021,fed_tax_revenue_pct_gdp,11.6966312097742
 Russia,2022,fed_tax_revenue_pct_gdp,10.843690994035
 Russia,2023,fed_tax_revenue_pct_gdp,12.2216011826161
 Russia,2024,fed_tax_revenue_pct_gdp,10.8718510370824
-Russia,2025,fed_tax_revenue_pct_gdp,10.8718510370824
 Russia,1988,gdp_billions,554.8286604361369
 Russia,1989,gdp_billions,506.631299734748
 Russia,1990,gdp_billions,517.014446227929
@@ -1562,122 +1422,72 @@ Russia,2022,gdp_billions,2292.4950976814703
 Russia,2023,gdp_billions,2046.28483815109
 Russia,2024,gdp_billions,2186.4622688130803
 Russia,2025,gdp_billions,2561.31016935874
-Russia,1960,gini_coefficient,30.049999999999997
-Russia,1961,gini_coefficient,28.866666666666664
-Russia,1962,gini_coefficient,28.866666666666664
-Russia,1963,gini_coefficient,29.066666666666666
-Russia,1964,gini_coefficient,29.233333333333334
-Russia,1965,gini_coefficient,29.325
-Russia,1966,gini_coefficient,29.25
-Russia,1967,gini_coefficient,29.200000000000003
-Russia,1968,gini_coefficient,32.18
-Russia,1969,gini_coefficient,32.22
-Russia,1970,gini_coefficient,32.44
-Russia,1971,gini_coefficient,32.6
-Russia,1972,gini_coefficient,32.58
-Russia,1973,gini_coefficient,32.54
-Russia,1974,gini_coefficient,32.68
-Russia,1975,gini_coefficient,36.48571428571429
-Russia,1976,gini_coefficient,36.47142857142857
-Russia,1977,gini_coefficient,36.42857142857143
-Russia,1978,gini_coefficient,36.42857142857143
-Russia,1979,gini_coefficient,36.614285714285714
-Russia,1980,gini_coefficient,35.2375
-Russia,1981,gini_coefficient,35.4625
-Russia,1982,gini_coefficient,35.7125
-Russia,1983,gini_coefficient,35.099999999999994
-Russia,1984,gini_coefficient,34.97777777777778
-Russia,1985,gini_coefficient,34.97777777777778
-Russia,1986,gini_coefficient,35.21111111111111
-Russia,1987,gini_coefficient,35.31111111111111
-Russia,1988,gini_coefficient,34.260000000000005
-Russia,1989,gini_coefficient,34.35
-Russia,1990,gini_coefficient,34.33
-Russia,1991,gini_coefficient,35.63333333333333
-Russia,1992,gini_coefficient,36.166666666666664
-Russia,1993,gini_coefficient,36.97777777777778
-Russia,1994,gini_coefficient,37.51111111111111
-Russia,1995,gini_coefficient,37.82222222222222
-Russia,1996,gini_coefficient,37.78888888888889
-Russia,1997,gini_coefficient,37.855555555555554
-Russia,1998,gini_coefficient,37.922222222222224
-Russia,1999,gini_coefficient,38.02222222222222
-Russia,2000,gini_coefficient,38.2
-Russia,2001,gini_coefficient,38.233333333333334
-Russia,2002,gini_coefficient,38.099999999999994
-Russia,2003,gini_coefficient,38.111111111111114
-Russia,2004,gini_coefficient,38.099999999999994
-Russia,2005,gini_coefficient,38.099999999999994
-Russia,2006,gini_coefficient,37.98888888888889
-Russia,2007,gini_coefficient,37.87777777777777
-Russia,2008,gini_coefficient,37.82222222222222
-Russia,2009,gini_coefficient,37.644444444444446
-Russia,2010,gini_coefficient,37.422222222222224
-Russia,2011,gini_coefficient,37.5
-Russia,2012,gini_coefficient,37.3
-Russia,2013,gini_coefficient,37.2
-Russia,2014,gini_coefficient,37.05555555555556
-Russia,2015,gini_coefficient,36.97777777777778
-Russia,2016,gini_coefficient,37.0
-Russia,2017,gini_coefficient,36.94444444444444
-Russia,2018,gini_coefficient,37.06666666666667
-Russia,2019,gini_coefficient,36.96666666666667
-Russia,2020,gini_coefficient,36.82222222222222
-Russia,2021,gini_coefficient,36.68888888888889
-Russia,2022,gini_coefficient,36.68888888888889
-Russia,2023,gini_coefficient,33.5875
-Russia,2024,gini_coefficient,36.45
-Russia,2025,gini_coefficient,36.45
-Russia,1976,political_violence_score,2.8
-Russia,1977,political_violence_score,2.8
-Russia,1978,political_violence_score,2.6
-Russia,1979,political_violence_score,2.6
-Russia,1980,political_violence_score,2.5
-Russia,1981,political_violence_score,2.7
-Russia,1982,political_violence_score,2.6
-Russia,1983,political_violence_score,2.8
-Russia,1984,political_violence_score,2.6
-Russia,1985,political_violence_score,2.6
-Russia,1986,political_violence_score,2.888888888888889
-Russia,1987,political_violence_score,2.8
-Russia,1988,political_violence_score,2.5
-Russia,1989,political_violence_score,2.3
-Russia,1990,political_violence_score,2.2
-Russia,1991,political_violence_score,2.7777777777777777
-Russia,1992,political_violence_score,2.4444444444444446
-Russia,1993,political_violence_score,2.2222222222222223
-Russia,1994,political_violence_score,2.6666666666666665
-Russia,1995,political_violence_score,2.4444444444444446
-Russia,1996,political_violence_score,2.7142857142857144
-Russia,1997,political_violence_score,2.4285714285714284
-Russia,1998,political_violence_score,2.375
-Russia,1999,political_violence_score,2.0
-Russia,2000,political_violence_score,2.4444444444444446
-Russia,2001,political_violence_score,2.6666666666666665
-Russia,2002,political_violence_score,2.75
-Russia,2003,political_violence_score,2.4444444444444446
-Russia,2004,political_violence_score,2.5555555555555554
-Russia,2005,political_violence_score,2.3333333333333335
-Russia,2006,political_violence_score,2.5555555555555554
-Russia,2007,political_violence_score,2.5555555555555554
-Russia,2008,political_violence_score,2.4444444444444446
-Russia,2009,political_violence_score,2.5555555555555554
-Russia,2010,political_violence_score,2.111111111111111
-Russia,2011,political_violence_score,2.2222222222222223
-Russia,2012,political_violence_score,2.2222222222222223
-Russia,2013,political_violence_score,2.2222222222222223
-Russia,2014,political_violence_score,2.2222222222222223
-Russia,2015,political_violence_score,2.0
-Russia,2016,political_violence_score,2.4444444444444446
-Russia,2017,political_violence_score,2.5555555555555554
-Russia,2018,political_violence_score,4.0
-Russia,2019,political_violence_score,2.888888888888889
-Russia,2020,political_violence_score,2.5555555555555554
-Russia,2021,political_violence_score,2.5555555555555554
-Russia,2022,political_violence_score,2.6666666666666665
-Russia,2023,political_violence_score,2.6
-Russia,2024,political_violence_score,2.5555555555555554
-Russia,2025,political_violence_score,2.5555555555555554
+Russia,1988,gini_coefficient,23.7
+Russia,1989,gini_coefficient,23.6
+Russia,1990,gini_coefficient,23.8
+Russia,1991,gini_coefficient,25.3
+Russia,1992,gini_coefficient,28.4
+Russia,1993,gini_coefficient,32.7
+Russia,1994,gini_coefficient,35.4
+Russia,1995,gini_coefficient,36.9
+Russia,1996,gini_coefficient,37.2
+Russia,1997,gini_coefficient,36.7
+Russia,1999,gini_coefficient,36.6
+Russia,2000,gini_coefficient,36.9
+Russia,2001,gini_coefficient,36.5
+Russia,2002,gini_coefficient,36.1
+Russia,2003,gini_coefficient,36.6
+Russia,2004,gini_coefficient,36.9
+Russia,2005,gini_coefficient,36.1
+Russia,2006,gini_coefficient,35.9
+Russia,2007,gini_coefficient,35.6
+Russia,2008,gini_coefficient,35.9
+Russia,2009,gini_coefficient,35.2
+Russia,2010,gini_coefficient,35.1
+Russia,2011,gini_coefficient,35.3
+Russia,2012,gini_coefficient,35.1
+Russia,2013,gini_coefficient,34.6
+Russia,2014,gini_coefficient,34.0
+Russia,2015,gini_coefficient,33.3
+Russia,2016,gini_coefficient,32.9
+Russia,2017,gini_coefficient,32.1
+Russia,2018,gini_coefficient,31.9
+Russia,2019,gini_coefficient,31.5
+Russia,2020,gini_coefficient,30.9
+Russia,2021,gini_coefficient,31.0
+Russia,2022,gini_coefficient,30.8
+Russia,2023,gini_coefficient,30.6
+Russia,1992,political_violence_score,2.0
+Russia,1994,political_violence_score,4.0
+Russia,1997,political_violence_score,3.0
+Russia,1998,political_violence_score,4.0
+Russia,2000,political_violence_score,5.0
+Russia,2001,political_violence_score,4.0
+Russia,2015,political_violence_score,3.0
+Russia,2016,political_violence_score,4.0
+Russia,2022,political_violence_score,5.0
+Russia,2023,political_violence_score,4.5
+Russia,2024,political_violence_score,5.0
+Russia,2000,redist_gdp_pct,7.53155234066691
+Russia,2001,redist_gdp_pct,8.87746881307044
+Russia,2002,redist_gdp_pct,9.39515548749749
+Russia,2003,redist_gdp_pct,9.82114340069255
+Russia,2004,redist_gdp_pct,9.13174142729977
+Russia,2005,redist_gdp_pct,8.16204052017155
+Russia,2006,redist_gdp_pct,7.68951781796193
+Russia,2008,redist_gdp_pct,8.48092267229107
+Russia,2009,redist_gdp_pct,11.0819679385553
+Russia,2010,redist_gdp_pct,12.42723604493
+Russia,2011,redist_gdp_pct,11.1484843605735
+Russia,2012,redist_gdp_pct,11.3149921186078
+Russia,2013,redist_gdp_pct,11.8745177223139
+Russia,2014,redist_gdp_pct,11.0108538333223
+Russia,2015,redist_gdp_pct,12.4064355533839
+Russia,2016,redist_gdp_pct,12.637703681939
+Russia,2017,redist_gdp_pct,13.162389871759
+Russia,2018,redist_gdp_pct,11.5447587098341
+Russia,2019,redist_gdp_pct,11.9253334687975
+Russia,2020,redist_gdp_pct,14.1033063262077
 Russia,1991,unemployment_rate_pct,5.11
 Russia,1992,unemployment_rate_pct,5.181
 Russia,1993,unemployment_rate_pct,5.883
@@ -1713,6 +1523,58 @@ Russia,2022,unemployment_rate_pct,3.867
 Russia,2023,unemployment_rate_pct,3.076
 Russia,2024,unemployment_rate_pct,2.43
 Russia,2025,unemployment_rate_pct,2.133
+South Africa,1960,civil_unrest_events,9.0
+South Africa,1961,civil_unrest_events,2.0
+South Africa,1962,civil_unrest_events,5.0
+South Africa,1963,civil_unrest_events,2.0
+South Africa,1964,civil_unrest_events,1.0
+South Africa,1967,civil_unrest_events,3.0
+South Africa,1968,civil_unrest_events,1.0
+South Africa,1970,civil_unrest_events,3.0
+South Africa,1972,civil_unrest_events,9.0
+South Africa,1973,civil_unrest_events,8.0
+South Africa,1974,civil_unrest_events,2.0
+South Africa,1976,civil_unrest_events,25.0
+South Africa,1977,civil_unrest_events,8.0
+South Africa,1979,civil_unrest_events,1.0
+South Africa,1980,civil_unrest_events,22.0
+South Africa,1981,civil_unrest_events,4.0
+South Africa,1982,civil_unrest_events,8.0
+South Africa,1983,civil_unrest_events,12.0
+South Africa,1984,civil_unrest_events,16.0
+South Africa,1985,civil_unrest_events,7.0
+South Africa,1986,civil_unrest_events,4.0
+South Africa,1988,civil_unrest_events,3.0
+South Africa,1990,civil_unrest_events,7.0
+South Africa,1997,civil_unrest_events,49.0
+South Africa,1998,civil_unrest_events,43.0
+South Africa,1999,civil_unrest_events,28.0
+South Africa,2000,civil_unrest_events,46.0
+South Africa,2001,civil_unrest_events,76.0
+South Africa,2002,civil_unrest_events,87.0
+South Africa,2003,civil_unrest_events,81.0
+South Africa,2004,civil_unrest_events,57.0
+South Africa,2005,civil_unrest_events,85.0
+South Africa,2006,civil_unrest_events,34.0
+South Africa,2007,civil_unrest_events,154.0
+South Africa,2008,civil_unrest_events,192.0
+South Africa,2009,civil_unrest_events,320.0
+South Africa,2010,civil_unrest_events,263.0
+South Africa,2011,civil_unrest_events,250.0
+South Africa,2012,civil_unrest_events,777.0
+South Africa,2013,civil_unrest_events,851.0
+South Africa,2014,civil_unrest_events,860.0
+South Africa,2015,civil_unrest_events,1159.0
+South Africa,2016,civil_unrest_events,1229.0
+South Africa,2017,civil_unrest_events,902.0
+South Africa,2018,civil_unrest_events,940.0
+South Africa,2019,civil_unrest_events,1384.0
+South Africa,2020,civil_unrest_events,1590.0
+South Africa,2021,civil_unrest_events,1615.0
+South Africa,2022,civil_unrest_events,1641.0
+South Africa,2023,civil_unrest_events,1656.0
+South Africa,2024,civil_unrest_events,1715.0
+South Africa,2025,civil_unrest_events,1560.0
 South Africa,1972,fed_tax_revenue_pct_gdp,15.0270614453996
 South Africa,1973,fed_tax_revenue_pct_gdp,15.6695403543733
 South Africa,1974,fed_tax_revenue_pct_gdp,15.5068804892792
@@ -1766,7 +1628,6 @@ South Africa,2021,fed_tax_revenue_pct_gdp,25.9501542020771
 South Africa,2022,fed_tax_revenue_pct_gdp,26.0196744256587
 South Africa,2023,fed_tax_revenue_pct_gdp,25.3996646845665
 South Africa,2024,fed_tax_revenue_pct_gdp,25.8775949092475
-South Africa,2025,fed_tax_revenue_pct_gdp,25.8775949092475
 South Africa,1960,gdp_billions,8.7485965005614
 South Africa,1961,gdp_billions,9.22599630960148
 South Africa,1962,gdp_billions,9.813996074401569
@@ -1833,122 +1694,93 @@ South Africa,2022,gdp_billions,407.59604306788503
 South Africa,2023,gdp_billions,381.440724491232
 South Africa,2024,gdp_billions,401.144998373585
 South Africa,2025,gdp_billions,427.184325997307
-South Africa,1960,gini_coefficient,30.049999999999997
-South Africa,1961,gini_coefficient,28.866666666666664
-South Africa,1962,gini_coefficient,28.866666666666664
-South Africa,1963,gini_coefficient,29.066666666666666
-South Africa,1964,gini_coefficient,29.233333333333334
-South Africa,1965,gini_coefficient,29.325
-South Africa,1966,gini_coefficient,29.25
-South Africa,1967,gini_coefficient,29.200000000000003
-South Africa,1968,gini_coefficient,32.18
-South Africa,1969,gini_coefficient,32.22
-South Africa,1970,gini_coefficient,32.44
-South Africa,1971,gini_coefficient,32.6
-South Africa,1972,gini_coefficient,32.58
-South Africa,1973,gini_coefficient,32.54
-South Africa,1974,gini_coefficient,32.68
-South Africa,1975,gini_coefficient,36.48571428571429
-South Africa,1976,gini_coefficient,36.47142857142857
-South Africa,1977,gini_coefficient,36.42857142857143
-South Africa,1978,gini_coefficient,36.42857142857143
-South Africa,1979,gini_coefficient,36.614285714285714
-South Africa,1980,gini_coefficient,35.2375
-South Africa,1981,gini_coefficient,35.4625
-South Africa,1982,gini_coefficient,35.7125
-South Africa,1983,gini_coefficient,35.099999999999994
-South Africa,1984,gini_coefficient,34.97777777777778
-South Africa,1985,gini_coefficient,34.97777777777778
-South Africa,1986,gini_coefficient,35.21111111111111
-South Africa,1987,gini_coefficient,35.31111111111111
-South Africa,1988,gini_coefficient,34.260000000000005
-South Africa,1989,gini_coefficient,34.35
-South Africa,1990,gini_coefficient,34.33
-South Africa,1991,gini_coefficient,35.63333333333333
-South Africa,1992,gini_coefficient,36.166666666666664
-South Africa,1993,gini_coefficient,36.97777777777778
-South Africa,1994,gini_coefficient,37.51111111111111
-South Africa,1995,gini_coefficient,37.82222222222222
-South Africa,1996,gini_coefficient,37.78888888888889
-South Africa,1997,gini_coefficient,37.855555555555554
-South Africa,1998,gini_coefficient,37.922222222222224
-South Africa,1999,gini_coefficient,38.02222222222222
-South Africa,2000,gini_coefficient,38.2
-South Africa,2001,gini_coefficient,38.233333333333334
-South Africa,2002,gini_coefficient,38.099999999999994
-South Africa,2003,gini_coefficient,38.111111111111114
-South Africa,2004,gini_coefficient,38.099999999999994
-South Africa,2005,gini_coefficient,38.099999999999994
-South Africa,2006,gini_coefficient,37.98888888888889
-South Africa,2007,gini_coefficient,37.87777777777777
-South Africa,2008,gini_coefficient,37.82222222222222
-South Africa,2009,gini_coefficient,37.644444444444446
-South Africa,2010,gini_coefficient,37.422222222222224
-South Africa,2011,gini_coefficient,37.5
-South Africa,2012,gini_coefficient,37.3
-South Africa,2013,gini_coefficient,37.2
-South Africa,2014,gini_coefficient,37.05555555555556
-South Africa,2015,gini_coefficient,36.97777777777778
-South Africa,2016,gini_coefficient,37.0
-South Africa,2017,gini_coefficient,36.94444444444444
-South Africa,2018,gini_coefficient,37.06666666666667
-South Africa,2019,gini_coefficient,36.96666666666667
-South Africa,2020,gini_coefficient,36.82222222222222
-South Africa,2021,gini_coefficient,36.68888888888889
-South Africa,2022,gini_coefficient,36.68888888888889
-South Africa,2023,gini_coefficient,33.5875
-South Africa,2024,gini_coefficient,36.45
-South Africa,2025,gini_coefficient,36.45
-South Africa,1976,political_violence_score,2.8
-South Africa,1977,political_violence_score,2.8
-South Africa,1978,political_violence_score,2.6
-South Africa,1979,political_violence_score,2.6
-South Africa,1980,political_violence_score,2.5
-South Africa,1981,political_violence_score,2.7
-South Africa,1982,political_violence_score,2.6
-South Africa,1983,political_violence_score,2.8
-South Africa,1984,political_violence_score,2.6
-South Africa,1985,political_violence_score,2.6
-South Africa,1986,political_violence_score,2.888888888888889
-South Africa,1987,political_violence_score,2.8
-South Africa,1988,political_violence_score,2.5
-South Africa,1989,political_violence_score,2.3
-South Africa,1990,political_violence_score,2.2
-South Africa,1991,political_violence_score,2.7777777777777777
-South Africa,1992,political_violence_score,2.4444444444444446
-South Africa,1993,political_violence_score,2.2222222222222223
-South Africa,1994,political_violence_score,2.6666666666666665
-South Africa,1995,political_violence_score,2.4444444444444446
-South Africa,1996,political_violence_score,2.7142857142857144
-South Africa,1997,political_violence_score,2.4285714285714284
-South Africa,1998,political_violence_score,2.375
-South Africa,1999,political_violence_score,2.0
-South Africa,2000,political_violence_score,2.4444444444444446
-South Africa,2001,political_violence_score,2.6666666666666665
-South Africa,2002,political_violence_score,2.75
-South Africa,2003,political_violence_score,2.4444444444444446
-South Africa,2004,political_violence_score,2.5555555555555554
-South Africa,2005,political_violence_score,2.3333333333333335
-South Africa,2006,political_violence_score,2.5555555555555554
-South Africa,2007,political_violence_score,2.5555555555555554
-South Africa,2008,political_violence_score,2.4444444444444446
-South Africa,2009,political_violence_score,2.5555555555555554
-South Africa,2010,political_violence_score,2.111111111111111
-South Africa,2011,political_violence_score,2.2222222222222223
-South Africa,2012,political_violence_score,2.2222222222222223
-South Africa,2013,political_violence_score,2.2222222222222223
-South Africa,2014,political_violence_score,2.2222222222222223
-South Africa,2015,political_violence_score,2.0
-South Africa,2016,political_violence_score,2.4444444444444446
-South Africa,2017,political_violence_score,2.5555555555555554
-South Africa,2018,political_violence_score,4.0
-South Africa,2019,political_violence_score,2.888888888888889
-South Africa,2020,political_violence_score,2.5555555555555554
-South Africa,2021,political_violence_score,2.5555555555555554
-South Africa,2022,political_violence_score,2.6666666666666665
-South Africa,2023,political_violence_score,2.6
-South Africa,2024,political_violence_score,2.5555555555555554
-South Africa,2025,political_violence_score,2.5555555555555554
+South Africa,1975,gini_coefficient,59.2
+South Africa,1976,gini_coefficient,59.4
+South Africa,1977,gini_coefficient,59.5
+South Africa,1978,gini_coefficient,59.6
+South Africa,1979,gini_coefficient,59.8
+South Africa,1980,gini_coefficient,59.9
+South Africa,1981,gini_coefficient,60.1
+South Africa,1982,gini_coefficient,60.2
+South Africa,1983,gini_coefficient,60.3
+South Africa,1984,gini_coefficient,60.4
+South Africa,1985,gini_coefficient,60.6
+South Africa,1986,gini_coefficient,60.7
+South Africa,1987,gini_coefficient,60.8
+South Africa,1988,gini_coefficient,61.0
+South Africa,1989,gini_coefficient,61.1
+South Africa,1990,gini_coefficient,61.2
+South Africa,1991,gini_coefficient,61.3
+South Africa,1992,gini_coefficient,61.5
+South Africa,1993,gini_coefficient,61.6
+South Africa,1995,gini_coefficient,61.5
+South Africa,1996,gini_coefficient,61.6
+South Africa,1997,gini_coefficient,61.7
+South Africa,1998,gini_coefficient,61.8
+South Africa,1999,gini_coefficient,61.9
+South Africa,2000,gini_coefficient,62.0
+South Africa,2001,gini_coefficient,62.3
+South Africa,2002,gini_coefficient,62.6
+South Africa,2003,gini_coefficient,62.8
+South Africa,2004,gini_coefficient,63.1
+South Africa,2005,gini_coefficient,63.4
+South Africa,2006,gini_coefficient,63.6
+South Africa,2007,gini_coefficient,63.8
+South Africa,2008,gini_coefficient,63.9
+South Africa,2009,gini_coefficient,63.7
+South Africa,2010,gini_coefficient,63.5
+South Africa,2011,gini_coefficient,63.3
+South Africa,2012,gini_coefficient,63.0
+South Africa,2013,gini_coefficient,62.8
+South Africa,2014,gini_coefficient,62.6
+South Africa,2015,gini_coefficient,62.4
+South Africa,2016,gini_coefficient,62.2
+South Africa,2017,gini_coefficient,62.0
+South Africa,2018,gini_coefficient,61.9
+South Africa,2019,gini_coefficient,61.7
+South Africa,2020,gini_coefficient,61.6
+South Africa,2021,gini_coefficient,61.4
+South Africa,2022,gini_coefficient,61.2
+South Africa,1976,political_violence_score,4.0
+South Africa,1978,political_violence_score,3.0
+South Africa,1983,political_violence_score,4.0
+South Africa,1984,political_violence_score,3.0
+South Africa,1985,political_violence_score,4.0
+South Africa,1986,political_violence_score,5.0
+South Africa,1987,political_violence_score,4.0
+South Africa,1991,political_violence_score,5.0
+South Africa,1995,political_violence_score,4.0
+South Africa,1999,political_violence_score,3.0
+South Africa,2000,political_violence_score,4.0
+South Africa,2002,political_violence_score,3.0
+South Africa,2017,political_violence_score,4.0
+South Africa,2023,political_violence_score,3.0
+South Africa,1996,redist_gdp_pct,2.95638098386444
+South Africa,1997,redist_gdp_pct,3.35107783392945
+South Africa,1998,redist_gdp_pct,3.23388114215716
+South Africa,1999,redist_gdp_pct,3.23639663386231
+South Africa,2000,redist_gdp_pct,3.19559260039995
+South Africa,2001,redist_gdp_pct,3.33752737059594
+South Africa,2002,redist_gdp_pct,3.78142089353918
+South Africa,2003,redist_gdp_pct,4.19587640625094
+South Africa,2004,redist_gdp_pct,4.28888796096423
+South Africa,2005,redist_gdp_pct,4.33669025585193
+South Africa,2006,redist_gdp_pct,4.23693887132252
+South Africa,2008,redist_gdp_pct,4.15257745064291
+South Africa,2009,redist_gdp_pct,4.61856411911837
+South Africa,2010,redist_gdp_pct,4.37451621000434
+South Africa,2011,redist_gdp_pct,4.40658256405756
+South Africa,2012,redist_gdp_pct,4.2022959102845
+South Africa,2013,redist_gdp_pct,4.43448845340897
+South Africa,2014,redist_gdp_pct,4.48915513369666
+South Africa,2015,redist_gdp_pct,4.50385041778704
+South Africa,2016,redist_gdp_pct,4.38778768099118
+South Africa,2017,redist_gdp_pct,5.35027372936544
+South Africa,2018,redist_gdp_pct,6.09804772905677
+South Africa,2019,redist_gdp_pct,5.18680960540652
+South Africa,2020,redist_gdp_pct,6.89400616813225
+South Africa,2021,redist_gdp_pct,5.81717401759378
+South Africa,2022,redist_gdp_pct,5.44896404351795
 South Africa,1991,unemployment_rate_pct,23.137
 South Africa,1992,unemployment_rate_pct,23.463
 South Africa,1993,unemployment_rate_pct,23.361
@@ -1984,6 +1816,35 @@ South Africa,2022,unemployment_rate_pct,33.268
 South Africa,2023,unemployment_rate_pct,32.098
 South Africa,2024,unemployment_rate_pct,32.279
 South Africa,2025,unemployment_rate_pct,32.391
+United Kingdom,1990,civil_unrest_events,36.0
+United Kingdom,1991,civil_unrest_events,11.0
+United Kingdom,1992,civil_unrest_events,21.0
+United Kingdom,1993,civil_unrest_events,23.0
+United Kingdom,1994,civil_unrest_events,13.0
+United Kingdom,1995,civil_unrest_events,12.0
+United Kingdom,1996,civil_unrest_events,20.0
+United Kingdom,1997,civil_unrest_events,14.0
+United Kingdom,1998,civil_unrest_events,20.0
+United Kingdom,1999,civil_unrest_events,15.0
+United Kingdom,2000,civil_unrest_events,18.0
+United Kingdom,2002,civil_unrest_events,33.0
+United Kingdom,2003,civil_unrest_events,20.0
+United Kingdom,2004,civil_unrest_events,17.0
+United Kingdom,2005,civil_unrest_events,14.0
+United Kingdom,2007,civil_unrest_events,8.0
+United Kingdom,2008,civil_unrest_events,10.0
+United Kingdom,2009,civil_unrest_events,21.0
+United Kingdom,2010,civil_unrest_events,16.0
+United Kingdom,2011,civil_unrest_events,20.0
+United Kingdom,2012,civil_unrest_events,15.0
+United Kingdom,2013,civil_unrest_events,20.0
+United Kingdom,2014,civil_unrest_events,13.0
+United Kingdom,2015,civil_unrest_events,20.0
+United Kingdom,2016,civil_unrest_events,35.0
+United Kingdom,2017,civil_unrest_events,21.0
+United Kingdom,2018,civil_unrest_events,24.0
+United Kingdom,2019,civil_unrest_events,32.0
+United Kingdom,2020,civil_unrest_events,4.0
 United Kingdom,1972,fed_tax_revenue_pct_gdp,23.0184853204808
 United Kingdom,1973,fed_tax_revenue_pct_gdp,21.0715830724992
 United Kingdom,1974,fed_tax_revenue_pct_gdp,23.7460735062314
@@ -2037,7 +1898,6 @@ United Kingdom,2021,fed_tax_revenue_pct_gdp,25.9910653856023
 United Kingdom,2022,fed_tax_revenue_pct_gdp,26.5536048949437
 United Kingdom,2023,fed_tax_revenue_pct_gdp,26.8736892132882
 United Kingdom,2024,fed_tax_revenue_pct_gdp,26.8890215407942
-United Kingdom,2025,fed_tax_revenue_pct_gdp,26.8890215407942
 United Kingdom,1960,gdp_billions,73.2339676921028
 United Kingdom,1961,gdp_billions,77.7419657033544
 United Kingdom,1962,gdp_billions,81.2475641568246
@@ -2104,188 +1964,146 @@ United Kingdom,2022,gdp_billions,3181.24435046541
 United Kingdom,2023,gdp_billions,3420.79665378908
 United Kingdom,2024,gdp_billions,3695.53951353415
 United Kingdom,2025,gdp_billions,4002.5875418460096
-United Kingdom,1960,gini_coefficient,30.049999999999997
-United Kingdom,1961,gini_coefficient,28.866666666666664
-United Kingdom,1962,gini_coefficient,28.866666666666664
-United Kingdom,1963,gini_coefficient,29.066666666666666
-United Kingdom,1964,gini_coefficient,29.233333333333334
-United Kingdom,1965,gini_coefficient,29.325
-United Kingdom,1966,gini_coefficient,29.25
-United Kingdom,1967,gini_coefficient,29.200000000000003
-United Kingdom,1968,gini_coefficient,32.18
-United Kingdom,1969,gini_coefficient,32.22
-United Kingdom,1970,gini_coefficient,32.44
-United Kingdom,1971,gini_coefficient,32.6
-United Kingdom,1972,gini_coefficient,32.58
-United Kingdom,1973,gini_coefficient,32.54
-United Kingdom,1974,gini_coefficient,32.68
-United Kingdom,1975,gini_coefficient,36.48571428571429
-United Kingdom,1976,gini_coefficient,36.47142857142857
-United Kingdom,1977,gini_coefficient,36.42857142857143
-United Kingdom,1978,gini_coefficient,36.42857142857143
-United Kingdom,1979,gini_coefficient,36.614285714285714
-United Kingdom,1980,gini_coefficient,35.2375
-United Kingdom,1981,gini_coefficient,35.4625
-United Kingdom,1982,gini_coefficient,35.7125
-United Kingdom,1983,gini_coefficient,35.099999999999994
-United Kingdom,1984,gini_coefficient,34.97777777777778
-United Kingdom,1985,gini_coefficient,34.97777777777778
-United Kingdom,1986,gini_coefficient,35.21111111111111
-United Kingdom,1987,gini_coefficient,35.31111111111111
-United Kingdom,1988,gini_coefficient,34.260000000000005
-United Kingdom,1989,gini_coefficient,34.35
-United Kingdom,1990,gini_coefficient,34.33
-United Kingdom,1991,gini_coefficient,35.63333333333333
-United Kingdom,1992,gini_coefficient,36.166666666666664
-United Kingdom,1993,gini_coefficient,36.97777777777778
-United Kingdom,1994,gini_coefficient,37.51111111111111
-United Kingdom,1995,gini_coefficient,37.82222222222222
-United Kingdom,1996,gini_coefficient,37.78888888888889
-United Kingdom,1997,gini_coefficient,37.855555555555554
-United Kingdom,1998,gini_coefficient,37.922222222222224
-United Kingdom,1999,gini_coefficient,38.02222222222222
-United Kingdom,2000,gini_coefficient,38.2
-United Kingdom,2001,gini_coefficient,38.233333333333334
-United Kingdom,2002,gini_coefficient,38.099999999999994
-United Kingdom,2003,gini_coefficient,38.111111111111114
-United Kingdom,2004,gini_coefficient,38.099999999999994
-United Kingdom,2005,gini_coefficient,38.099999999999994
-United Kingdom,2006,gini_coefficient,37.98888888888889
-United Kingdom,2007,gini_coefficient,37.87777777777777
-United Kingdom,2008,gini_coefficient,37.82222222222222
-United Kingdom,2009,gini_coefficient,37.644444444444446
-United Kingdom,2010,gini_coefficient,37.422222222222224
-United Kingdom,2011,gini_coefficient,37.5
-United Kingdom,2012,gini_coefficient,37.3
-United Kingdom,2013,gini_coefficient,37.2
-United Kingdom,2014,gini_coefficient,37.05555555555556
-United Kingdom,2015,gini_coefficient,36.97777777777778
-United Kingdom,2016,gini_coefficient,37.0
-United Kingdom,2017,gini_coefficient,36.94444444444444
-United Kingdom,2018,gini_coefficient,37.06666666666667
-United Kingdom,2019,gini_coefficient,36.96666666666667
-United Kingdom,2020,gini_coefficient,36.82222222222222
-United Kingdom,2021,gini_coefficient,36.68888888888889
-United Kingdom,2022,gini_coefficient,36.68888888888889
-United Kingdom,2023,gini_coefficient,33.5875
-United Kingdom,2024,gini_coefficient,36.45
-United Kingdom,2025,gini_coefficient,36.45
-United Kingdom,1976,political_violence_score,2.8
-United Kingdom,1977,political_violence_score,2.8
-United Kingdom,1978,political_violence_score,2.6
-United Kingdom,1979,political_violence_score,2.6
-United Kingdom,1980,political_violence_score,2.5
-United Kingdom,1981,political_violence_score,2.7
-United Kingdom,1982,political_violence_score,2.6
-United Kingdom,1983,political_violence_score,2.8
-United Kingdom,1984,political_violence_score,2.6
-United Kingdom,1985,political_violence_score,2.6
-United Kingdom,1986,political_violence_score,2.888888888888889
-United Kingdom,1987,political_violence_score,2.8
-United Kingdom,1988,political_violence_score,2.5
-United Kingdom,1989,political_violence_score,2.3
-United Kingdom,1990,political_violence_score,2.2
-United Kingdom,1991,political_violence_score,2.7777777777777777
-United Kingdom,1992,political_violence_score,2.4444444444444446
-United Kingdom,1993,political_violence_score,2.2222222222222223
-United Kingdom,1994,political_violence_score,2.6666666666666665
-United Kingdom,1995,political_violence_score,2.4444444444444446
-United Kingdom,1996,political_violence_score,2.7142857142857144
-United Kingdom,1997,political_violence_score,2.4285714285714284
-United Kingdom,1998,political_violence_score,2.375
-United Kingdom,1999,political_violence_score,2.0
-United Kingdom,2000,political_violence_score,2.4444444444444446
-United Kingdom,2001,political_violence_score,2.6666666666666665
-United Kingdom,2002,political_violence_score,2.75
-United Kingdom,2003,political_violence_score,2.4444444444444446
-United Kingdom,2004,political_violence_score,2.5555555555555554
-United Kingdom,2005,political_violence_score,2.3333333333333335
-United Kingdom,2006,political_violence_score,2.5555555555555554
-United Kingdom,2007,political_violence_score,2.5555555555555554
-United Kingdom,2008,political_violence_score,2.4444444444444446
-United Kingdom,2009,political_violence_score,2.5555555555555554
-United Kingdom,2010,political_violence_score,2.111111111111111
-United Kingdom,2011,political_violence_score,2.2222222222222223
-United Kingdom,2012,political_violence_score,2.2222222222222223
-United Kingdom,2013,political_violence_score,2.2222222222222223
-United Kingdom,2014,political_violence_score,2.2222222222222223
-United Kingdom,2015,political_violence_score,2.0
-United Kingdom,2016,political_violence_score,2.4444444444444446
-United Kingdom,2017,political_violence_score,2.5555555555555554
-United Kingdom,2018,political_violence_score,4.0
-United Kingdom,2019,political_violence_score,2.888888888888889
-United Kingdom,2020,political_violence_score,2.5555555555555554
-United Kingdom,2021,political_violence_score,2.5555555555555554
-United Kingdom,2022,political_violence_score,2.6666666666666665
-United Kingdom,2023,political_violence_score,2.6
-United Kingdom,2024,political_violence_score,2.5555555555555554
-United Kingdom,2025,political_violence_score,2.5555555555555554
-United Kingdom,1960,redist_gdp_pct,10.691770533333333
-United Kingdom,1961,redist_gdp_pct,10.948257333333332
-United Kingdom,1962,redist_gdp_pct,11.059931999999998
-United Kingdom,1963,redist_gdp_pct,11.375360233333334
-United Kingdom,1964,redist_gdp_pct,11.123909833333334
-United Kingdom,1965,redist_gdp_pct,11.5943398
-United Kingdom,1966,redist_gdp_pct,11.779151666666666
-United Kingdom,1967,redist_gdp_pct,12.699709333333333
-United Kingdom,1968,redist_gdp_pct,12.920217766666667
-United Kingdom,1969,redist_gdp_pct,12.773282333333334
-United Kingdom,1970,redist_gdp_pct,13.002480333333333
-United Kingdom,1971,redist_gdp_pct,13.446698166666666
-United Kingdom,1972,redist_gdp_pct,13.990301
-United Kingdom,1973,redist_gdp_pct,14.026002
-United Kingdom,1974,redist_gdp_pct,15.398722999999999
-United Kingdom,1975,redist_gdp_pct,17.172529333333333
-United Kingdom,1976,redist_gdp_pct,17.206447999999998
-United Kingdom,1977,redist_gdp_pct,17.058683666666667
-United Kingdom,1978,redist_gdp_pct,16.863939333333335
-United Kingdom,1979,redist_gdp_pct,16.740230666666665
-United Kingdom,1980,redist_gdp_pct,17.171666666666667
-United Kingdom,1981,redist_gdp_pct,17.986
-United Kingdom,1982,redist_gdp_pct,18.291666666666668
-United Kingdom,1983,redist_gdp_pct,18.509666666666668
-United Kingdom,1984,redist_gdp_pct,18.117
-United Kingdom,1985,redist_gdp_pct,18.141333333333336
-United Kingdom,1986,redist_gdp_pct,17.024
-United Kingdom,1987,redist_gdp_pct,16.471
-United Kingdom,1988,redist_gdp_pct,15.815
-United Kingdom,1989,redist_gdp_pct,15.246
-United Kingdom,1990,redist_gdp_pct,13.007
-United Kingdom,1991,redist_gdp_pct,14.658000000000001
-United Kingdom,1992,redist_gdp_pct,15.8785
-United Kingdom,1993,redist_gdp_pct,16.091
-United Kingdom,1994,redist_gdp_pct,15.7575
-United Kingdom,1995,redist_gdp_pct,15.8185
-United Kingdom,1996,redist_gdp_pct,16.049
-United Kingdom,1997,redist_gdp_pct,15.826
-United Kingdom,1998,redist_gdp_pct,15.999
-United Kingdom,1999,redist_gdp_pct,16.25016666666667
-United Kingdom,2000,redist_gdp_pct,15.568166666666665
-United Kingdom,2001,redist_gdp_pct,15.990666666666668
-United Kingdom,2002,redist_gdp_pct,16.253333333333334
-United Kingdom,2003,redist_gdp_pct,16.542
-United Kingdom,2004,redist_gdp_pct,16.3815
-United Kingdom,2005,redist_gdp_pct,16.3585
-United Kingdom,2006,redist_gdp_pct,16.13
-United Kingdom,2007,redist_gdp_pct,15.903666666666666
-United Kingdom,2008,redist_gdp_pct,16.619
-United Kingdom,2009,redist_gdp_pct,18.524166666666666
-United Kingdom,2010,redist_gdp_pct,18.280833333333334
-United Kingdom,2011,redist_gdp_pct,17.702666666666666
-United Kingdom,2012,redist_gdp_pct,17.81266666666667
-United Kingdom,2013,redist_gdp_pct,17.937
-United Kingdom,2014,redist_gdp_pct,17.8655
-United Kingdom,2015,redist_gdp_pct,18.000833333333333
-United Kingdom,2016,redist_gdp_pct,18.162499999999998
-United Kingdom,2017,redist_gdp_pct,18.1005
-United Kingdom,2018,redist_gdp_pct,18.043833333333335
-United Kingdom,2019,redist_gdp_pct,18.483999999999998
-United Kingdom,2020,redist_gdp_pct,22.100666666666665
-United Kingdom,2021,redist_gdp_pct,21.975333333333335
-United Kingdom,2022,redist_gdp_pct,19.7855
-United Kingdom,2023,redist_gdp_pct,19.888333333333332
-United Kingdom,2024,redist_gdp_pct,21.51525
-United Kingdom,2025,redist_gdp_pct,21.51525
+United Kingdom,1961,gini_coefficient,26.1
+United Kingdom,1962,gini_coefficient,25.8
+United Kingdom,1963,gini_coefficient,25.9
+United Kingdom,1964,gini_coefficient,25.8
+United Kingdom,1965,gini_coefficient,25.5
+United Kingdom,1966,gini_coefficient,25.4
+United Kingdom,1967,gini_coefficient,25.2
+United Kingdom,1968,gini_coefficient,25.0
+United Kingdom,1969,gini_coefficient,25.2
+United Kingdom,1970,gini_coefficient,25.5
+United Kingdom,1971,gini_coefficient,25.9
+United Kingdom,1972,gini_coefficient,25.8
+United Kingdom,1973,gini_coefficient,25.9
+United Kingdom,1974,gini_coefficient,25.7
+United Kingdom,1975,gini_coefficient,25.1
+United Kingdom,1976,gini_coefficient,24.9
+United Kingdom,1977,gini_coefficient,24.7
+United Kingdom,1978,gini_coefficient,25.1
+United Kingdom,1979,gini_coefficient,25.4
+United Kingdom,1980,gini_coefficient,26.1
+United Kingdom,1981,gini_coefficient,26.7
+United Kingdom,1982,gini_coefficient,27.1
+United Kingdom,1983,gini_coefficient,27.3
+United Kingdom,1984,gini_coefficient,27.6
+United Kingdom,1985,gini_coefficient,28.6
+United Kingdom,1986,gini_coefficient,29.7
+United Kingdom,1987,gini_coefficient,30.8
+United Kingdom,1988,gini_coefficient,31.5
+United Kingdom,1989,gini_coefficient,31.8
+United Kingdom,1990,gini_coefficient,32.5
+United Kingdom,1991,gini_coefficient,32.7
+United Kingdom,1993,gini_coefficient,33.1
+United Kingdom,1994,gini_coefficient,33.7
+United Kingdom,1996,gini_coefficient,33.6
+United Kingdom,1997,gini_coefficient,33.9
+United Kingdom,1998,gini_coefficient,34.4
+United Kingdom,1999,gini_coefficient,34.7
+United Kingdom,2000,gini_coefficient,35.0
+United Kingdom,2001,gini_coefficient,34.6
+United Kingdom,2002,gini_coefficient,33.7
+United Kingdom,2003,gini_coefficient,33.1
+United Kingdom,2004,gini_coefficient,32.9
+United Kingdom,2005,gini_coefficient,33.3
+United Kingdom,2006,gini_coefficient,33.4
+United Kingdom,2007,gini_coefficient,32.9
+United Kingdom,2009,gini_coefficient,32.6
+United Kingdom,2010,gini_coefficient,32.0
+United Kingdom,2011,gini_coefficient,31.4
+United Kingdom,2012,gini_coefficient,31.1
+United Kingdom,2013,gini_coefficient,30.7
+United Kingdom,2014,gini_coefficient,31.1
+United Kingdom,2015,gini_coefficient,31.3
+United Kingdom,2016,gini_coefficient,31.2
+United Kingdom,2018,gini_coefficient,31.4
+United Kingdom,2019,gini_coefficient,31.1
+United Kingdom,2020,gini_coefficient,30.9
+United Kingdom,2021,gini_coefficient,31.1
+United Kingdom,2022,gini_coefficient,32.2
+United Kingdom,2023,gini_coefficient,31.9
+United Kingdom,2024,gini_coefficient,31.6
+United Kingdom,1976,political_violence_score,2.0
+United Kingdom,1979,political_violence_score,1.0
+United Kingdom,1984,political_violence_score,2.0
+United Kingdom,1985,political_violence_score,1.0
+United Kingdom,1986,political_violence_score,2.0
+United Kingdom,1987,political_violence_score,1.0
+United Kingdom,1988,political_violence_score,2.0
+United Kingdom,1989,political_violence_score,1.0
+United Kingdom,1991,political_violence_score,2.0
+United Kingdom,1993,political_violence_score,1.0
+United Kingdom,1998,political_violence_score,2.0
+United Kingdom,1999,political_violence_score,1.0
+United Kingdom,2000,political_violence_score,2.0
+United Kingdom,2010,political_violence_score,1.0
+United Kingdom,2016,political_violence_score,2.0
+United Kingdom,2017,political_violence_score,1.0
+United Kingdom,1960,redist_gdp_pct,10.491441
+United Kingdom,1961,redist_gdp_pct,10.753797
+United Kingdom,1962,redist_gdp_pct,10.958211
+United Kingdom,1963,redist_gdp_pct,11.49145
+United Kingdom,1964,redist_gdp_pct,11.2993765
+United Kingdom,1965,redist_gdp_pct,11.976261
+United Kingdom,1966,redist_gdp_pct,12.208261
+United Kingdom,1967,redist_gdp_pct,12.895713
+United Kingdom,1968,redist_gdp_pct,13.396644
+United Kingdom,1969,redist_gdp_pct,13.390328
+United Kingdom,1970,redist_gdp_pct,13.558754
+United Kingdom,1971,redist_gdp_pct,13.424457
+United Kingdom,1972,redist_gdp_pct,14.260652
+United Kingdom,1973,redist_gdp_pct,13.84068
+United Kingdom,1974,redist_gdp_pct,15.323655
+United Kingdom,1975,redist_gdp_pct,16.054113
+United Kingdom,1976,redist_gdp_pct,16.63472
+United Kingdom,1977,redist_gdp_pct,16.575602
+United Kingdom,1978,redist_gdp_pct,16.909748
+United Kingdom,1979,redist_gdp_pct,16.822386
+United Kingdom,1980,redist_gdp_pct,16.867
+United Kingdom,1981,redist_gdp_pct,18.312
+United Kingdom,1982,redist_gdp_pct,18.823
+United Kingdom,1983,redist_gdp_pct,19.606
+United Kingdom,1984,redist_gdp_pct,19.576
+United Kingdom,1985,redist_gdp_pct,19.609
+United Kingdom,1986,redist_gdp_pct,19.614
+United Kingdom,1987,redist_gdp_pct,18.79
+United Kingdom,1988,redist_gdp_pct,17.473
+United Kingdom,1989,redist_gdp_pct,16.841
+United Kingdom,1990,redist_gdp_pct,17.248
+United Kingdom,1991,redist_gdp_pct,18.879
+United Kingdom,1992,redist_gdp_pct,20.486
+United Kingdom,1993,redist_gdp_pct,21.063
+United Kingdom,1994,redist_gdp_pct,20.308
+United Kingdom,1995,redist_gdp_pct,18.954
+United Kingdom,1996,redist_gdp_pct,18.767
+United Kingdom,1997,redist_gdp_pct,18.927
+United Kingdom,1998,redist_gdp_pct,19.13
+United Kingdom,1999,redist_gdp_pct,18.908
+United Kingdom,2000,redist_gdp_pct,19.258
+United Kingdom,2001,redist_gdp_pct,19.791
+United Kingdom,2002,redist_gdp_pct,19.843
+United Kingdom,2003,redist_gdp_pct,20.675
+United Kingdom,2004,redist_gdp_pct,21.21
+United Kingdom,2005,redist_gdp_pct,21.261
+United Kingdom,2006,redist_gdp_pct,21.265
+United Kingdom,2007,redist_gdp_pct,21.473
+United Kingdom,2008,redist_gdp_pct,22.791
+United Kingdom,2009,redist_gdp_pct,25.094
+United Kingdom,2010,redist_gdp_pct,25.234
+United Kingdom,2011,redist_gdp_pct,25.076
+United Kingdom,2012,redist_gdp_pct,25.279
+United Kingdom,2013,redist_gdp_pct,24.583
+United Kingdom,2014,redist_gdp_pct,24.024
+United Kingdom,2015,redist_gdp_pct,23.698
+United Kingdom,2016,redist_gdp_pct,22.9
+United Kingdom,2017,redist_gdp_pct,22.647
+United Kingdom,2018,redist_gdp_pct,22.223
+United Kingdom,2019,redist_gdp_pct,22.252
+United Kingdom,2020,redist_gdp_pct,25.609
+United Kingdom,2021,redist_gdp_pct,24.404
+United Kingdom,2022,redist_gdp_pct,22.747
+United Kingdom,2023,redist_gdp_pct,22.985
 United Kingdom,1991,unemployment_rate_pct,8.55
 United Kingdom,1992,unemployment_rate_pct,9.772
 United Kingdom,1993,unemployment_rate_pct,10.346
@@ -2355,18 +2173,6 @@ United States,2010,avg_federal_tax_rate_pct,11.81
 United States,2011,avg_federal_tax_rate_pct,12.54
 United States,2012,avg_federal_tax_rate_pct,13.11
 United States,2013,avg_federal_tax_rate_pct,13.64
-United States,2014,avg_federal_tax_rate_pct,13.64
-United States,2015,avg_federal_tax_rate_pct,13.64
-United States,2016,avg_federal_tax_rate_pct,13.64
-United States,2017,avg_federal_tax_rate_pct,13.64
-United States,2018,avg_federal_tax_rate_pct,13.64
-United States,2019,avg_federal_tax_rate_pct,13.64
-United States,2020,avg_federal_tax_rate_pct,13.64
-United States,2021,avg_federal_tax_rate_pct,13.64
-United States,2022,avg_federal_tax_rate_pct,13.64
-United States,2023,avg_federal_tax_rate_pct,13.64
-United States,2024,avg_federal_tax_rate_pct,13.64
-United States,2025,avg_federal_tax_rate_pct,13.64
 United States,2006,avg_hourly_earnings_nominal,20.261666666666667
 United States,2007,avg_hourly_earnings_nominal,20.9075
 United States,2008,avg_hourly_earnings_nominal,21.565833333333334
@@ -2458,7 +2264,6 @@ United States,1961,civil_unrest_events,10.0
 United States,1962,civil_unrest_events,11.0
 United States,1963,civil_unrest_events,79.0
 United States,1964,civil_unrest_events,25.0
-United States,1965,civil_unrest_events,25.0
 United States,1966,civil_unrest_events,29.0
 United States,1967,civil_unrest_events,83.0
 United States,1968,civil_unrest_events,85.0
@@ -2477,31 +2282,22 @@ United States,1980,civil_unrest_events,0.0
 United States,1981,civil_unrest_events,3.0
 United States,1982,civil_unrest_events,1.0
 United States,1983,civil_unrest_events,5.0
-United States,1984,civil_unrest_events,5.0
 United States,1985,civil_unrest_events,0.0
-United States,1986,civil_unrest_events,0.0
-United States,1987,civil_unrest_events,0.0
-United States,1988,civil_unrest_events,0.0
-United States,1989,civil_unrest_events,0.0
 United States,1990,civil_unrest_events,3.0
 United States,1991,civil_unrest_events,4.0
 United States,1992,civil_unrest_events,5.0
 United States,1993,civil_unrest_events,0.0
-United States,1994,civil_unrest_events,0.0
-United States,1995,civil_unrest_events,0.0
 United States,1996,civil_unrest_events,5.0
 United States,1997,civil_unrest_events,0.0
 United States,1998,civil_unrest_events,2.0
 United States,1999,civil_unrest_events,1.0
 United States,2000,civil_unrest_events,0.0
-United States,2001,civil_unrest_events,0.0
 United States,2002,civil_unrest_events,2.0
 United States,2003,civil_unrest_events,1.0
 United States,2004,civil_unrest_events,5.0
 United States,2005,civil_unrest_events,3.0
 United States,2006,civil_unrest_events,1.0
 United States,2007,civil_unrest_events,3.0
-United States,2008,civil_unrest_events,3.0
 United States,2009,civil_unrest_events,2.0
 United States,2010,civil_unrest_events,1.0
 United States,2011,civil_unrest_events,61.0
@@ -2614,10 +2410,6 @@ United States,1985,days_idle,7079.1
 United States,1986,days_idle,11860.5
 United States,1987,days_idle,4481.4
 United States,1988,days_idle,2879500.0
-United States,1989,days_idle,2879500.0
-United States,1990,days_idle,2879500.0
-United States,1991,days_idle,2879500.0
-United States,1992,days_idle,2879500.0
 United States,1993,days_idle,3597800.0
 United States,1994,days_idle,7948100.0
 United States,1995,days_idle,3476900.0
@@ -2845,7 +2637,6 @@ United States,2021,gini_coefficient,0.397127187192
 United States,2022,gini_coefficient,0.417003541651
 United States,2023,gini_coefficient,0.418204618935
 United States,2024,gini_coefficient,0.417625281746
-United States,2025,gini_coefficient,0.417625281746
 United States,2000,job_openings_thousands,3.7
 United States,2001,job_openings_thousands,3.1916666666666664
 United States,2002,job_openings_thousands,2.575
@@ -2937,7 +2728,6 @@ United States,1995,lfpr_pct,66.625
 United States,1996,lfpr_pct,66.76666666666667
 United States,1997,lfpr_pct,67.10833333333333
 United States,1998,lfpr_pct,67.08333333333333
-United States,1999,lfpr_pct,67.08333333333333
 United States,2000,lfpr_pct,67.06666666666666
 United States,2001,lfpr_pct,66.83333333333334
 United States,2002,lfpr_pct,66.58333333333334
@@ -2964,6 +2754,47 @@ United States,2022,lfpr_pct,62.233333333333334
 United States,2023,lfpr_pct,62.608333333333334
 United States,2024,lfpr_pct,62.59166666666667
 United States,2025,lfpr_pct,62.4375
+United States,1976,political_violence_score,2.8
+United States,1978,political_violence_score,2.6
+United States,1980,political_violence_score,2.5
+United States,1981,political_violence_score,2.7
+United States,1982,political_violence_score,2.6
+United States,1983,political_violence_score,2.8
+United States,1984,political_violence_score,2.6
+United States,1986,political_violence_score,2.888888888888889
+United States,1987,political_violence_score,2.8
+United States,1988,political_violence_score,2.5
+United States,1989,political_violence_score,2.3
+United States,1990,political_violence_score,2.2
+United States,1991,political_violence_score,2.7777777777777777
+United States,1992,political_violence_score,2.4444444444444446
+United States,1993,political_violence_score,2.2222222222222223
+United States,1994,political_violence_score,2.6666666666666665
+United States,1995,political_violence_score,2.4444444444444446
+United States,1996,political_violence_score,2.7142857142857144
+United States,1997,political_violence_score,2.4285714285714284
+United States,1998,political_violence_score,2.375
+United States,1999,political_violence_score,2.0
+United States,2000,political_violence_score,2.4444444444444446
+United States,2001,political_violence_score,2.6666666666666665
+United States,2002,political_violence_score,2.75
+United States,2003,political_violence_score,2.4444444444444446
+United States,2004,political_violence_score,2.5555555555555554
+United States,2005,political_violence_score,2.3333333333333335
+United States,2006,political_violence_score,2.5555555555555554
+United States,2008,political_violence_score,2.4444444444444446
+United States,2009,political_violence_score,2.5555555555555554
+United States,2010,political_violence_score,2.111111111111111
+United States,2011,political_violence_score,2.2222222222222223
+United States,2015,political_violence_score,2.0
+United States,2016,political_violence_score,2.4444444444444446
+United States,2017,political_violence_score,2.5555555555555554
+United States,2018,political_violence_score,4.0
+United States,2019,political_violence_score,2.888888888888889
+United States,2020,political_violence_score,2.5555555555555554
+United States,2022,political_violence_score,2.6666666666666665
+United States,2023,political_violence_score,2.6
+United States,2024,political_violence_score,2.5555555555555554
 United States,1960,protest_intensity_score,0.17973870403801587
 United States,1961,protest_intensity_score,0.17545339167850138
 United States,1962,protest_intensity_score,0.1644869028275119
@@ -3146,41 +2977,79 @@ United States,2021,redist_eitc,65.684
 United States,2022,redist_eitc,57.0
 United States,2023,redist_eitc,64.0
 United States,2024,redist_eitc,69.6
-United States,2025,redist_eitc,69.6
+United States,1960,redist_gdp_pct,0.6159950729965512
+United States,1961,redist_gdp_pct,0.8449970529166615
+United States,1962,redist_gdp_pct,0.5855897538470094
+United States,1963,redist_gdp_pct,0.5307553646865814
+United States,1964,redist_gdp_pct,0.45258638916292215
+United States,1965,redist_gdp_pct,0.37061911962316313
+United States,1966,redist_gdp_pct,0.40631457323861664
+United States,1967,redist_gdp_pct,0.4252606104181065
+United States,1968,redist_gdp_pct,0.3886627844589023
+United States,1969,redist_gdp_pct,0.3704868873507164
+United States,1970,redist_gdp_pct,1.974856094446683
+United States,1971,redist_gdp_pct,1.9820263520230506
+United States,1972,redist_gdp_pct,1.8081434086900623
+United States,1973,redist_gdp_pct,1.5216776815292083
+United States,1974,redist_gdp_pct,1.5679186011979716
+United States,1975,redist_gdp_pct,2.644562395484967
+United States,1976,redist_gdp_pct,2.3087235361186687
+United States,1977,redist_gdp_pct,1.921136701824215
+United States,1978,redist_gdp_pct,1.5760918097668655
+United States,1979,redist_gdp_pct,1.4537256744726539
+United States,1980,redist_gdp_pct,2.0567037703968585
+United States,1981,redist_gdp_pct,1.7837307069060466
+United States,1982,redist_gdp_pct,1.9666988959550362
+United States,1983,redist_gdp_pct,1.8447904140737412
+United States,1984,redist_gdp_pct,1.3962938664729985
+United States,1985,redist_gdp_pct,1.6817633420054932
+United States,1986,redist_gdp_pct,1.607697585636782
+United States,1987,redist_gdp_pct,1.5062414925383785
+United States,1988,redist_gdp_pct,1.4204900647341288
+United States,1989,redist_gdp_pct,1.3561280714631903
+United States,1990,redist_gdp_pct,1.9272559877609303
+United States,1991,redist_gdp_pct,2.1232171583465327
+United States,1992,redist_gdp_pct,2.2859118085421706
+United States,1993,redist_gdp_pct,2.1554274275813885
+United States,1994,redist_gdp_pct,1.9658331280706642
+United States,1995,redist_gdp_pct,3.0523086460589344
+United States,1996,redist_gdp_pct,2.927658718263534
+United States,1997,redist_gdp_pct,2.7130604253736665
+United States,1998,redist_gdp_pct,2.5483283543304793
+United States,1999,redist_gdp_pct,2.3996329077342695
+United States,2000,redist_gdp_pct,2.7047169434205918
+United States,2001,redist_gdp_pct,2.9635607013158376
+United States,2002,redist_gdp_pct,3.403123805725774
+United States,2003,redist_gdp_pct,3.4317678864775094
+United States,2004,redist_gdp_pct,3.291509192199296
+United States,2005,redist_gdp_pct,3.239480381392552
+United States,2006,redist_gdp_pct,3.067586518512542
+United States,2007,redist_gdp_pct,3.091468389376397
+United States,2008,redist_gdp_pct,3.336057491436204
+United States,2009,redist_gdp_pct,4.379188115871225
+United States,2010,redist_gdp_pct,4.5263244708434875
+United States,2011,redist_gdp_pct,4.318107400721668
+United States,2012,redist_gdp_pct,4.049681770277823
+United States,2013,redist_gdp_pct,3.9517881721851764
+United States,2014,redist_gdp_pct,3.8201062485660726
+United States,2015,redist_gdp_pct,3.9516394736715315
+United States,2016,redist_gdp_pct,3.9661740511030894
+United States,2017,redist_gdp_pct,3.8960013680350927
+United States,2018,redist_gdp_pct,3.7436934657441627
+United States,2019,redist_gdp_pct,3.6146599806425357
+United States,2020,redist_gdp_pct,6.358006140453288
+United States,2021,redist_gdp_pct,5.267434693597139
+United States,2022,redist_gdp_pct,3.936706425837638
+United States,2023,redist_gdp_pct,3.9927980283140294
+United States,2024,redist_gdp_pct,3.939106361541988
+United States,2025,redist_gdp_pct,3.759503844239151
 United States,1966,redist_medicaid,0.9
-United States,1967,redist_medicaid,0.9
-United States,1968,redist_medicaid,0.9
-United States,1969,redist_medicaid,0.9
 United States,1970,redist_medicaid,5.1
-United States,1971,redist_medicaid,5.1
-United States,1972,redist_medicaid,5.1
-United States,1973,redist_medicaid,5.1
-United States,1974,redist_medicaid,5.1
 United States,1975,redist_medicaid,13.0
-United States,1976,redist_medicaid,13.0
-United States,1977,redist_medicaid,13.0
-United States,1978,redist_medicaid,13.0
-United States,1979,redist_medicaid,13.0
 United States,1980,redist_medicaid,25.0
-United States,1981,redist_medicaid,25.0
-United States,1982,redist_medicaid,25.0
-United States,1983,redist_medicaid,25.0
-United States,1984,redist_medicaid,25.0
 United States,1985,redist_medicaid,41.0
-United States,1986,redist_medicaid,41.0
-United States,1987,redist_medicaid,41.0
-United States,1988,redist_medicaid,41.0
-United States,1989,redist_medicaid,41.0
 United States,1990,redist_medicaid,72.0
-United States,1991,redist_medicaid,72.0
-United States,1992,redist_medicaid,72.0
-United States,1993,redist_medicaid,72.0
-United States,1994,redist_medicaid,72.0
 United States,1995,redist_medicaid,159.0
-United States,1996,redist_medicaid,159.0
-United States,1997,redist_medicaid,159.0
-United States,1998,redist_medicaid,159.0
-United States,1999,redist_medicaid,159.0
 United States,2000,redist_medicaid,206.0
 United States,2001,redist_medicaid,229.0
 United States,2002,redist_medicaid,258.0
@@ -3206,26 +3075,7 @@ United States,2021,redist_medicaid,748.0
 United States,2022,redist_medicaid,824.0
 United States,2023,redist_medicaid,894.0
 United States,2024,redist_medicaid,949.0
-United States,2025,redist_medicaid,949.0
 United States,1970,redist_snap,11.3270795
-United States,1971,redist_snap,11.3270795
-United States,1972,redist_snap,11.3270795
-United States,1973,redist_snap,11.3270795
-United States,1974,redist_snap,11.3270795
-United States,1975,redist_snap,11.3270795
-United States,1976,redist_snap,11.3270795
-United States,1977,redist_snap,11.3270795
-United States,1978,redist_snap,11.3270795
-United States,1979,redist_snap,11.3270795
-United States,1980,redist_snap,11.3270795
-United States,1981,redist_snap,11.3270795
-United States,1982,redist_snap,11.3270795
-United States,1983,redist_snap,11.3270795
-United States,1984,redist_snap,11.3270795
-United States,1985,redist_snap,11.3270795
-United States,1986,redist_snap,11.3270795
-United States,1987,redist_snap,11.3270795
-United States,1988,redist_snap,11.3270795
 United States,1989,redist_snap,11.669780000000001
 United States,1990,redist_snap,14.142790000000002
 United States,1991,redist_snap,17.31577
@@ -3260,7 +3110,6 @@ United States,2019,redist_snap,55.622279999999996
 United States,2020,redist_snap,74.15668
 United States,2021,redist_snap,107.9315
 United States,2022,redist_snap,113.90249
-United States,2023,redist_snap,113.90249
 United States,2024,redist_snap,93.47588999999999
 United States,2025,redist_snap,95.7821
 United States,1960,redist_ui,3.341
@@ -3328,7 +3177,72 @@ United States,2021,redist_ui,326.77
 United States,2022,redist_ui,30.307
 United States,2023,redist_ui,38.24
 United States,2024,redist_ui,41.77
-United States,2025,redist_ui,41.77
+United States,1960,redistribution_total_billions,3.341
+United States,1961,redistribution_total_billions,4.748
+United States,1962,redistribution_total_billions,3.536
+United States,1963,redistribution_total_billions,3.382
+United States,1964,redistribution_total_billions,3.097
+United States,1965,redistribution_total_billions,2.749
+United States,1966,redistribution_total_billions,3.304
+United States,1967,redistribution_total_billions,3.6559999999999997
+United States,1968,redistribution_total_billions,3.654
+United States,1969,redistribution_total_billions,3.769
+United States,1970,redistribution_total_billions,21.1920795
+United States,1971,redistribution_total_billions,23.080079499999997
+United States,1972,redistribution_total_billions,23.110079499999998
+United States,1973,redistribution_total_billions,21.676079499999997
+United States,1974,redistribution_total_billions,24.212079499999998
+United States,1975,redistribution_total_billions,44.5100795
+United States,1976,redistribution_total_billions,43.2300795
+United States,1977,redistribution_total_billions,39.9540795
+United States,1978,redistribution_total_billions,36.995079499999996
+United States,1979,redistribution_total_billions,38.1630795
+United States,1980,redistribution_total_billions,58.7230795
+United States,1981,redistribution_total_billions,57.1810795
+United States,1982,redistribution_total_billions,65.7490795
+United States,1983,redistribution_total_billions,66.9670795
+United States,1984,redistribution_total_billions,56.3490795
+United States,1985,redistribution_total_billions,72.9450795
+United States,1986,redistribution_total_billions,73.6150795
+United States,1987,redistribution_total_billions,73.0970795
+United States,1988,redistribution_total_billions,74.34407949999999
+United States,1989,redistribution_total_billions,76.48778
+United States,1990,redistribution_total_billions,114.91479000000001
+United States,1991,redistribution_total_billions,130.72477
+United States,1992,redistribution_total_billions,149.00068000000002
+United States,1993,redistribution_total_billions,147.79703
+United States,1994,redistribution_total_billions,143.21357999999998
+United States,1995,redistribution_total_billions,233.15206999999998
+United States,1996,redistribution_total_billions,236.27911
+United States,1997,redistribution_total_billions,232.64086
+United States,1998,redistribution_total_billions,230.87749
+United States,1999,redistribution_total_billions,231.02939999999998
+United States,2000,redistribution_total_billions,277.19232
+United States,2001,redistribution_total_billions,313.58839
+United States,2002,redistribution_total_billions,371.8972
+United States,2003,redistribution_total_billions,393.00028000000003
+United States,2004,redistribution_total_billions,401.99488999999994
+United States,2005,redistribution_total_billions,422.29088
+United States,2006,redistribution_total_billions,423.74735
+United States,2007,redistribution_total_billions,447.39227
+United States,2008,redistribution_total_billions,492.69939999999997
+United States,2009,redistribution_total_billions,633.98992
+United States,2010,redistribution_total_billions,681.04316
+United States,2011,redistribution_total_billions,673.52692
+United States,2012,redistribution_total_billions,658.19134
+United States,2013,redistribution_total_billions,666.98432
+United States,2014,redistribution_total_billions,672.48184
+United States,2015,redistribution_total_billions,722.9071399999999
+United States,2016,redistribution_total_billions,745.7432699999999
+United States,2017,redistribution_total_billions,763.92605
+United States,2018,redistribution_total_billions,773.2248500000001
+United States,2019,redistribution_total_billions,778.43328
+United States,2020,redistribution_total_billions,1356.89868
+United States,2021,redistribution_total_billions,1248.3854999999999
+United States,2022,redistribution_total_billions,1025.20949
+United States,2023,redistribution_total_billions,1110.14249
+United States,2024,redistribution_total_billions,1153.84589
+United States,2025,redistribution_total_billions,1156.1521
 United States,1960,total_nonfarm_employment,54293.91666666667
 United States,1961,total_nonfarm_employment,54102.83333333333
 United States,1962,total_nonfarm_employment,55659.58333333333
@@ -3632,10 +3546,6 @@ United States,1985,workers_affected,323.9
 United States,1986,workers_affected,533.1
 United States,1987,workers_affected,174.4
 United States,1988,workers_affected,2500.0
-United States,1989,workers_affected,2500.0
-United States,1990,workers_affected,2500.0
-United States,1991,workers_affected,2500.0
-United States,1992,workers_affected,2500.0
 United States,1993,workers_affected,181900.0
 United States,1994,workers_affected,324500.0
 United States,1995,workers_affected,190300.0

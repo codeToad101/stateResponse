@@ -20,7 +20,7 @@ differently (or the claim itself needs to be dropped/reframed).
 import numpy as np
 from scipy.stats import linregress
 
-from agents.state import load_and_prepare_data
+from agents.state import load_and_prepare_panel, load_regime_periods
 
 
 def trend_test(annual, col, label=None):
@@ -55,33 +55,70 @@ def trend_test(annual, col, label=None):
     return dict(col=col, slope=slope, r2=r**2, p=p, first=first, last=last,
                 cagr=cagr, verdict=verdict)
 
+def regime_split_trend_tests(annual, regime_periods, country, min_n=6):
+    """
+    Runs trend_test separately within each regime-era for this country
+    (see regime_periods.csv), in ADDITION to the whole-span test the
+    caller already ran. min_n=6 (per your call) -- an era with fewer
+    non-null years than that is skipped and reported as skipped, not
+    silently fit anyway.
+    """
+    rows = regime_periods[regime_periods['country'] == country]
+    era_results = []
+    for _, row in rows.iterrows():
+        era_annual = annual[(annual.index >= row['start_year']) & (annual.index <= row['end_year'])]
+        for col, label in [('redistribution_pct_gdp', 'Redistribution (% of GDP)'),
+                            ('gini_coefficient', 'Gini coefficient')]:
+            n_avail = era_annual[col].dropna().shape[0] if col in era_annual.columns else 0
+            era_tag = f"{row['regime_label']} {row['start_year']}-{row['end_year']}"
+            if n_avail < min_n:
+                print(f"    [{era_tag}] {label}: skipped, only {n_avail} "
+                      f"non-null years (< {min_n})")
+                continue
+            print(f"    [{era_tag}, confidence={row['confidence']}]")
+            result = trend_test(era_annual, col, label)
+            result.update(regime_label=row['regime_label'],
+                           era=f"{row['start_year']}-{row['end_year']}")
+            era_results.append(result)
+    return era_results
 
 if __name__ == "__main__":
     print("=" * 70)
     print("WEALTH/WELFARE GROWTH CHECK -- REAL DATA (not simulated)")
     print("=" * 70)
 
-    annual = load_and_prepare_data()
-    print(f"\nLoaded {len(annual)} annual observations "
-          f"({annual.index.min()}-{annual.index.max()})")
+    by_country = load_and_prepare_panel()
+    regime_periods = load_regime_periods()
 
-    redist_result = trend_test(annual, "redistribution_pct_gdp", "Redistribution (% of GDP)")
-    gini_result = trend_test(annual, "gini_coefficient", "Gini coefficient")
+    for country, annual in sorted(by_country.items()):
+        if ('redistribution_pct_gdp' not in annual.columns
+                or annual['redistribution_pct_gdp'].dropna().empty):
+            print(f"\n{country}: skipped, no redistribution data at all")
+            continue
 
-    print("\n" + "-" * 70)
-    print("INTERPRETATION")
-    print("-" * 70)
-    if redist_result["verdict"] == "real upward trend" and gini_result["verdict"] == "real upward trend":
-        print("Both series show a real upward trend over the full span -- the empirical")
-        print("precondition for the 'welfare grows, but Gini grows too, so it's not")
-        print("enough' claim holds. Whether redistribution's growth rate")
-        print(f"({redist_result['cagr']*100:+.2f}%/yr) is actually 'keeping pace' with Gini's")
-        print(f"({gini_result['cagr']*100:+.2f}%/yr) is NOT resolved by comparing these two")
-        print("CAGRs directly -- different scales/units. Treat this as descriptive")
-        print("support for the premise; the ABM on/off comparison is what actually")
-        print("tests adequacy.")
-    else:
-        print("At least one trend is NOT statistically significant over the full span.")
-        print("The 'welfare grows but isn't enough' claim needs re-examination or")
-        print("reframing before proceeding to the ABM comparison -- don't build a")
-        print("mechanism to explain a premise that isn't actually supported here.")
+        print(f"\n{'=' * 70}\n{country}\n{'=' * 70}")
+        n_rows = annual.notna().any(axis=1).sum()
+        print(f"Loaded {n_rows} annual rows ({annual.index.min()}-{annual.index.max()})")
+
+        redist_result = trend_test(annual, "redistribution_pct_gdp", "Redistribution (% of GDP)")
+        gini_result = (trend_test(annual, "gini_coefficient", "Gini coefficient")
+                       if 'gini_coefficient' in annual.columns else None)
+
+        print("\n  Regime-era breakdown:")
+        regime_split_trend_tests(annual, regime_periods, country, min_n=6)
+
+        print("\n  " + "-" * 66)
+        print("  INTERPRETATION")
+        print("  " + "-" * 66)
+        if (gini_result and redist_result["verdict"] == "real upward trend"
+                and gini_result["verdict"] == "real upward trend"):
+            print(f"  Both series show a real upward trend over the full span for {country} --")
+            print("  the empirical precondition for 'welfare grows, but Gini grows too' holds.")
+            print(f"  Redistribution CAGR {redist_result['cagr']*100:+.2f}%/yr vs. Gini CAGR "
+                  f"{gini_result['cagr']*100:+.2f}%/yr -- not directly comparable (different")
+            print("  units), descriptive support only; the ABM on/off comparison tests adequacy.")
+        else:
+            print(f"  At least one whole-span trend is not statistically significant for "
+                  f"{country}.")
+            print("  The 'welfare grows but isn't enough' framing needs re-examination for")
+            print("  this country specifically before leaning on it in cross-country claims.")

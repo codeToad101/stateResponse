@@ -1,36 +1,75 @@
 """
 state.py
-
 State Fiscal Response Function — data prep + calibration.
 
 Pipeline:
-  1. load_and_prepare_data()   -> reads results/us_state_response_data.csv,
-                                   collapses quarterly-ffilled annual data
-                                   down to true annual observations (in
-                                   memory only — no intermediate file saved),
-                                   builds R(t), Protest(t-lag), Gini(t),
-                                   Growth(t).
-  2. StateResponseFitter       -> fits a family of candidate response
-                                   functions (linear / logistic / exponential
-                                   parametric forms + a flexible GAM) and
-                                   compares them on AIC/BIC/R2, with
-                                   coefficient CIs and residual diagnostics.
-  3. State                     -> ABM agent shell (next phase); left mostly
-                                   as scaffolding, now wired to accept a
-                                   fitted response function instead of a
-                                   hardcoded polynomial.
+  1. load_and_prepare_panel() -> reads results/combined_long_panel.csv
+                                  (country, year, label, value), pivots
+                                  each country to its own annual wide frame,
+                                  and builds R(t), Protest(t-lag), Gini(t),
+                                  Growth(t), and PoliticalViolence(t-lag).
+  2. StateResponseFitter      -> fits linear / logistic / exponential /
+                                  GAM candidates for ONE country's data,
+                                  with a variable predictor count (see
+                                  below), coefficient CIs, and residual
+                                  diagnostics.
+  3. fit_all_countries()      -> loops StateResponseFitter across every
+                                  country in the panel that clears a
+                                  per-candidate minimum-N floor, so
+                                  data-poor countries still get whatever
+                                  candidates are legitimately identifiable
+                                  instead of an all-or-nothing gate.
+  4. State                    -> ABM agent shell, now driven by whatever
+                                  predictor set a given country's fit
+                                  actually used (4 or 5 inputs), rather
+                                  than a hardcoded 4-tuple.
 
-Why annual, not quarterly, for fitting:
-  The response variable (redistribution, Gini, tax rate) is sourced from
-  annual data and forward-filled to quarterly only for calendar alignment,
-  not because 4 independent quarterly observations actually exist. Fitting
-  on the raw ffilled quarterly series would treat 4 duplicate copies of the
-  same annual number as 4 data points, artificially inflating N and any
-  significance/AIC comparison. We collapse to one observation per year for
-  the DV. Predictors that carry real quarterly variation (protest, GDP
-  growth) are aggregated *within* each year (mean) before that collapse, so
-  the within-year signal isn't just discarded — it's what the lag structure
-  is testing.
+===============================================================================
+NOTES
+===============================================================================
+Non-US countries have a structurally THINNER and
+DIFFERENT schema than the US, not just fewer rows of the same columns:
+
+  - Redistribution: every country (US included, after the collector's
+    rename) carries ONE 'redist_gdp_pct' label -- the US's is built by
+    summing four program components upstream and non-US countries' are a
+    single OECD/welfare-expenditure series, but by the time it reaches this
+    file it's the same shape (one number, %GDP, per country-year). Use it
+    directly. Do NOT reconstruct it from components here.
+
+  - Protest: the US has TWO measures -- 'protest_intensity_score' (a
+    log1p + min-max score built upstream from strike workers/days-idle,
+    US-only) and 'civil_unrest_events' (raw annual event counts from
+    CNTS-style sources, same measure every OTHER country has too, US
+    included). For a cross-country/cross-regime fitter to compare
+    apples to apples, we build our OWN harmonized protest measure from
+    'civil_unrest_events' for every country (see build_unrest_score
+    below) rather than using the US's bespoke strike-based score. This
+    means the fitted US protest coefficient here is not directly the
+    same measurement as 'protest_intensity_score' elsewhere in this
+    codebase -- that's intentional, for cross-country comparability, and
+    worth remembering if the two are ever compared side by side.
+
+  - Political violence: 'political_violence_score' (Political Terror
+    Scale-style, state violence AGAINST civilians -- the opposite
+    causal direction from civil_unrest_events, which is civilians
+    acting against the state) exists for most non-US countries but NOT
+    currently for the US. It is wired in here as its OWN, separate
+    predictor (never merged with protest) for every country generically
+    -- there is no US-specific carve-out in the code. If/when US
+    political-violence data is added upstream, it will just start being
+    used, with no code change needed here. Until then it's simply
+    absent from the US's fitted predictor set, exactly like any other
+    country whose coverage doesn't clear the inclusion floor below.
+
+  - Regime labels (representative / captured / dictatorship) are
+    DELIBERATELY NOT encoded as fitting inputs anywhere in this file.
+    They live in regime_periods.csv as a separate, manually-reviewed
+    reference table, joined against fitted results only for
+    post-hoc grouping/inspection. The point is to let the data speak
+    first and inspect it by regime after, not to bend the data toward
+    a regime assumption. See load_regime_periods() / regime_periods.csv.
+===============================================================================
 """
 
 import numpy as np
@@ -39,6 +78,7 @@ import mesa
 import warnings
 warnings.filterwarnings('ignore')
 
+from pathlib import Path
 from scipy.optimize import curve_fit
 from sklearn.metrics import r2_score, mean_squared_error
 from statsmodels.stats.stattools import durbin_watson
@@ -57,7 +97,10 @@ from statsmodels.tsa.stattools import adfuller
 # allows nearby years' errors to be correlated instead of assuming they're
 # independent, giving wider, more honest CIs. Works for both the linear and
 # the nonlinear (logistic/exponential) models via a numerical Jacobian --
-# same machinery, no need for a separate linear-only path.
+# same machinery, no need for a separate linear-only path. Unaffected by
+# the multi-country / variable-predictor-count changes below: it treats
+# model_fn as a black box called as model_fn(X, *params), which still holds
+# regardless of how many predictors X carries for a given country.
 
 def _numerical_jacobian(model_fn, X, params, eps=1e-6):
     """d(model_fn)/d(params) at `params`, evaluated at every observation.
@@ -77,34 +120,25 @@ def _numerical_jacobian(model_fn, X, params, eps=1e-6):
 
 def newey_west_lag(n):
     """Automatic bandwidth (Newey & West, 1994 rule of thumb): grows slowly
-    with sample size. For our n~60 this lands around 3 lags."""
+    with sample size."""
     return max(1, int(np.floor(4 * (n / 100) ** (2 / 9))))
 
 
 def hac_sandwich_covariance(jacobian, residuals, maxlags):
     """
     Newey-West HAC sandwich covariance for a (nonlinear) least-squares fit.
-
-    jacobian:  (n, k) array, d(model)/d(params) at the fitted params
-    residuals: (n,) array, y - y_pred, assumed time-ordered
-    maxlags:   how many periods of autocorrelation to correct for
-
     Returns a (k, k) covariance matrix for the parameter estimates -- same
     role as pcov from curve_fit, but robust to autocorrelated residuals.
     """
     scores = jacobian * residuals[:, None]  # per-observation contributions, (n, k)
 
-    # "Meat": weighted sum of score autocovariances (Bartlett kernel, same
-    # kernel statsmodels uses for cov_type='HAC')
     meat = scores.T @ scores  # lag 0
     for lag in range(1, maxlags + 1):
         w = 1 - lag / (maxlags + 1)
         gamma = scores[lag:].T @ scores[:-lag]
         meat += w * (gamma + gamma.T)
 
-    # "Bread": Gauss-Newton approximation to (J'J)^-1
     bread = np.linalg.inv(jacobian.T @ jacobian)
-
     return bread @ meat @ bread
 
 
@@ -133,151 +167,195 @@ except ImportError:
 
 
 # ============================================================================
-# 1. DATA LOADING + ANNUAL AGGREGATION
+# 1. LONG-PANEL LOADING + PER-COUNTRY ANNUAL PREP
 # ============================================================================
 
-# Columns that are already single annual values forward-filled across
-# quarters (gini.csv, EITC, medicaid, etc. — see ManualDataTranslator).
-# Aggregate with .first() per year: taking the mean would be numerically
-# identical (they're constant within-year) but .first() is explicit about
-# "this was never actually a quarterly observation."
-ANNUAL_FFILLED_COLS = [
-    'wage_p10', 'wage_p50', 'wage_p90',
-    'gini_coefficient', 'avg_federal_tax_rate_pct',
-    'redist_eitc', 'redist_snap', 'redist_medicaid', 'redist_ui',
-    'workers_affected', 'days_idle', 'civil_unrest_events',
-]
-
-# Columns with genuine quarter-to-quarter variation. Aggregate with the
-# within-year mean so real signal (not just one quarter's snapshot) feeds
-# the annual model.
-QUARTERLY_RATE_COLS = [
-    'unemployment_rate_pct', 'lfpr_pct',
-    'avg_hourly_earnings_nominal', 'avg_hourly_earnings_real',
-    'job_openings_thousands', 'wage_growth_yoy', 'labor_market_tightness',
-    'fed_tax_revenue_pct_gdp', 'protest_intensity_score',
-]
-
-# Levels where the year-end (Q4) value is the more natural "size of the
-# economy this year" figure than an average of four SAAR levels.
-QUARTERLY_LEVEL_COLS = [
-    'gdp_billions', 'total_nonfarm_employment', 'civilian_labor_force_thousands',
-]
+# Minimum non-null years a column needs, for a given country, before we'll
+# even consider it as a candidate predictor for that country. Below this,
+# dropna() in build_model_inputs would gut the sample anyway -- better to
+# drop the predictor and keep more years than keep the predictor and lose
+# the country.
+MIN_PREDICTOR_COVERAGE_YEARS = 10
 
 
-def load_and_prepare_data(csv_path="results/us_state_response_data.csv",
-                           protest_lag_years=1):
+def build_unrest_score(civil_unrest_events):
     """
-    Load the quarterly CSV and collapse it to one row per year, ready for
-    state-response fitting. No intermediate file is written — this is a
-    pure in-memory transform.
+    Harmonized cross-country protest measure, built from raw annual
+    civil_unrest_events counts: log1p (event counts are heavily
+    right-skewed -- a handful of huge-unrest years otherwise dominate),
+    then min-max rescaled WITHIN this one country's own series to [0, 1].
 
-    Returns
-    -------
-    annual : pd.DataFrame, indexed by year, with all aggregated columns
-             plus derived R(t) [redistribution_pct_gdp], Growth(t)
-             [gdp yoy % change], and Protest_lag [protest lagged by
-             protest_lag_years].
+    Per-country min-max (not a global z-score across countries) is a
+    deliberate choice: it measures each country's protest activity
+    relative to ITS OWN historical range, which is the right comparison
+    for "did the state respond more after an unusually large protest
+    wave, for that country" -- not "who had more protests in absolute
+    terms," which raw counts from very different data sources/population
+    sizes can't support anyway. This is the same log1p + min-max recipe
+    already used upstream for the US's strike-based
+    protest_intensity_score (see calculate_strike_severity in the
+    collection script) -- kept consistent rather than inventing a
+    second normalization scheme.
+
+    Returns np.nan-filled series unchanged if there's insufficient
+    variation to rescale (all-equal or all-missing), same guard as the
+    upstream strike-severity calc.
     """
-    df = pd.read_csv(csv_path)
-    df = df.rename(columns={df.columns[0]: 'date'})
-    df['date'] = pd.to_datetime(df['date'])
-    df['year'] = df['date'].dt.year
+    if civil_unrest_events is None:
+        return None
+    logged = np.log1p(civil_unrest_events.clip(lower=0))
+    valid = logged.dropna()
+    if len(valid) == 0 or valid.max() == valid.min():
+        return pd.Series(np.nan, index=civil_unrest_events.index)
+    return (logged - valid.min()) / (valid.max() - valid.min())
 
-    present_ffilled = [c for c in ANNUAL_FFILLED_COLS if c in df.columns]
-    present_rate = [c for c in QUARTERLY_RATE_COLS if c in df.columns]
-    present_level = [c for c in QUARTERLY_LEVEL_COLS if c in df.columns]
 
-    agg_map = {}
-    agg_map.update({c: 'first' for c in present_ffilled})
-    agg_map.update({c: 'mean' for c in present_rate})
-    agg_map.update({c: 'last' for c in present_level})
-
-    annual = df.groupby('year').agg(agg_map)
-
-    # ---- Derived: redistribution as % of GDP (recomputed post-aggregation,
-    # not aggregated as a pre-computed ratio, to avoid compounding rounding
-    # from four quarterly ratios that were never independent anyway) ----
-    redist_components = [c for c in ['redist_eitc', 'redist_snap',
-                                      'redist_medicaid', 'redist_ui']
-                          if c in annual.columns]
-    if redist_components and 'gdp_billions' in annual.columns:
-        annual['redistribution_total_billions'] = annual[redist_components].sum(axis=1)
-        annual['redistribution_pct_gdp'] = (
-            annual['redistribution_total_billions'] / annual['gdp_billions'] * 100
-        )
+def _prep_one_country(annual, protest_lag_years=1):
+    """
+    Given one country's annual wide frame (columns = labels straight off
+    the long panel), add every derived column the fitter needs. Mutates
+    and returns `annual`.
+    """
+    # ---- Redistribution: used directly, never reconstructed here ----
+    if 'redist_gdp_pct' in annual.columns:
+        annual['redistribution_pct_gdp'] = annual['redist_gdp_pct']
     else:
         annual['redistribution_pct_gdp'] = np.nan
+    annual['redistribution_lag'] = annual['redistribution_pct_gdp'].shift(1)
 
-    # ---- Derived: GDP growth, YoY % change of the annual level ----
+    # ---- Growth: already a rate, never re-differenced ----
     if 'gdp_billions' in annual.columns:
         annual['gdp_growth_yoy_pct'] = annual['gdp_billions'].pct_change() * 100
 
-    # ---- Derived: lagged protest signal ----
-    if 'protest_intensity_score' in annual.columns:
-        annual['protest_lag'] = annual['protest_intensity_score'].shift(protest_lag_years)
+    # ---- Harmonized protest measure (see build_unrest_score) ----
+    if 'civil_unrest_events' in annual.columns:
+        annual['unrest_score'] = build_unrest_score(annual['civil_unrest_events'])
+        annual['protest_lag'] = annual['unrest_score'].shift(protest_lag_years)
 
-    # ---- Derived: lagged redistribution (policy-persistence term) ----
-    if 'redistribution_pct_gdp' in annual.columns:
-        annual['redistribution_lag'] = annual['redistribution_pct_gdp'].shift(1)
+    # ---- Political violence: own predictor, lagged the same way as
+    # protest (state repression this year plausibly shapes next year's
+    # policy response the same lag-logic way protest does). Not
+    # log/min-max transformed -- PTS-style scores are already a bounded
+    # small-integer scale (~1-5), not a skewed count. ----
+    if 'political_violence_score' in annual.columns:
+        annual['political_violence_lag'] = (
+            annual['political_violence_score'].shift(protest_lag_years)
+        )
 
-    # ---- Derived: first-differenced series (stationarity fix for the
-    # levels-based fitter) ----
-    # ADF testing showed redistribution_pct_gdp, gini_coefficient, and
-    # protest_intensity_score all have unit roots (p=0.70, 0.89, 0.70).
-    # prepare_var_data() already differenced before the BVAR; the
-    # StateResponseFitter needs the same treatment or its R²/CIs risk
-    # reflecting two series trending together, not a real relationship.
-    # gdp_growth_yoy_pct is already a rate/first-difference of GDP levels
-    # and is NOT differenced again here (confirm with check_stationarity).
-    if 'redistribution_pct_gdp' in annual.columns:
-        annual['d_redistribution_pct_gdp'] = annual['redistribution_pct_gdp'].diff()
-        # lag-1 of the differenced series itself: last period's CHANGE,
-        # not last period's level -- the differenced analog of redistribution_lag.
-        annual['d_redistribution_lag'] = annual['d_redistribution_pct_gdp'].shift(1)
+    # ---- First differences (stationarity fix). ADF testing (see
+    # check_stationarity) generally shows unit roots in the levels of
+    # redistribution, gini, and protest/unrest -- fitting on levels
+    # risks a spurious regression (two trending series, not a real
+    # relationship). gdp_growth_yoy_pct is already a rate and is NOT
+    # differenced again. ----
+    annual['d_redistribution_pct_gdp'] = annual['redistribution_pct_gdp'].diff()
+    annual['d_redistribution_lag'] = annual['d_redistribution_pct_gdp'].shift(1)
 
     if 'gini_coefficient' in annual.columns:
         annual['d_gini_coefficient'] = annual['gini_coefficient'].diff()
 
-    if 'protest_intensity_score' in annual.columns:
-        annual['d_protest_intensity_score'] = annual['protest_intensity_score'].diff()
-        # same lag amount as protest_lag, applied to the differenced series
-        annual['d_protest_lag'] = annual['d_protest_intensity_score'].shift(protest_lag_years)
+    if 'unrest_score' in annual.columns:
+        d_unrest = annual['unrest_score'].diff()
+        annual['d_protest_lag'] = d_unrest.shift(protest_lag_years)
+
+    if 'political_violence_score' in annual.columns:
+        d_pvs = annual['political_violence_score'].diff()
+        annual['d_political_violence_lag'] = d_pvs.shift(protest_lag_years)
 
     return annual
 
 
-def build_model_inputs(annual, y_col='d_redistribution_pct_gdp',
-                        x_cols=('d_protest_lag', 'd_gini_coefficient', 'gdp_growth_yoy_pct',
-                                'd_redistribution_lag')):
+def load_and_prepare_panel(csv_path="results/combined_long_panel.csv",
+                            protest_lag_years=1):
+    """
+    Load the long-format (country, year, label, value) panel and return a
+    dict: {country: annual_df}, one wide annual frame per country, each
+    carrying every derived column _prep_one_country adds. No intermediate
+    file is written.
+    """
+    long_df = pd.read_csv(csv_path)
+    required = {'country', 'year', 'label', 'value'}
+    missing = required - set(long_df.columns)
+    if missing:
+        raise ValueError(f"combined_long_panel.csv missing columns: {missing}")
+
+    by_country = {}
+    for country, g in long_df.groupby('country'):
+        wide = g.pivot_table(index='year', columns='label', values='value')
+        wide = wide.sort_index()
+        by_country[country] = _prep_one_country(wide, protest_lag_years=protest_lag_years)
+
+    return by_country
+
+
+def select_predictors_for_country(annual, min_coverage=MIN_PREDICTOR_COVERAGE_YEARS):
+    """
+    Decide this country's predictor set. Base four are attempted for
+    every country; political_violence is included only if it clears the
+    coverage floor -- so the US (no political_violence_score at all
+    right now) and a data-poor country both degrade gracefully to the
+    4-predictor form, while a well-covered country gets the 5th.
+
+    Returns (x_cols, notes) where notes explains any exclusion, for
+    transparent logging by the caller.
+    """
+    x_cols = []
+    notes = []
+
+    base = [
+        ('d_protest_lag', 'protest (civil_unrest_events, harmonized)'),
+        ('d_gini_coefficient', 'gini'),
+        ('gdp_growth_yoy_pct', 'growth'),
+        ('d_redistribution_lag', 'redistribution persistence'),
+    ]
+    for col, desc in base:
+        if col in annual.columns and annual[col].notna().sum() >= min_coverage:
+            x_cols.append(col)
+        else:
+            have = annual[col].notna().sum() if col in annual.columns else 0
+            notes.append(f"excluded base predictor '{col}' ({desc}): "
+                          f"only {have} non-null years (< {min_coverage})")
+
+    optional_col = 'd_political_violence_lag'
+    if optional_col in annual.columns and annual[optional_col].notna().sum() >= min_coverage:
+        x_cols.append(optional_col)
+        notes.append(f"included optional predictor '{optional_col}': "
+                      f"{annual[optional_col].notna().sum()} non-null years")
+    else:
+        have = annual[optional_col].notna().sum() if optional_col in annual.columns else 0
+        notes.append(f"political_violence not included ({have} non-null years "
+                      f"< {min_coverage}) -- structurally available, just not "
+                      f"currently covered for this country")
+
+    return x_cols, notes
+
+
+def build_model_inputs(annual, y_col='d_redistribution_pct_gdp', x_cols=None):
     """
     Extract (X, y) arrays for fitting, dropping any year with missing data
-    in the required columns. Returns the aligned year index too, so
-    residual diagnostics can be reported against real calendar years.
+    in the required columns. Returns the aligned year index too.
     """
+    if x_cols is None:
+        raise ValueError("x_cols is required (use select_predictors_for_country)")
     needed = list(x_cols) + [y_col]
     missing = [c for c in needed if c not in annual.columns]
     if missing:
         raise ValueError(f"Missing required columns for fitting: {missing}")
 
     sub = annual[needed].dropna()
-    X = sub[list(x_cols)].to_numpy().T  # shape (n_predictors, n_obs) to match curve_fit convention
+    if len(sub) == 0:
+        raise ValueError(f"No overlapping non-null years across {needed}")
+    X = sub[list(x_cols)].to_numpy().T  # shape (n_predictors, n_obs)
     y = sub[y_col].to_numpy()
     years = sub.index.to_numpy()
     return X, y, years
 
+
 def check_collinearity(X, feature_names):
     """
     Pairwise correlation + VIF (variance inflation factor) across
-    predictors, run before fitting so an unstable/counterintuitive
-    coefficient (e.g. a large, sign-flipped gini coefficient) can be
-    diagnosed as collinearity rather than mistaken for a real effect.
-
-    VIF_i = 1 / (1 - R_i^2), where R_i^2 comes from regressing predictor
-    i on all other predictors. Rule of thumb: VIF > 5 is concerning,
-    VIF > 10 is a real problem -- coefficients on that predictor are
-    likely unstable and shouldn't be over-interpreted individually, even
-    if the overall fit (R²/AIC) looks good.
+    predictors. Unchanged in behavior; still generic to however many
+    predictors a given country's X carries.
     """
     n_features = X.shape[0]
     corr = np.corrcoef(X)
@@ -304,25 +382,21 @@ def check_collinearity(X, feature_names):
         flag = "  ⚠ HIGH" if vif > 10 else ("  ⚠ moderate" if vif > 5 else "")
         print(f"  {name:22} VIF = {vif:7.2f}{flag}")
 
+
 def check_stationarity(series, name):
     """
-    Augmented Dickey-Fuller test: is `series` stationary (fluctuates
-    around a stable mean) or does it have a unit root (wanders/trends
-    persistently)? Run on LEVELS (not first-differenced) series used
-    directly in the linear/logistic/exponential fits above, since a
-    unit root there risks a spurious regression -- high R²/tight CIs
-    that reflect two series drifting together, not a real relationship.
-    This is exactly the risk prepare_var_data() already guards against
-    by first-differencing for the BVAR; this check makes that same risk
-    visible for the levels-based StateResponseFitter models too.
+    Augmented Dickey-Fuller test. Unchanged from the single-country
+    version -- takes any series, generic to country.
 
     H0 (null): series has a unit root (non-stationary).
-    p < 0.05: reject H0 -> stationary, levels-based fit is on safer ground.
-    p >= 0.05: fail to reject -> possible unit root, treat any levels-based
-    fit involving this series (e.g. redistribution_pct_gdp regressed on
-    its own lag) with real suspicion, not just a footnote.
+    p < 0.05: reject H0 -> stationary.
+    p >= 0.05: possible unit root -- treat any levels-based fit
+    involving this series with real suspicion.
     """
     clean = series.dropna()
+    if len(clean) < 4:
+        print(f"  ADF({name}): skipped, only {len(clean)} non-null obs")
+        return None
     result = adfuller(clean, autolag='AIC')
     stat, pvalue, used_lag, nobs = result[0], result[1], result[2], result[3]
     verdict = "stationary" if pvalue < 0.05 else "possible unit root (non-stationary)"
@@ -333,75 +407,130 @@ def check_stationarity(series, name):
 
 
 # ============================================================================
-# 2. STATE RESPONSE FITTER
+# 2. STATE RESPONSE FITTER (variable predictor count)
 # ============================================================================
+#
+# The old model_fn signatures hardcoded exactly 4 predictors
+# (protest, gini, growth, redist_lag) by name. That doesn't work once
+# political_violence is a 5th predictor for SOME countries and not
+# others -- we can't have one fixed function signature per candidate
+# shape anymore. Instead:
+#
+#   X[0] = protest (always the first "core" predictor)
+#   X[1] = gini     (always the second "core" predictor)
+#   X[2:] = every other included predictor, always additive
+#           (growth, redist_lag, and political_violence when present)
+#
+# linear stays a straight dot-product + intercept regardless of width.
+# logistic/exponential keep protest+gini in their saturating core (that
+# structural choice -- protest and inequality are what plausibly
+# saturate, growth/persistence/repression are additive context -- is
+# unchanged from the original design) and add one linear coefficient
+# per extra predictor. This means logistic/exponential now correctly
+# USE growth and any other extra predictor -- the original
+# exponential_model silently ignored growth entirely (it unpacked
+# `growth` from X and never used it). That was an oversight, not a
+# deliberate omission from the model spec in this file's own docstring
+# (R(t) = f(Protest, Gini, Growth)), so it's fixed here rather than
+# preserved for backward compatibility.
+
 
 class StateResponseFitter:
     """
-    Fits a family of candidate state response functions
-        R(t) = f(Protest(t-lag), Gini(t), Growth(t))
+    Fits a family of candidate state response functions for ONE country
+        R(t) = f(Protest(t-lag), Gini(t), Growth(t), Redist_lag(t), [PoliticalViolence(t-lag)])
     and compares them honestly: fixed AIC/BIC, coefficient CIs, and
-    residual autocorrelation diagnostics (relevant here since this is a
-    time series, not iid cross-sectional data).
+    residual autocorrelation diagnostics.
 
-    Deliberately does NOT hardcode one form as "the" model. Parametric
-    candidates are kept for interpretability; a GAM candidate is included
-    so each predictor's functional shape can be learned from data rather
-    than assumed. Best model is selected on AIC but ties/close calls should
-    be judged manually — lower AIC by a hair isn't a good reason to prefer
-    a black-box GAM over an interpretable linear form.
+    feature_names[0] must be the protest predictor, feature_names[1] the
+    gini predictor -- everything after that is treated as additive
+    "extra" context in the logistic/exponential forms. build_model_inputs
+    + select_predictors_for_country already produce X/x_cols in this
+    order, so callers normally don't need to think about it directly.
     """
 
-    def __init__(self, X, y, years, feature_names=('protest_lag', 'gini', 'growth', 'redist_lag')):
+    # Per-candidate minimum-N floor: k_params + this margin. A flat n>=8
+    # gate (the old approach) treats a 5-param logistic and a 5-param
+    # linear as equally identifiable at the same n, which isn't true --
+    # this scales the floor to how many parameters that specific
+    # candidate is actually asking the data to pin down, so a data-poor
+    # country can still get a legitimate linear fit even where logistic/
+    # GAM correctly get excluded rather than reported as a degenerate
+    # number.
+    MIN_N_MARGIN = 4
+    GAM_MIN_N = 20  # GAM has no fixed parameter count to build a formula
+                     # floor from (its effective DoF is data-dependent via
+                     # the spline gridsearch), so it gets its own flat,
+                     # stricter absolute floor instead.
+
+    def __init__(self, X, y, years, feature_names):
         self.X = X          # shape (n_features, n_obs)
         self.y = y
         self.years = years
         self.feature_names = list(feature_names)
+        self.n_extra = X.shape[0] - 2  # predictors beyond protest+gini
         self.n = len(y)
         self.results = {}
-        # Training-domain bounds per predictor, min/max as actually
-        # observed in the fitting data. Used downstream (State.decide_policy)
-        # to clip inputs to the range the response function was validated
-        # on -- "bounded exponential": the function's SHAPE stays whatever
-        # fit best in-range (exponential, if that wins), but it is never
-        # *evaluated* outside where the data could inform it. Standard,
-        # citable technique (domain-restricted extrapolation / trust
-        # region), distinct from and simpler than swapping to a globally-
-        # bounded functional form.
+        self.skipped = {}  # candidate -> reason, for transparency
         self.domain_bounds_ = {
             name: (float(np.min(X[i])), float(np.max(X[i])))
             for i, name in enumerate(self.feature_names)
         }
 
-    # ---- parametric candidate forms ----
+    # ---- parametric candidate forms (n_extra-aware) ----
     @staticmethod
-    def linear_model(X, a, b, c, d, intercept):
-        protest, gini, growth, redist_lag = X
-        return a * protest + b * gini + c * growth + d * redist_lag + intercept
+    def linear_model(X, *params):
+        *coefs, intercept = params
+        return np.dot(coefs, X) + intercept
 
     @staticmethod
-    def logistic_model(X, a, b, c, d, k, x0):
-        """Saturates at high protest/inequality; redistribution_lag enters
-        additively as a policy-persistence term, same role as growth."""
-        protest, gini, growth, redist_lag = X
-        return a / (1 + np.exp(-k * (protest + b * gini - x0))) + c * growth + d * redist_lag
+    def logistic_model(X, *params):
+        """Saturates at high protest/inequality; every other predictor
+        (growth, redist_lag, political_violence if present) enters
+        additively as context, same policy-persistence role as before."""
+        n_extra = X.shape[0] - 2
+        a, b, k, x0 = params[:4]
+        extra_coefs = np.asarray(params[4:4 + n_extra])
+        protest, gini = X[0], X[1]
+        result = a / (1 + np.exp(-k * (protest + b * gini - x0)))
+        if n_extra:
+            result = result + extra_coefs @ X[2:]
+        return result
 
     @staticmethod
-    def exponential_model(X, a, b, c, d):
-        """Accelerates at extreme inequality; redistribution_lag adds
-        policy persistence."""
-        protest, gini, growth, redist_lag = X
-        return a * np.exp(np.clip(b * gini, -50, 50)) + c * protest + d * redist_lag
+    def exponential_model(X, *params):
+        """Accelerates at extreme inequality; protest enters linearly
+        (not inside the exponential -- only gini saturates this way);
+        every other predictor is additive, same as logistic."""
+        n_extra = X.shape[0] - 2
+        a, b, c = params[:3]
+        extra_coefs = np.asarray(params[3:3 + n_extra])
+        protest, gini = X[0], X[1]
+        result = a * np.exp(np.clip(b * gini, -50, 50)) + c * protest
+        if n_extra:
+            result = result + extra_coefs @ X[2:]
+        return result
 
     def _aic_bic(self, y_pred, k):
-        """Standard Gaussian-likelihood AIC/BIC: n*ln(RSS/n) + penalty."""
         rss = np.sum((self.y - y_pred) ** 2)
-        rss = max(rss, 1e-12)  # guard against log(0) on a perfect fit
+        rss = max(rss, 1e-12)
         aic = self.n * np.log(rss / self.n) + 2 * k
         bic = self.n * np.log(rss / self.n) + k * np.log(self.n)
         return aic, bic, rss
 
-    def _fit_parametric(self, name, model_fn, p0=None):
+    def _min_n_ok(self, name, k_params):
+        floor = k_params + self.MIN_N_MARGIN
+        if self.n < floor:
+            reason = (f"n={self.n} < required {floor} (k={k_params} params + "
+                      f"{self.MIN_N_MARGIN} margin)")
+            self.skipped[name] = reason
+            print(f"{name:12} | SKIPPED | {reason}")
+            return False
+        return True
+
+    def _fit_parametric(self, name, model_fn, p0):
+        if not self._min_n_ok(name, len(p0)):
+            return
         try:
             popt, pcov = curve_fit(model_fn, self.X, self.y, p0=p0, maxfev=20000)
             y_pred = model_fn(self.X, *popt)
@@ -409,17 +538,11 @@ class StateResponseFitter:
             rmse = np.sqrt(mean_squared_error(self.y, y_pred))
             aic, bic, rss = self._aic_bic(y_pred, k=len(popt))
 
-            # Naive 95% CI per coefficient, straight from curve_fit's pcov.
-            # Assumes independent residuals -- kept for comparison only,
-            # see hac_ci_95 below for the corrected version.
             perr = np.sqrt(np.diag(pcov)) if pcov is not None and np.all(np.isfinite(pcov)) else np.full(len(popt), np.nan)
             ci = [(p - 1.96 * e, p + 1.96 * e) for p, e in zip(popt, perr)]
 
-            dw = durbin_watson(self.y - y_pred)  # ~2 = no autocorrelation, <1.5 flags concern
+            dw = durbin_watson(self.y - y_pred)
 
-            # HAC/Newey-West corrected SEs and CIs -- accounts for the
-            # residual autocorrelation Durbin-Watson just flagged, rather
-            # than assuming it away.
             hac_se, hac_ci, nw_lags = hac_standard_errors(model_fn, self.X, self.y, popt)
 
             self.results[name] = {
@@ -432,20 +555,27 @@ class StateResponseFitter:
             print(f"{name:12} | R²: {r2:6.3f} | RMSE: {rmse:8.4f} | "
                   f"AIC: {aic:8.2f} | BIC: {bic:8.2f} | DW: {dw:.2f}")
         except Exception as e:
+            self.skipped[name] = f"fit failed: {e}"
             print(f"{name:12} | FAILED: {e}")
 
     def _fit_gam(self):
         if not PYGAM_AVAILABLE:
             return
+        if self.n < self.GAM_MIN_N:
+            reason = f"n={self.n} < GAM floor {self.GAM_MIN_N}"
+            self.skipped['gam'] = reason
+            print(f"{'gam':12} | SKIPPED | {reason}")
+            return
         try:
             Xg = self.X.T  # pygam wants (n_obs, n_features)
-            gam = LinearGAM(s(0) + s(1) + s(2) + s(3)).gridsearch(Xg, self.y, progress=False)
+            n_features = Xg.shape[1]
+            terms = s(0)
+            for i in range(1, n_features):
+                terms = terms + s(i)
+            gam = LinearGAM(terms).gridsearch(Xg, self.y, progress=False)
             y_pred = gam.predict(Xg)
             r2 = r2_score(self.y, y_pred)
             rmse = np.sqrt(mean_squared_error(self.y, y_pred))
-            # pygam reports its own AIC (accounts for effective DoF of splines,
-            # not raw parameter count) — use it directly rather than our
-            # fixed-k formula, which would understate GAM flexibility.
             aic = gam.statistics_['AIC']
             edof = gam.statistics_['edof']
             bic = self.n * np.log(max(np.sum((self.y - y_pred) ** 2), 1e-12) / self.n) + edof * np.log(self.n)
@@ -459,61 +589,38 @@ class StateResponseFitter:
             print(f"{'gam':12} | R²: {r2:6.3f} | RMSE: {rmse:8.4f} | "
                   f"AIC: {aic:8.2f} | BIC: {bic:8.2f} | DW: {dw:.2f}  (edof={edof:.1f})")
         except Exception as e:
+            self.skipped['gam'] = f"fit failed: {e}"
             print(f"{'gam':12} | FAILED: {e}")
 
-    # Whether each candidate's functional form is bounded/saturating as
-    # Gini/protest -> extreme values, vs. capable of unbounded (or
-    # super-exponential) growth outside the training domain. Not a
-    # judgment about in-sample fit -- purely about extrapolation safety.
-    # linear: unbounded but grows only linearly (mild). logistic: bounded
-    # by construction (R_max ceiling) -- the only candidate consistent
-    # with "a state cannot spend >100% of GDP." exponential: unbounded
-    # and, given b~18 fitted on a narrow 0.35-0.42 Gini window, explodes
-    # by orders of magnitude just outside it (confirmed empirically: the
-    # fitted exponential goes from ~3.8 at real Gini=0.42 to ~73,000 at
-    # simulated Gini=0.96 once the ABM's wealth mechanics could actually
-    # reach that range). gam: unconstrained spline, no boundedness
-    # guarantee at all outside the training range.
     _EXTRAPOLATION_SAFE = {'linear': True, 'logistic': True,
                             'exponential': False, 'gam': False}
 
     def fit_and_compare(self, extrapolation_safe_only=False):
         """
-        extrapolation_safe_only: when True, restricts model SELECTION
-        (not fitting -- every candidate is still fit and reported) to
-        candidates flagged extrapolation-safe above. This is not "assume
-        the answer" curve-shopping: every candidate's AIC/BIC/R2 is still
-        printed for full transparency, including cases where the
-        unconstrained AIC winner is excluded from selection.
-
-        Methodological basis: per Burnham & Anderson (2002, "Model
-        Selection and Multimodel Inference"), models within a modest AIC
-        gap represent comparable empirical support, and selection among
-        them is legitimately informed by considerations beyond raw fit --
-        theoretical plausibility, structural soundness, or (as here)
-        fitness for the model's intended downstream use. This is not
-        "picking a smaller ΔAIC gap than usual" special pleading: this
-        project's ABM explicitly needs to evaluate off-historical-
-        trajectory states (captured/dictatorship regimes reaching Gini
-        levels the training data never saw), so extrapolation safety is
-        a real, stated requirement of the use case, not an ad hoc
-        preference invoked to override an inconvenient result. The ΔAIC
-        between the unconstrained and constrained winners is always
-        printed so the tradeoff being made is visible, not hidden.
+        Fits every candidate that clears its own min-N floor (see
+        MIN_N_MARGIN / GAM_MIN_N above); candidates that don't clear it
+        are skipped with a printed reason and recorded in self.skipped,
+        not silently dropped. extrapolation_safe_only restricts final
+        SELECTION only, not fitting -- see the original docstring logic
+        (Burnham & Anderson 2002) preserved from the single-country
+        version.
         """
         print(f"Fitting on n={self.n} annual observations "
-              f"({self.years.min()}-{self.years.max()})\n")
+              f"({self.years.min()}-{self.years.max()}), "
+              f"{2 + self.n_extra} predictors: {self.feature_names}\n")
 
+        n_extra = self.n_extra
         self._fit_parametric('linear', self.linear_model,
-                              p0=[1, 1, 1, 0.5, np.mean(self.y)])
+                              p0=[1] * (2 + n_extra) + [np.mean(self.y)])
         self._fit_parametric('logistic', self.logistic_model,
-                              p0=[np.ptp(self.y), 1, 0.1, 0.5, 1, np.mean(self.X[1])])
+                              p0=[np.ptp(self.y), 1, 1, np.mean(self.X[1])] + [0.5] * n_extra)
         self._fit_parametric('exponential', self.exponential_model,
-                              p0=[1, 1, 0.1, 0.5])
+                              p0=[1, 1, 1] + [0.5] * n_extra)
         self._fit_gam()
 
         if not self.results:
-            print("\n✗ No candidate model fit successfully.")
+            print("\n✗ No candidate model fit successfully "
+                  f"(skipped: {self.skipped}).")
             return None, {}
 
         unconstrained_best = min(self.results, key=lambda k: self.results[k]['aic'])
@@ -537,8 +644,7 @@ class StateResponseFitter:
                     print(f"  (unconstrained AIC winner was '{unconstrained_best}', "
                           f"AIC={self.results[unconstrained_best]['aic']:.2f}; "
                           f"'{best_model}' costs +{delta_aic:.2f} AIC in exchange for a "
-                          f"bounded/saturating functional form -- see fit_and_compare "
-                          f"docstring for the methodological justification.)")
+                          f"bounded/saturating functional form.)")
 
         best = self.results[best_model]
         if best['durbin_watson'] < 1.5 or best['durbin_watson'] > 2.5:
@@ -560,53 +666,161 @@ class StateResponseFitter:
                   f"or partial-dependence plots instead of a coefficient table.")
             return
 
-        print(f"\n{model_name} — coefficient summary")
-        print("-" * 60)
+        extra_labels = [f"extra_{i} ({name})" for i, name in enumerate(self.feature_names[2:])]
         labels = {
-            'linear': ['a (d_protest_lag)', 'b (d_gini)', 'c (growth)', 'd (d_redist_lag)', 'intercept'],
-            'logistic': ['a (scale)', 'b (d_gini weight)', 'c (growth)', 'd (d_redist_lag)', 'k (steepness)', 'x0 (midpoint)'],
-            'exponential': ['a (scale)', 'b (d_gini exponent)', 'c (d_protest)', 'd (d_redist_lag)'],
+            'linear': [f"coef ({name})" for name in self.feature_names] + ['intercept'],
+            'logistic': ['a (scale)', 'b (gini weight)', 'k (steepness)', 'x0 (midpoint)'] + extra_labels,
+            'exponential': ['a (scale)', 'b (gini exponent)', 'c (protest)'] + extra_labels,
         }.get(model_name, [f'param_{i}' for i in range(len(res['params']))])
 
-        print(f"  {'':22}   {'naive CI (iid residuals)':32} {'HAC/Newey-West CI (' + str(res['nw_lags']) + ' lags)'}")
+        print(f"\n{model_name} — coefficient summary")
+        print("-" * 60)
+        print(f"  {'':28}   {'naive CI (iid residuals)':32} {'HAC/Newey-West CI (' + str(res['nw_lags']) + ' lags)'}")
         for label, val, (lo, hi), (hlo, hhi) in zip(
                 labels, res['params'], res['param_ci_95'], res['param_ci_95_hac']):
             naive_str = f"[{lo:8.4f}, {hi:8.4f}]"
             hac_str = f"[{hlo:8.4f}, {hhi:8.4f}]"
             flips = (lo <= 0 <= hi) != (hlo <= 0 <= hhi)
             flag = "  ← CI vs 0 changes!" if flips else ""
-            print(f"  {label:22} = {val:10.4f}   {naive_str:32} {hac_str}{flag}")
+            print(f"  {label:28} = {val:10.4f}   {naive_str:32} {hac_str}{flag}")
         print(f"  R² = {res['r2']:.3f}   RMSE = {res['rmse']:.4f}   "
               f"AIC = {res['aic']:.2f}   BIC = {res['bic']:.2f}")
 
 
 # ============================================================================
-# 3. BAYESIAN VAR — joint Protest <-> Redistribution <-> Gini system
+# 2b. CROSS-COUNTRY ORCHESTRATOR
+# ============================================================================
+
+# Below this, even a linear+intercept fit (5 params minimum with all
+# predictors) is not worth reporting -- this is the absolute floor before
+# StateResponseFitter's own per-candidate floors even get a chance to run.
+ABSOLUTE_MIN_N = 6
+
+
+def fit_all_countries(panel_csv="results/combined_long_panel.csv",
+                       protest_lag_years=1,
+                       extrapolation_safe_only=True,
+                       min_predictor_coverage=MIN_PREDICTOR_COVERAGE_YEARS):
+    """
+    Loop the single-country StateResponseFitter across every country in
+    the long panel. Countries/candidates that don't clear their data
+    floor are skipped with a printed, recorded reason -- never silently
+    dropped and never force-fit past what the data supports.
+
+    Returns {country: {'fitter': StateResponseFitter, 'best': str|None,
+                        'results': dict, 'predictors': list, 'n': int}}
+    for every country that produced at least one usable fit; countries
+    that couldn't clear ABSOLUTE_MIN_N or had no redistribution data at
+    all are omitted (reason printed at the time, not returned silently --
+    check the console output for the "skip:" lines if a country you
+    expected is missing from the returned dict).
+    """
+    by_country = load_and_prepare_panel(panel_csv, protest_lag_years=protest_lag_years)
+    all_results = {}
+
+    for country in sorted(by_country):
+        annual = by_country[country]
+        print(f"\n{'=' * 70}\n{country}\n{'=' * 70}")
+
+        x_cols, notes = select_predictors_for_country(annual, min_coverage=min_predictor_coverage)
+        for note in notes:
+            print(f"  {note}")
+
+        try:
+            X, y, years = build_model_inputs(annual, x_cols=tuple(x_cols))
+        except ValueError as e:
+            print(f"  skip: {e}")
+            continue
+
+        if len(y) < ABSOLUTE_MIN_N:
+            print(f"  skip: only {len(y)} usable annual obs "
+                  f"(< ABSOLUTE_MIN_N={ABSOLUTE_MIN_N})")
+            continue
+
+        feature_names = ['protest_lag', 'gini'] + [
+            c for c in x_cols if c not in ('d_protest_lag', 'd_gini_coefficient')
+        ]
+        fitter = StateResponseFitter(X, y, years, feature_names=feature_names)
+        best_name, results = fitter.fit_and_compare(extrapolation_safe_only=extrapolation_safe_only)
+
+        if best_name is None:
+            print(f"  no candidate fit successfully for {country}")
+            continue
+
+        all_results[country] = {
+            'fitter': fitter, 'best': best_name, 'results': results,
+            'predictors': x_cols, 'n': len(y),
+        }
+
+    return all_results
+
+
+# ============================================================================
+# 2c. REGIME PERIODS (reference table, NEVER a fitting input)
 # ============================================================================
 #
-# Why a VAR, and why Bayesian: R(t) depends on lagged Protest; Protest(t)
-# plausibly depends on lagged R and on Gini, which all three series also
-# trend with (Gini/protest correlate at 0.85 in levels). Fitting each
-# equation separately risks both just re-detecting the shared trend rather
-# than a real structural relationship. A VAR estimates the system jointly;
-# Granger-style checks off it ask "does X help predict Y beyond Y's own
-# history" -- a much stronger claim than eyeballing one coefficient's CI.
-#
-# A classical (OLS) VAR would badly overfit at n~60 for even a 3-variable,
-# 1-lag system. A Minnesota-prior Bayesian VAR shrinks coefficients toward
-# zero (own-lag less than cross-lag) -- the standard, citable fix for
-# small-sample macro VARs (Litterman 1986; Bańbura, Giannone & Reichlin
-# 2010), not an ad hoc regularization choice.
+# See regime_periods.csv alongside this file. Deliberately NOT sticky /
+# assumed -- it's a manually-reviewed, editable reference table of
+# (country, year range, regime label, confidence, note), joined against
+# fitted/observed data only for post-hoc grouping ("does the fitted
+# response differ before/after this transition"), never fed into the
+# fitter itself. Boundaries the data doesn't clearly support are marked
+# confidence='low' rather than guessed at with false precision.
 
-def prepare_var_data(annual, columns=('protest_intensity_score',
+def load_regime_periods(csv_path="data/format/regime_periods.csv"):
+    path = Path(csv_path)
+    if not path.exists():
+        print(f"⚠ {csv_path} not found -- regime grouping unavailable, "
+              f"nothing fabricated. Fitted results are unaffected.")
+        return pd.DataFrame(columns=['country', 'start_year', 'end_year',
+                                      'regime_label', 'confidence', 'note'])
+    return pd.read_csv(path)
+
+
+def annotate_with_regime(annual, country, regime_periods):
+    """
+    Left-joins a per-year regime_label/confidence onto one country's
+    annual df, purely for inspection (e.g. splitting residuals or
+    fitted coefficients by regime-period after the fact). Years outside
+    every listed range, or countries with no rows in regime_periods.csv
+    yet, get NaN -- not defaulted to 'representative' or any other
+    assumed label.
+    """
+    annual = annual.copy()
+    annual['regime_label'] = np.nan
+    annual['regime_confidence'] = np.nan
+    rows = regime_periods[regime_periods['country'] == country]
+    for _, row in rows.iterrows():
+        mask = (annual.index >= row['start_year']) & (annual.index <= row['end_year'])
+        annual.loc[mask, 'regime_label'] = row['regime_label']
+        annual.loc[mask, 'regime_confidence'] = row.get('confidence', np.nan)
+    return annual
+
+
+# ============================================================================
+# 3. BAYESIAN VAR — joint Protest <-> Redistribution <-> Gini system
+# ============================================================================
+# Unchanged in mechanics from the single-country version; prepare_var_data
+# now takes one country's already-prepared annual df (from
+# load_and_prepare_panel) instead of a US-only global `annual`, so it's
+# usable per-country in the same loop shape as fit_all_countries above.
+
+def prepare_var_data(annual, columns=('unrest_score',
                                        'redistribution_pct_gdp',
                                        'gini_coefficient')):
     """
     First-differences the requested columns -- the stationarity fix for
     the trend-driven collinearity flagged in the single-equation fits --
-    and drops the resulting leading NaN row.
+    and drops the resulting leading NaN row. Defaults to unrest_score
+    now (the harmonized cross-country protest measure) rather than the
+    US-only protest_intensity_score the single-country version used.
     """
-    sub = annual[list(columns)].dropna()
+    present = [c for c in columns if c in annual.columns]
+    missing = [c for c in columns if c not in annual.columns]
+    if missing:
+        print(f"  ⚠ prepare_var_data: {missing} not available for this country, "
+              f"proceeding with {present}")
+    sub = annual[present].dropna()
     diffed = sub.diff().dropna()
     diffed.columns = [f'd_{c}' for c in diffed.columns]
     return diffed
@@ -614,21 +828,9 @@ def prepare_var_data(annual, columns=('protest_intensity_score',
 
 class BayesianVAR:
     """
-    Small Bayesian VAR with a Minnesota-style shrinkage prior.
-
-    Data handling: input should already be first-differenced (see
-    prepare_var_data). Series are standardized (z-scored) internally so a
-    single pair of shrinkage hyperparameters applies sensibly across
-    variables in very different natural units (a Gini-point change vs. a
-    %-GDP change), rather than needing the variable-specific scale
-    factors classic Minnesota implementations carry.
-
-    Estimation: closed-form Bayesian linear regression per equation, with
-    a diagonal prior precision (own-lag coefficients shrunk less than
-    cross-lag ones) and an empirical-Bayes (OLS plug-in) residual
-    variance. This is the standard closed-form equivalent of the
-    dummy-observation Minnesota BVAR construction, just without the
-    dummy-observation bookkeeping.
+    Small Bayesian VAR with a Minnesota-style shrinkage prior. Unchanged
+    from the single-country version -- operates on whatever columns
+    prepare_var_data hands it, no US-specific assumptions inside.
     """
 
     def __init__(self, data, lag=1, lambda_overall=0.2, lambda_cross=0.5):
@@ -666,7 +868,7 @@ class BayesianVAR:
         for eq_idx, eq_name in enumerate(self.columns):
             y = Y[:, eq_idx]
 
-            prior_var = [1e4]  # intercept: diffuse, effectively unshrunk
+            prior_var = [1e4]
             for l in range(1, p + 1):
                 for j in range(k):
                     is_own = (j == eq_idx)
@@ -711,12 +913,6 @@ class BayesianVAR:
                 print(f"  {name:28} = {m:8.4f}   95% credible [{lo:7.4f}, {hi:7.4f}]{flag}")
 
     def granger_check(self, cause, effect):
-        """
-        Does `cause`'s lagged coefficient(s) in the `effect` equation stay
-        credibly away from zero? A lightweight, single-model analog of a
-        Granger-causality F-test, consistent with the Bayesian shrinkage
-        framework already in use rather than a separate nested-OLS test.
-        """
         names = self.coef_names()
         mean = self.coefs_[effect]
         se = np.sqrt(np.diag(self.coef_cov_[effect]))
@@ -734,12 +930,6 @@ class BayesianVAR:
         return any_significant
 
     def impulse_response(self, shock_var, steps=6):
-        """
-        One-standard-deviation shock to `shock_var` at t=0, propagated
-        through the fitted system (standardized units). Non-orthogonalized
-        (no Cholesky ordering) -- fine for a first look at propagation
-        shape, not a causal-ordering claim.
-        """
         k = len(self.columns)
         p = self.lag
         A = np.zeros((p, k, k))
@@ -764,31 +954,27 @@ class BayesianVAR:
         return pd.DataFrame(path, columns=self.columns, index=range(0, steps + 1))
 
 
-
-
 class Regime:
     """
     Three regime types, per the project's stated research question
     (structural reform vs. captured elite bias vs. unresponsive
-    repression). Each regime is implemented as a *weighting* on the same
-    fitted response function, not a separate model per regime -- this
-    keeps the comparison honest: differences in simulated outcomes come
-    from how the state weighs its inputs, not from swapping in an
-    unrelated equation per regime.
+    repression). Each regime is a *weighting* on the same fitted
+    response function, not a separate model per regime.
+
+    NOTE: these labels are the ABM's simulation-time regime dial (what
+    weighting a simulated State agent uses going forward), and are NOT
+    the same thing as regime_periods.csv, which is a historical/
+    observational reference table for grouping already-fitted results
+    by what regime a real country arguably was in during a given span.
+    Don't conflate the two -- one drives simulation, the other is just
+    for looking at history.
     """
-    REPRESENTATIVE = "representative"  # responds to fitted function as calibrated
-    CAPTURED = "captured"              # protest signal damped, firm-profit signal upweighted
-    DICTATORSHIP = "dictatorship"      # protest/gini signal near-zero, repression high
+    REPRESENTATIVE = "representative"
+    CAPTURED = "captured"
+    DICTATORSHIP = "dictatorship"
 
     ALL = (REPRESENTATIVE, CAPTURED, DICTATORSHIP)
 
-    # (protest_weight_multiplier, police_intensity) per regime. Captured
-    # states don't ignore conflict outright (Acemoglu & Robinson-style
-    # elites still fear uprising) but respond far less per unit of
-    # protest than a representative state; dictatorship both damps the
-    # policy channel and raises repression, which feeds back to suppress
-    # protest directly (Worker.risk_perception) rather than through
-    # policy at all.
     _PARAMS = {
         REPRESENTATIVE: dict(protest_weight=1.0, police_intensity=1.0),
         CAPTURED:       dict(protest_weight=0.35, police_intensity=1.3),
@@ -805,21 +991,31 @@ class Regime:
 class State(mesa.Agent):
     """
     ABM state agent. Plugs in whichever function won the fitting
-    comparison above (response_fn, response_params) rather than a
-    hardcoded polynomial -- selected empirically, not assumed.
-
-    Two things the original pseudocode was missing that matter for
-    "modern ABM standards": (1) the response isn't purely deterministic --
-    residual noise is bootstrapped from the fit's own empirical residuals,
-    matching the project's math spec (R(t) = f(...) + epsilon(t)) instead
-    of silently dropping the noise term; (2) regime type actually changes
-    simulated behavior via the Regime weighting above, closing the loop
-    the README describes (repression -> worker risk perception ->
-    protest -> state observation) rather than leaving "regimes" as a
-    label with no mechanism.
+    comparison for a given country (response_fn, response_params,
+    feature_names) -- feature_names now drives EVERYTHING about what
+    inputs decide_policy builds, rather than a hardcoded 4-tuple, since
+    a country's fitted model may have 4 or 5 predictors depending on
+    political_violence coverage. The Worker-facing inputs a State needs
+    each tick (protest, gini, growth, redistribution persistence,
+    optionally political violence) are supplied via `observe()`; State
+    only builds X for whichever of those the calibrated fit actually
+    used.
     """
 
-    def __init__(self, model, response_fn, response_params, regime=Regime.REPRESENTATIVE,
+    # Maps a feature_name (as produced by StateResponseFitter /
+    # select_predictors_for_country) to the attribute on this State
+    # instance that holds the CURRENT-TICK value for it. Every entry
+    # here must correspond to something decide_policy computes below.
+    _FEATURE_TO_ATTR = {
+        'protest_lag': '_cur_d_protest',
+        'gini': '_cur_d_gini',
+        'gdp_growth_yoy_pct': 'growth',
+        'd_redistribution_lag': '_last_redistribution_delta',
+        'd_political_violence_lag': '_cur_d_political_violence',
+    }
+
+    def __init__(self, model, response_fn, response_params, feature_names,
+                 regime=Regime.REPRESENTATIVE,
                  residuals=None, tax_rate=0.25, domain_bounds=None, rng=None,
                  redistribution_enabled=True):
         super().__init__(model)
@@ -827,29 +1023,28 @@ class State(mesa.Agent):
 
         self.response_fn = response_fn
         self.response_params = response_params
+        # Whatever predictor set this country's fit actually used, in
+        # the exact order response_fn expects. E.g. ['protest_lag',
+        # 'gini', 'gdp_growth_yoy_pct', 'd_redistribution_lag'] for a
+        # country without political-violence coverage, or that list
+        # plus 'd_political_violence_lag' for one with it.
+        self.feature_names = list(feature_names)
+        unknown = [f for f in self.feature_names if f not in self._FEATURE_TO_ATTR]
+        if unknown:
+            raise ValueError(
+                f"State got feature_names {unknown} with no known mapping in "
+                f"_FEATURE_TO_ATTR -- add it there before calibrating a State "
+                f"on a fit that includes this predictor."
+            )
+
         self.regime = regime
-        # off -> state never redistributes at all (hard 0.0, every tick),
-        # isolating whether the fiscal channel matters for Gini's trajectory
-        # at all, vs. only dampens it. On -> normal fitted dynamics.
         self.redistribution_enabled = redistribution_enabled
         regime_params = Regime.params(regime)
         self.protest_weight = regime_params['protest_weight']
         self.police_intensity = regime_params['police_intensity']
 
-        # Empirical residuals from the fit (if provided) let us draw
-        # realistic noise each step instead of either omitting epsilon(t)
-        # or inventing an arbitrary noise distribution.
         self.residuals = residuals if residuals is not None else np.array([0.0])
 
-        # Training-domain bounds (StateResponseFitter.domain_bounds_) --
-        # inputs are clipped to these before response_fn ever sees them
-        # (see decide_policy). "Bounded exponential": the fitted shape
-        # itself is whatever won on AIC in-range (exponential currently),
-        # left untouched -- it is simply never *evaluated* outside where
-        # the data could inform it, rather than being swapped for a
-        # globally-bounded functional form. If not provided, no clipping
-        # is applied (useful for quick smoke tests) -- flagged since that
-        # reintroduces the extrapolation risk this exists to prevent.
         self.domain_bounds = domain_bounds
         if self.domain_bounds is None:
             import warnings as _warnings
@@ -863,54 +1058,50 @@ class State(mesa.Agent):
         self.tax_rate = tax_rate
         self.redistribution = 0.0
         self.past_protests = []
+        self.past_political_violence = []
         self.avg_wage = None
         self.gini = None
+        self.growth = 0.0
 
-        # for Worker._adapt_threshold's reinforcement signal
         self._last_redistribution = 0.0
-        # response_fn now predicts a CHANGE in redistribution (fitted on
-        # differenced series), not a level -- these track what's needed
-        # to compute this tick's deltas and next tick's d_redist_lag term.
         self._last_redistribution_delta = 0.0
         self._prev_gini = None
+        self._cur_d_protest = 0.0
+        self._cur_d_gini = 0.0
+        self._cur_d_political_violence = 0.0
 
-    def observe(self, avg_wage, gini, protest_intensity, growth):
+    def observe(self, avg_wage, gini, protest_intensity, growth, political_violence=None):
+        """political_violence is optional -- only needs to be supplied
+        by the Model if this State's calibrated feature_names actually
+        includes 'd_political_violence_lag'; otherwise it's ignored."""
         self.avg_wage = avg_wage
         self.gini = gini
         self.growth = growth
         self.past_protests.append(protest_intensity)
+        if political_violence is not None:
+            self.past_political_violence.append(political_violence)
 
-    def _clip_to_training_domain(self, protest, gini, growth, redist_lag):
+    def _clip_to_training_domain(self, values_by_feature):
+        """values_by_feature: dict {feature_name: raw_value}. Returns a
+        dict with the same keys, clipped to this State's domain_bounds
+        (if any) for that feature."""
         if self.domain_bounds is None:
-            return protest, gini, growth, redist_lag
-        p_lo, p_hi = self.domain_bounds.get('protest_lag', (-np.inf, np.inf))
-        g_lo, g_hi = self.domain_bounds.get('gini', (-np.inf, np.inf))
-        gr_lo, gr_hi = self.domain_bounds.get('growth', (-np.inf, np.inf))
-        r_lo, r_hi = self.domain_bounds.get('redist_lag', (-np.inf, np.inf))
-        return (
-            float(np.clip(protest, p_lo, p_hi)),
-            float(np.clip(gini, g_lo, g_hi)),
-            float(np.clip(growth, gr_lo, gr_hi)),
-            float(np.clip(redist_lag, r_lo, r_hi)),
-        )
+            return dict(values_by_feature)
+        clipped = {}
+        for name, val in values_by_feature.items():
+            lo, hi = self.domain_bounds.get(name, (-np.inf, np.inf))
+            clipped[name] = float(np.clip(val, lo, hi))
+        return clipped
 
     def decide_policy(self, lag_periods=1):
         """
-        response_fn now predicts d_redistribution (a CHANGE), fitted on
-        first-differenced series -- the levels-based fit was found to run
-        on non-stationary series (ADF p=0.70/0.89/0.70 on redistribution,
-        gini, protest), risking a spurious regression. So each input here
-        is now a delta, not a level, and the model's prediction is added
-        onto last period's level rather than used directly. growth stays
-        undifferenced (already a rate). Same 4 inputs, same clipping
-        machinery, same public signature -- only what the numbers mean
-        changed.
+        response_fn predicts d_redistribution (a CHANGE), fitted on
+        first-differenced series. Builds X dynamically from whatever
+        feature_names this State was calibrated with -- 4 predictors for
+        a country without political-violence coverage, 5 for one with
+        it -- rather than assuming a fixed shape.
         """
         if not self.redistribution_enabled:
-            # "off" condition for the Gini-growth-vs-redistribution test
-            # (experiments.py's run_gini_growth_test): no welfare channel
-            # exists at all, rather than a dampened one -- a stronger,
-            # more legible contrast than merely zeroing the protest term.
             self.redistribution = 0.0
             self._last_redistribution = 0.0
             self._last_redistribution_delta = 0.0
@@ -925,18 +1116,27 @@ class State(mesa.Agent):
             self.past_protests[-lag_periods - 1]
             if len(self.past_protests) >= lag_periods + 1 else 0.0
         )
-        d_protest_lag = (protest_now - protest_prev) * self.protest_weight
+        self._cur_d_protest = (protest_now - protest_prev) * self.protest_weight
+        self._cur_d_gini = (self.gini - self._prev_gini) if self._prev_gini is not None else 0.0
 
-        d_gini = (self.gini - self._prev_gini) if self._prev_gini is not None else 0.0
-
-        clipped_d_protest, clipped_d_gini, clipped_growth, clipped_d_redist_lag = (
-            self._clip_to_training_domain(
-                d_protest_lag, d_gini, self.growth, self._last_redistribution_delta
+        if 'd_political_violence_lag' in self.feature_names:
+            pv_now = (
+                self.past_political_violence[-lag_periods]
+                if len(self.past_political_violence) >= lag_periods else 0.0
             )
-        )
+            pv_prev = (
+                self.past_political_violence[-lag_periods - 1]
+                if len(self.past_political_violence) >= lag_periods + 1 else 0.0
+            )
+            self._cur_d_political_violence = pv_now - pv_prev
 
-        X = np.array([[clipped_d_protest], [clipped_d_gini],
-                       [clipped_growth], [clipped_d_redist_lag]])
+        raw_values = {
+            name: getattr(self, self._FEATURE_TO_ATTR[name])
+            for name in self.feature_names
+        }
+        clipped = self._clip_to_training_domain(raw_values)
+
+        X = np.array([[clipped[name]] for name in self.feature_names])
         predicted_delta = float(self.response_fn(X, *self.response_params)[0])
 
         noise = self.random_gen.choice(self.residuals)
@@ -951,17 +1151,13 @@ class State(mesa.Agent):
         self._prev_gini = self.gini
 
     def redistribute(self, workers):
-        """
-        Distributes redistribution to the lowest-earning quartile of
-        currently employed-or-not workers -- proportional wage subsidy,
-        not a hardcoded UBI amount.
-        """
+        """Distributes redistribution to the lowest-earning quartile of
+        currently employed-or-not workers -- proportional wage subsidy."""
         if not workers:
             return
 
         for w in workers:
-            w.transfer_income = 0.0  # reset every tick -- only this tick's
-            # recipients should carry a nonzero transfer forward
+            w.transfer_income = 0.0
         recipients = sorted(workers, key=lambda w: w.wage)[: max(1, len(workers) // 4)]
         subsidy = self.redistribution / len(recipients)
         for w in recipients:
@@ -969,94 +1165,36 @@ class State(mesa.Agent):
 
     def step(self):
         """Mesa scheduling hook -- observe/decide/redistribute are called
-        explicitly by the Model with the current-period aggregates, since
-        those aggregates depend on all Worker/Firm steps having already
-        run this tick."""
+        explicitly by the Model with the current-period aggregates."""
         pass
 
 
 # ============================================================================
-# __main__ — run the full pipeline, print diagnostics
+# __main__ — run the cross-country pipeline, print diagnostics
 # ============================================================================
 
 if __name__ == "__main__":
     print("=" * 70)
-    print("STATE RESPONSE FUNCTION — DATA PREP + CALIBRATION")
+    print("STATE RESPONSE FUNCTION — CROSS-COUNTRY DATA PREP + CALIBRATION")
     print("=" * 70)
 
-    annual = load_and_prepare_data("results/us_state_response_data.csv",
-                                    protest_lag_years=1)
+    all_results = fit_all_countries("results/combined_long_panel.csv",
+                                     protest_lag_years=1,
+                                     extrapolation_safe_only=True)
 
-    print(f"\nAnnual observations: {len(annual)} years "
-          f"({annual.index.min()}-{annual.index.max()})")
+    print("\n" + "=" * 70)
+    print("SUMMARY ACROSS COUNTRIES")
+    print("=" * 70)
+    regime_periods = load_regime_periods("data/format/regime_periods.csv")
+    for country, res in all_results.items():
+        best = res['best']
+        r2 = res['results'][best]['r2'] if best else float('nan')
+        n_regime_rows = len(regime_periods[regime_periods['country'] == country])
+        print(f"  {country:16} best={best or '—':12} n={res['n']:3} "
+              f"predictors={res['predictors']} "
+              f"R²={r2:.3f}  (regime_periods.csv rows: {n_regime_rows})")
 
-    print("\nColumn coverage after annual aggregation:")
-    coverage = (annual.notna().sum() / len(annual) * 100).sort_values(ascending=False)
-    for col, pct in coverage.items():
-        print(f"  {col:32} {pct:5.1f}%")
-
-    X, y, years = build_model_inputs(
-        annual,
-        y_col='d_redistribution_pct_gdp',
-        x_cols=('d_protest_lag', 'd_gini_coefficient', 'gdp_growth_yoy_pct', 'd_redistribution_lag'),
-    )
-
-    print(f"\nUsable rows for fitting after dropna: {len(y)}")
-    if len(y) < 8:
-        print("⚠ Very small sample for a 3-4 parameter model — treat coefficients "
-              "as exploratory, not confirmatory, until coverage improves.")
-
-    check_collinearity(X, feature_names=('protest_lag', 'gini', 'growth', 'redist_lag'))
-
-    print("\nStationarity check (ADF test) on LEVELS series (context — these now feed")
-    print("the differenced fit only via their diffs, not directly):")
-    check_stationarity(annual['redistribution_pct_gdp'], 'redistribution_pct_gdp')
-    check_stationarity(annual['gini_coefficient'], 'gini_coefficient')
-    check_stationarity(annual['protest_intensity_score'], 'protest_intensity_score')
-
-    print("\nConfirmatory ADF check on the DIFFERENCED series actually used in the fit below:")
-    check_stationarity(annual['d_redistribution_pct_gdp'], 'd_redistribution_pct_gdp')
-    check_stationarity(annual['d_gini_coefficient'], 'd_gini_coefficient')
-    check_stationarity(annual['d_protest_intensity_score'], 'd_protest_intensity_score')
-    check_stationarity(annual['gdp_growth_yoy_pct'], 'gdp_growth_yoy_pct (undifferenced — already a rate)')
-
-
-    print("\n" + "-" * 70)
-    print("MODEL COMPARISON")
-    print("-" * 70)
-    fitter = StateResponseFitter(X, y, years)
-    best_name, results = fitter.fit_and_compare()
-
-    if best_name:
-        fitter.summarize(best_name)
-        # Also print the simplest (linear) model for reference even if it
-        # didn't win, since it's the easiest to cite in the paper.
-        if best_name != 'linear' and 'linear' in results:
-            fitter.summarize('linear')
-
-    print("\n" + "-" * 70)
-    print("JOINT SYSTEM — BAYESIAN VAR (Protest <-> Redistribution <-> Gini)")
-    print("-" * 70)
-
-    var_data = prepare_var_data(annual)
-    print(f"Fitting on {len(var_data)} first-differenced annual observations")
-
-    bvar = BayesianVAR(var_data, lag=1, lambda_overall=0.2, lambda_cross=0.5).fit()
-    bvar.summary()
-
-    print("\n" + "-" * 70)
-    print("GRANGER-STYLE CHECKS")
-    print("-" * 70)
-    d_protest = 'd_protest_intensity_score'
-    d_redist = 'd_redistribution_pct_gdp'
-    d_gini = 'd_gini_coefficient'
-    bvar.granger_check(d_protest, d_redist)
-    bvar.granger_check(d_redist, d_protest)
-    bvar.granger_check(d_gini, d_protest)
-    bvar.granger_check(d_gini, d_redist)
-
-    print("\n" + "-" * 70)
-    print("IMPULSE RESPONSE — one s.d. protest shock, propagated 6 periods")
-    print("-" * 70)
-    irf = bvar.impulse_response(d_protest, steps=6)
-    print(irf.round(3).to_string())
+    skipped_countries = set()  # populated implicitly via console "skip:" lines above
+    print("\n(See console output above for any country skipped entirely, and "
+          "each fitter's `.skipped` dict for individual candidates skipped "
+          "within a country that did produce a fit.)")

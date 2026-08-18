@@ -3,15 +3,6 @@ make BVAR Markov-Switching (?)
 Helpful, and arguably not optional given your own framing:
 
 Crisis/revolt mechanism (Turchin/Lawson-Oak) — your README already poses reform vs. revolution as the central ideological stake. Without some revolt-capable mechanism, the "revolution" side of that question is structurally unrepresentable, especially for dictatorship/captured regimes. I'd rank this closer to necessary than optional, but as phase 2 — after the response function is fixed.
-Cross-country data — strengthens the extrapolation region specifically, valuable but not required to answer the core US-calibrated regime comparison.
-
-Fix the calibration question first (Q2) — cheap, and rules out "artifact" before you conclude "null."
-Re-test with an episodic/discrete-event framing (does redistribution shift meaningfully in the few years around real historical strike waves) rather than only continuous annual correlation — closer to what disruption theory actually predicts.
-Only then consider cross-country data — as a way to add regime variation, not as a rescue from a null.
-
-Decide how to handle the rolling-window power problem (Chow test, or explicitly caveat it as inconclusive).
-Build the revolt-capable mechanism — no longer optional-phase-2, it's currently the reason 2/3 of your regime comparison is empty.
-Only then cross-national data, as you already had it scoped.
 
 note: keep rolling-window refit in as a minor supporting note ("no evidence of a stable nonzero coefficient in any sub-era, though power is limited at n≈20"), skip the Chow test, and put your remaining effort into the parts still actually unresolved — the revolt-mechanism gap and cross-national data.
 

@@ -32,6 +32,9 @@ Epstein):
 import numpy as np
 import networkx as nx
 import mesa
+from functools import lru_cache
+from scipy.optimize import brentq
+from scipy.stats import norm
 
 
 class EmploymentStatus:
@@ -79,6 +82,168 @@ def occupational_tier(skill):
 # repeat of the earlier bankruptcy-collapse bug when this was first added.
 MEAN_SKILL_PREMIUM = 1.262223
 
+# ============================================================================
+# GLOBAL-GAMES COORDINATION (Morris & Shin 1998, 2003; Edmond 2013)
+# ============================================================================
+#
+# Replaces a hand-set critical-mass cutoff with an endogenously-solved
+# switching threshold, so that "does the population coordinate" isn't an
+# arbitrary constant someone typed in. Two population-shared objects:
+#
+#   theta  -- the TRUE regime fundamental this tick (public, but each
+#             worker only observes it through a private noisy signal).
+#             Built from State's existing gini/growth/redistribution
+#             trend -- see compute_theta_fundamental.
+#   x*     -- the equilibrium private-signal threshold: a worker whose
+#             signal falls below x* has "coordination succeed" this
+#             tick. Solved from the regime's payoff structure (see
+#             solve_switching_equilibrium), not hand-set.
+#
+# theta* (the critical TRUE fundamental below which a cascade succeeds)
+# and x* are the standard two-equation Morris-Shin fixed point. Payoffs
+# here let benefit-of-toppling scale with how bad the regime already is
+# (1 - theta*), so unlike the textbook diffuse-prior closed form, theta*
+# has no closed form anymore and needs the numerical root-find.
+
+def compute_theta_fundamental(state, gini_ref=0.45, growth_scale=5.0,
+                               weight_growth=1.0, weight_gini=1.0,
+                               weight_redistribution=0.5):
+    """
+    theta in (0,1): TRUE regime-strength fundamental for this tick.
+    Higher theta = stronger fundamentals = harder for a protest cascade
+    to succeed. Built entirely from State's existing observed aggregates
+    (gini, growth, redistribution trend) -- no new invented series, same
+    pattern as reusing police_intensity/protest_weight for payoffs below.
+
+    Which macro signals matter and how much is a documented modeling
+    choice, not a fitted quantity (state.py has nothing to fit a
+    theta-fundamental target against). Treat these weights the same way
+    sigma is treated in Worker -- worth a sensitivity sweep, not
+    presented as precision.
+
+    'redistribution gap' is operationalized as the PROPORTIONAL change
+    in redistribution (this tick's delta / last level) rather than an
+    absolute gap against some reference, since redistribution has no
+    fixed absolute scale in this model. Flagging that interpretation
+    explicitly since it's a choice, not the only reasonable one.
+    """
+    if state.gini is None:
+        return 0.5  # no observation yet (pre-first-tick) -- neutral prior
+
+    growth = state.growth if state.growth is not None else 0.0
+    growth_term = weight_growth * (growth / growth_scale)
+
+    gini_term = weight_gini * (state.gini - gini_ref)
+
+    prev_redist = getattr(state, '_last_redistribution', 0.0)
+    redist_delta = getattr(state, '_last_redistribution_delta', 0.0)
+    if abs(prev_redist) > 1e-9:
+        redist_term = weight_redistribution * (redist_delta / abs(prev_redist))
+    else:
+        redist_term = 0.0
+
+    raw = growth_term - gini_term + redist_term
+    return float(1.0 / (1.0 + np.exp(-raw)))
+
+
+def _theta_star_residual(theta_star, cost, benefit0, benefit_scale):
+    """
+    Fixed-point residual for the critical TRUE fundamental theta*:
+        Phi(-delta(theta*)) - theta*  ==  0
+    where delta(theta*) = Phi^-1( cost / (benefit(theta*) + cost) ) is the
+    indifference condition for the marginal agent, and
+        benefit(theta*) = benefit0 * (1 + benefit_scale*(1 - theta*))
+    lets the payoff for successfully toppling scale with how weak the
+    regime already is. That theta*-dependence is what breaks the classic
+    Morris-Shin closed form and requires brentq below rather than
+    algebra.
+    """
+    theta_star = float(np.clip(theta_star, 1e-9, 1 - 1e-9))
+    benefit = benefit0 * (1.0 + benefit_scale * (1.0 - theta_star))
+    ratio = float(np.clip(cost / (benefit + cost), 1e-9, 1 - 1e-9))
+    delta = norm.ppf(ratio)
+    return norm.cdf(-delta) - theta_star
+
+
+def _delta_at(theta_star, cost, benefit0, benefit_scale):
+    theta_star = float(np.clip(theta_star, 1e-9, 1 - 1e-9))
+    benefit = benefit0 * (1.0 + benefit_scale * (1.0 - theta_star))
+    ratio = float(np.clip(cost / (benefit + cost), 1e-9, 1 - 1e-9))
+    return norm.ppf(ratio)
+
+def sweep_coordination_sensitivity(state, n_workers=500, sigma_values=(0.03, 0.07, 0.15, 0.30),
+                                     weight_sets=None, seed=0):
+    """
+    Quick diagnostic sweep, NOT a calibration -- there's no historical
+    target to fit theta weights or sigma against (same caveat as
+    compute_theta_fundamental's docstring). Reports, for a fixed state
+    snapshot, how sensitive coordination_success and the willing-but-
+    falsified gap are to sigma and to the theta weight set, so you can
+    eyeball whether the AND-gate is workably permissive before running
+    a full abm_model experiment.
+    """
+    if weight_sets is None:
+        weight_sets = {
+            'baseline': dict(weight_growth=1.0, weight_gini=1.0, weight_redistribution=0.5),
+            'gini_dominant': dict(weight_growth=0.3, weight_gini=2.0, weight_redistribution=0.3),
+            'redistribution_dominant': dict(weight_growth=0.5, weight_gini=0.5, weight_redistribution=2.0),
+        }
+    rng = np.random.default_rng(seed)
+    results = []
+    for weight_name, weights in weight_sets.items():
+        theta = compute_theta_fundamental(state, **weights)
+        for sigma in sigma_values:
+            cost = 1.0 * state.police_intensity
+            theta_star, x_star = solve_switching_equilibrium(cost, 1.0, 1.0, sigma)
+            signals = theta + rng.normal(0.0, sigma, size=n_workers)
+            coord_success_rate = float(np.mean(signals < x_star))
+            results.append(dict(weights=weight_name, sigma=sigma, theta=theta,
+                                 theta_star=theta_star, x_star=x_star,
+                                 coordination_success_rate=coord_success_rate))
+    return results
+
+
+@lru_cache(maxsize=512)
+def solve_switching_equilibrium(cost, benefit0, benefit_scale, sigma):
+    """
+    Solves the Morris-Shin fixed point (theta*, x*) via a 1-D root-find
+    (scipy.optimize.brentq) against the equilibrium indifference
+    condition, per Morris & Shin (1998, 2003); payoff structure follows
+    Edmond (2013)'s regime-change framing.
+
+    theta*: critical TRUE fundamental -- a cascade succeeds iff the
+        tick's true theta < theta*.
+    x*: the switching threshold each worker compares their PRIVATE
+        signal against (signal < x* -> coordination succeeds).
+
+    Note theta* does not depend on sigma -- in this diffuse-prior/normal-
+    noise setup that's a real, known property of the model (the
+    "risk-dominant" threshold is pinned by the payoff structure alone),
+    not an oversight. x* DOES depend on sigma (x* = theta* - sigma*delta),
+    which is where the private-signal noise actually shows up.
+
+    cost:            regime-scaled cost of protesting if the regime
+                     survives (coordination_cost0 * state.police_intensity
+                     -- reuses the existing regime-differentiated dial
+                     rather than inventing a new "revolution cost").
+    benefit0/scale:  payoff structure for a successful cascade.
+    sigma:           private-signal noise std (Worker.signal_noise_std)
+                     -- included only because x* needs it; cached
+                     lookups are exact since cost/benefit/sigma are the
+                     same float values for every worker within a tick
+                     (all read off the one shared State/regime), so this
+                     avoids O(N) redundant root-finds per tick.
+
+    Raises via brentq's ValueError if the residual doesn't change sign
+    across (0,1) (e.g. a pathological cost/benefit ratio) -- caller
+    should treat that as a configuration problem to fix, not silently
+    clamp, so it's left unguarded here deliberately.
+    """
+    theta_star = brentq(_theta_star_residual, 1e-6, 1 - 1e-6,
+                         args=(cost, benefit0, benefit_scale))
+    delta = _delta_at(theta_star, cost, benefit0, benefit_scale)
+    x_star = theta_star - sigma * delta
+    return theta_star, x_star
 
 class Worker(mesa.Agent):
     def __init__(self, model, skill, initial_wage,
@@ -88,6 +253,9 @@ class Worker(mesa.Agent):
                  savings_rate=0.30, investment_threshold_multiple=5.0,
                  propensity_to_invest_alpha=2.0, propensity_to_invest_beta=5.0,
                  idiosyncratic_return_std=0.03,
+                 signal_noise_std=0.07,
+                 coordination_benefit0=1.0, coordination_benefit_scale=1.0,
+                 coordination_cost0=1.0,
                  rng=None):
         super().__init__(model)
         self.random_gen = rng if rng is not None else np.random.default_rng()
@@ -134,6 +302,20 @@ class Worker(mesa.Agent):
             self.random_gen.beta(propensity_to_invest_alpha, propensity_to_invest_beta)
         )
         self.idiosyncratic_return_std = idiosyncratic_return_std
+        # --- global-games coordination (see solve_switching_equilibrium) ---
+        # sigma: the one genuinely free, uncalibratable knob -- treat as
+        # a documented sensitivity-analysis parameter (run across a
+        # range), not fitted precision, same posture as the VAR's null
+        # gini/redistribution result.
+        self.signal_noise_std = signal_noise_std
+        self.coordination_benefit0 = coordination_benefit0
+        self.coordination_benefit_scale = coordination_benefit_scale
+        self.coordination_cost0 = coordination_cost0
+        self.would_protest_uninhibited = False  # latent willingness (Kuran)
+        self.private_signal = None
+        self.theta_star = None
+        self.x_star = None
+        self.preference_falsification_gap = 0.0  # willing but not coordinated
         self.wealth = 0.0
         self.investment_income = 0.0  # realized THIS tick only -- what
         # feeds the income Gini, never the wealth stock itself (an income
@@ -241,18 +423,50 @@ class Worker(mesa.Agent):
         gap_if_max_grievance = (1.5 - self.risk_perception) - self.threshold
         return gap_if_max_grievance < 0
 
-    def _decide_protest(self):
+    def _decide_protest(self, state, theta):
         """
-        Probabilistic (logistic), not a hard cutoff. Two workers with
-        identical grievance/risk/threshold can make different choices --
-        avoids the brittle all-or-nothing regime switches a hard
-        threshold produces, and keeps individual behavior genuinely
-        stochastic rather than a deterministic function of observables.
+        Two-stage decision, replacing the old single-stage logistic
+        cutoff (kept as stage 1, unchanged math) with an added global-
+        games coordination gate (stage 2):
+
+          1. Latent willingness (Epstein-style logistic gap, identical
+             to the old _decide_protest) -- would this worker protest if
+             coordination weren't a separate consideration at all.
+          2. Coordination (Morris-Shin / Edmond) -- the worker only ACTS
+             on that willingness if their private noisy signal of the
+             true regime fundamental theta falls below the population's
+             endogenous switching threshold x* (see
+             solve_switching_equilibrium). x* is solved from payoffs
+             each tick, not hand-set -- this is what replaces the old
+             ad hoc fixed critical-mass cutoff.
+
+        is_protesting is the AND of both stages. A worker who is willing
+        (stage 1) but whose signal doesn't clear coordination (stage 2)
+        is Kuran's preference falsification: privately aggrieved,
+        outwardly quiescent -- logged in preference_falsification_gap
+        rather than silently discarded, so a run can show that gap
+        spiking right before a real cascade.
         """
         gap = (self.grievance - self.risk_perception) - self.threshold
         steepness = 8.0  # higher = closer to a hard threshold; kept moderate
         p_protest = 1.0 / (1.0 + np.exp(-steepness * gap))
-        self.is_protesting = bool(self.random_gen.random() < p_protest)
+        self.would_protest_uninhibited = bool(self.random_gen.random() < p_protest)
+
+        cost = self.coordination_cost0 * state.police_intensity
+        theta_star, x_star = solve_switching_equilibrium(
+            cost, self.coordination_benefit0, self.coordination_benefit_scale,
+            self.signal_noise_std,
+        )
+        self.theta_star = theta_star
+        self.x_star = x_star
+
+        self.private_signal = theta + self.random_gen.normal(0.0, self.signal_noise_std)
+        coordination_success = self.private_signal < x_star
+
+        self.is_protesting = self.would_protest_uninhibited and coordination_success #too restricted ???
+        self.preference_falsification_gap = float(
+            self.would_protest_uninhibited and not coordination_success
+        )
 
     def _adapt_threshold(self):
         """
@@ -331,7 +545,8 @@ class Worker(mesa.Agent):
         self._update_grievance(state)
         self._apply_macro_trend_pathway(state)
         self._update_risk_perception(state)
-        self._decide_protest()
+        theta = compute_theta_fundamental(state)
+        self._decide_protest(state, theta)
         self._adapt_threshold()
         self._update_wealth_and_investment(self.model.market_return)
         # wage/employment mutations happen in Firm.step(), not here --
