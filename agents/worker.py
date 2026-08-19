@@ -245,6 +245,21 @@ def solve_switching_equilibrium(cost, benefit0, benefit_scale, sigma):
     x_star = theta_star - sigma * delta
     return theta_star, x_star
 
+# Ceiling used to rescale risk_perception onto the same range as
+# self.grievance's clip ceiling (see _apply_macro_trend_pathway). Fix
+# (a): without this, police_intensity (up to Regime.DICTATORSHIP's 2.5
+# in state.py) fed directly into the grievance-minus-risk gap
+# unrescaled, exceeding grievance's own [0, 1.5] ceiling -- meaning
+# EVERY worker under dictatorship had risk_perception > max possible
+# grievance regardless of local_visibility, making protest
+# combinatorially unreachable rather than merely rare.
+GRIEVANCE_CEILING = 1.5
+
+# Matches Regime.DICTATORSHIP's police_intensity in state.py. Duplicated
+# here (not imported) to avoid a worker.py <-> state.py import cycle;
+# keep in sync if state.py's regime police_intensity values change.
+MAX_POLICE_INTENSITY = 2.5
+
 class Worker(mesa.Agent):
     def __init__(self, model, skill, initial_wage,
                  threshold_mean=0.62, threshold_std=0.1,
@@ -269,6 +284,25 @@ class Worker(mesa.Agent):
         self.occupation, self.skill_premium = occupational_tier(self.skill)
         # idiosyncratic protest threshold theta_i (Epstein 2002-style)
         self.threshold = max(0.01, self.random_gen.normal(threshold_mean, threshold_std))
+
+        # Fix (b): idiosyncratic risk tolerance multiplier, drawn once.
+        # Beta(5,1): most workers cluster near 1.0 (full sensitivity to
+        # regime repression), but density stays nonzero near 0 for a
+        # thin tail -- Kuran (1989)'s "sparks": individuals who act
+        # despite high nominal repression. Without this every agent
+        # shares one deterministic risk_perception each tick (a pure
+        # function of police_intensity + local_visibility), so a
+        # high-repression regime has NO possible first mover at all,
+        # not merely a rare one -- there's nothing to break the fixed
+        # point at local_visibility=0.
+        self.risk_tolerance = float(self.random_gen.beta(5.0, 1.0))
+
+        # Fix (c): short EMA of local network visibility rather than a
+        # pure per-tick snapshot -- lets a spark from risk_tolerance
+        # propagate/compound over several ticks (Granovetter 1978,
+        # Epstein 2002) instead of requiring multiple agents to move in
+        # the exact same tick with zero carryover from prior visibility.
+        self.visibility_ema = 0.0
 
         # --- data-calibrated macro pathway (see calibrate_population_from_bvar
         # below) -- deliberately small by default; see that function's
@@ -384,7 +418,7 @@ class Worker(mesa.Agent):
         d_redist = getattr(self.model, 'last_redistribution_delta', 0.0)
         self.grievance += self.redistribution_sensitivity * d_redist
 
-        self.grievance = float(np.clip(self.grievance, 0.0, 1.5))
+        self.grievance = float(np.clip(self.grievance, 0.0, GRIEVANCE_CEILING))
 
     def _update_risk_perception(self, state):
         """
@@ -393,20 +427,43 @@ class Worker(mesa.Agent):
         (safety in numbers) than an isolated one at the same state
         repression level. Implements what the original pseudocode called
         but never defined (count_active_protesters_in_network()).
+
+        local_visibility uses a short EMA over recent ticks (fix c)
+        rather than this tick's snapshot alone, so a lone spark can
+        compound into visibility over several ticks instead of requiring
+        simultaneous multi-agent ignition.
         """
         neighbors = list(self.model.worker_network.neighbors(self.unique_id))
         if neighbors:
             visible = sum(
                 1 for n in neighbors if self.model.workers_by_id[n].is_protesting
             )
-            local_visibility = visible / len(neighbors)
+            local_visibility_now = visible / len(neighbors)
         else:
-            local_visibility = 0.0
+            local_visibility_now = 0.0
 
-        # state.police_intensity is regime-dependent (see state.py) --
-        # dictatorships/captured states raise this, damping protest
-        # independent of how aggrieved workers actually are
-        self.risk_perception = state.police_intensity * (1 - local_visibility)
+        vis_ema_alpha = 0.3
+        self.visibility_ema = (
+            vis_ema_alpha * local_visibility_now + (1 - vis_ema_alpha) * self.visibility_ema
+        )
+
+        # Fix (a): rescaled onto grievance's own [0, GRIEVANCE_CEILING]
+        # range instead of feeding police_intensity (up to 2.5) directly
+        # into a gap equation whose other term tops out at 1.5.
+        normalized_intensity = state.police_intensity / MAX_POLICE_INTENSITY
+        base_risk = normalized_intensity * GRIEVANCE_CEILING * (1 - self.visibility_ema)
+
+        # Fix (b): idiosyncratic risk tolerance -- most workers near 1.0
+        # (full sensitivity), a thin tail near 0 (structurally fearless
+        # sparks, regardless of visibility or regime).
+        base_risk *= self.risk_tolerance
+
+        pv_history = getattr(state, "past_political_violence", None)
+        if pv_history:
+            pv_norm = np.clip((pv_history[-1] - 1.0) / 4.0, 0.0, 1.0)
+            self.risk_perception = base_risk + (GRIEVANCE_CEILING - base_risk) * pv_norm
+        else:
+            self.risk_perception = base_risk
 
     def repression_binding(self):
         """
@@ -420,7 +477,7 @@ class Worker(mesa.Agent):
         SIGNAL, not just the state's response to it) rather than only
         reflecting a genuinely weak redistribution response.
         """
-        gap_if_max_grievance = (1.5 - self.risk_perception) - self.threshold
+        gap_if_max_grievance = (GRIEVANCE_CEILING - self.risk_perception) - self.threshold
         return gap_if_max_grievance < 0
 
     def _decide_protest(self, state, theta):
@@ -586,8 +643,8 @@ def calibrate_population_from_bvar(bvar, threshold_mean_base=0.62, threshold_std
     gini_row = names.index('d_gini_coefficient(t-1)')
     redist_row = names.index('d_redistribution_pct_gdp(t-1)')
 
-    protest_coefs = bvar.coefs_['d_protest_intensity_score']
-    protest_cov = bvar.coef_cov_['d_protest_intensity_score']
+    protest_coefs = bvar.coefs_['d_unrest_score']
+    protest_cov = bvar.coef_cov_['d_unrest_score']
 
     gini_mean = protest_coefs[gini_row]
     gini_se = np.sqrt(protest_cov[gini_row, gini_row])

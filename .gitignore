@@ -9,3 +9,6 @@ notes.txt
 sources.txt
 tempHandoff.txt
 rolling_window_refit.py
+diagnostic_dictatorship_spark.py
+results/diagnostics/
+data/reference/

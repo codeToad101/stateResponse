@@ -667,6 +667,7 @@ class ManualDataTranslator:
             country_col="country",
             country_filter=country
         )
+        self.translated_series[country]['gini_coefficient'] = self.translated_series[country]['gini_coefficient'] / 100
         self.ingest_and_adjust_fiscal_year(
             filename="tax_GDPpct_nonUS.csv",
             series_name="fed_tax_revenue_pct_gdp",

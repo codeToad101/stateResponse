@@ -1,0 +1,1221 @@
+======================================================================
+EXPERIMENT SUITE — ALL COUNTRIES
+======================================================================
+
+======================================================================
+Chile
+======================================================================
+  political_violence not included (4 non-null years < 10) -- structurally available, just not currently covered for this country
+Fitting on n=19 annual observations (1992-2021), 4 predictors: ['protest_lag', 'gini', 'gdp_growth_yoy_pct', 'd_redistribution_lag']
+
+linear       | R²:  0.588 | RMSE:   0.8716 | AIC:     4.78 | BIC:     9.50 | DW: 1.66
+logistic     | R²:  0.596 | RMSE:   0.8630 | AIC:     6.40 | BIC:    12.07 | DW: 1.89
+exponential  | R²:  0.699 | RMSE:   0.7453 | AIC:    -1.17 | BIC:     3.55 | DW: 2.36
+gam          | SKIPPED | n=19 < GAM floor 20
+
+✓ Best model by AIC, restricted to extrapolation-safe candidates ['linear', 'logistic']: linear
+  (unconstrained AIC winner was 'exponential', AIC=-1.17; 'linear' costs +5.95 AIC in exchange for a bounded/saturating functional form.)
+
+======================================================================
+Egypt
+======================================================================
+  political_violence not included (8 non-null years < 10) -- structurally available, just not currently covered for this country
+Fitting on n=10 annual observations (2012-2021), 4 predictors: ['protest_lag', 'gini', 'gdp_growth_yoy_pct', 'd_redistribution_lag']
+
+linear       | R²:  0.531 | RMSE:   1.5890 | AIC:    19.26 | BIC:    20.78 | DW: 1.20
+logistic     | R²:  0.504 | RMSE:   1.6334 | AIC:    21.81 | BIC:    23.63 | DW: 1.29
+exponential  | R²:  0.559 | RMSE:   1.5401 | AIC:    18.64 | BIC:    20.15 | DW: 1.41
+gam          | SKIPPED | n=10 < GAM floor 20
+
+✓ Best model by AIC, restricted to extrapolation-safe candidates ['linear', 'logistic']: linear
+  (unconstrained AIC winner was 'exponential', AIC=18.64; 'linear' costs +0.63 AIC in exchange for a bounded/saturating functional form.)
+⚠ Durbin-Watson = 1.20 on the best model — residuals show autocorrelation. With n=10 annual points this is common and worth flagging rather than hiding: point estimates are still usable but standard/CI estimates may be too tight.
+
+======================================================================
+Germany
+======================================================================
+  political_violence not included (2 non-null years < 10) -- structurally available, just not currently covered for this country
+Fitting on n=34 annual observations (1982-2021), 4 predictors: ['protest_lag', 'gini', 'gdp_growth_yoy_pct', 'd_redistribution_lag']
+
+linear       | R²:  0.149 | RMSE:   0.7416 | AIC:   -10.33 | BIC:    -2.70 | DW: 2.25
+logistic     | FAILED: Optimal parameters not found: Number of calls to function has reached maxfev = 20000.
+exponential  | R²:  0.155 | RMSE:   0.7392 | AIC:   -10.55 | BIC:    -2.92 | DW: 2.24
+gam          | R²:  0.998 | RMSE:   0.0318 | AIC:    22.26 | BIC:  -117.65 | DW: 1.92  (edof=33.1)
+
+✓ Best model by AIC, restricted to extrapolation-safe candidates ['linear']: linear
+  (unconstrained AIC winner was 'exponential', AIC=-10.55; 'linear' costs +0.22 AIC in exchange for a bounded/saturating functional form.)
+
+======================================================================
+Korea
+======================================================================
+  political_violence not included (5 non-null years < 10) -- structurally available, just not currently covered for this country
+Fitting on n=26 annual observations (1992-2021), 4 predictors: ['protest_lag', 'gini', 'gdp_growth_yoy_pct', 'd_redistribution_lag']
+
+linear       | R²:  0.264 | RMSE:   0.6436 | AIC:   -12.91 | BIC:    -6.62 | DW: 2.56
+logistic     | R²:  0.457 | RMSE:   0.5531 | AIC:   -18.80 | BIC:   -11.25 | DW: 2.08
+exponential  | R²:  0.279 | RMSE:   0.6374 | AIC:   -13.42 | BIC:    -7.13 | DW: 2.56
+gam          | R²:  1.000 | RMSE:   0.0074 | AIC:   -40.43 | BIC:  -171.75 | DW: 2.04  (edof=25.7)
+
+✓ Best model by AIC, restricted to extrapolation-safe candidates ['linear', 'logistic']: logistic
+  (unconstrained AIC winner was 'gam', AIC=-40.43; 'logistic' costs +21.63 AIC in exchange for a bounded/saturating functional form.)
+
+======================================================================
+Poland
+======================================================================
+  excluded base predictor 'd_redistribution_lag' (redistribution persistence): only 0 non-null years (< 10)
+  political_violence not included (5 non-null years < 10) -- structurally available, just not currently covered for this country
+  skip: No overlapping non-null years across ['d_protest_lag', 'd_gini_coefficient', 'gdp_growth_yoy_pct', 'd_redistribution_pct_gdp']
+
+======================================================================
+Russia
+======================================================================
+  political_violence not included (5 non-null years < 10) -- structurally available, just not currently covered for this country
+Fitting on n=12 annual observations (2006-2020), 4 predictors: ['protest_lag', 'gini', 'gdp_growth_yoy_pct', 'd_redistribution_lag']
+
+linear       | R²:  0.283 | RMSE:   0.9142 | AIC:     7.85 | BIC:    10.27 | DW: 2.07
+logistic     | FAILED: Singular matrix
+exponential  | R²:  0.240 | RMSE:   0.9415 | AIC:     8.55 | BIC:    10.98 | DW: 2.18
+gam          | SKIPPED | n=12 < GAM floor 20
+
+✓ Best model by AIC, restricted to extrapolation-safe candidates ['linear']: linear
+
+======================================================================
+South Africa
+======================================================================
+  political_violence not included (5 non-null years < 10) -- structurally available, just not currently covered for this country
+Fitting on n=21 annual observations (1999-2022), 4 predictors: ['protest_lag', 'gini', 'gdp_growth_yoy_pct', 'd_redistribution_lag']
+
+linear       | R²:  0.258 | RMSE:   0.4955 | AIC:   -19.49 | BIC:   -14.27 | DW: 1.95
+logistic     | FAILED: Singular matrix
+exponential  | R²:  0.250 | RMSE:   0.4982 | AIC:   -19.27 | BIC:   -14.04 | DW: 1.96
+gam          | R²:  1.000 | RMSE:   0.0080 | AIC:   -19.71 | BIC:  -139.16 | DW: 2.67  (edof=20.8)
+
+✓ Best model by AIC, restricted to extrapolation-safe candidates ['linear']: linear
+  (unconstrained AIC winner was 'gam', AIC=-19.71; 'linear' costs +0.22 AIC in exchange for a bounded/saturating functional form.)
+
+======================================================================
+United Kingdom
+======================================================================
+  political_violence not included (8 non-null years < 10) -- structurally available, just not currently covered for this country
+Fitting on n=19 annual observations (1994-2021), 4 predictors: ['protest_lag', 'gini', 'gdp_growth_yoy_pct', 'd_redistribution_lag']
+
+linear       | R²:  0.153 | RMSE:   0.8363 | AIC:     3.20 | BIC:     7.93 | DW: 1.93
+logistic     | R²:  0.177 | RMSE:   0.8245 | AIC:     4.67 | BIC:    10.33 | DW: 1.97
+exponential  | R²:  0.141 | RMSE:   0.8422 | AIC:     3.47 | BIC:     8.20 | DW: 1.92
+gam          | SKIPPED | n=19 < GAM floor 20
+
+✓ Best model by AIC, restricted to extrapolation-safe candidates ['linear', 'logistic']: linear
+
+======================================================================
+United States
+======================================================================
+  included optional predictor 'd_political_violence_lag': 34 non-null years
+Fitting on n=22 annual observations (1982-2024), 5 predictors: ['protest_lag', 'gini', 'gdp_growth_yoy_pct', 'd_redistribution_lag', 'd_political_violence_lag']
+
+linear       | R²:  0.728 | RMSE:   0.3419 | AIC:   -35.22 | BIC:   -28.68 | DW: 1.02
+logistic     | R²:  0.929 | RMSE:   0.1746 | AIC:   -62.78 | BIC:   -55.14 | DW: 1.71
+exponential  | R²:  0.936 | RMSE:   0.1657 | AIC:   -67.11 | BIC:   -60.56 | DW: 1.53
+gam          | R²:  1.000 | RMSE:   0.0019 | AIC:   -81.17 | BIC:  -208.25 | DW: 1.94  (edof=21.8)
+
+✓ Best model by AIC, restricted to extrapolation-safe candidates ['linear', 'logistic']: logistic
+  (unconstrained AIC winner was 'gam', AIC=-81.17; 'logistic' costs +18.39 AIC in exchange for a bounded/saturating functional form.)
+
+Usable fits: ['Chile', 'Egypt', 'Germany', 'Korea', 'Russia', 'South Africa', 'United Kingdom', 'United States']
+
+######################################################################
+# Chile
+######################################################################
+[Chile] Historical validation (n=38 comparable years)
+  RMSE: 29.202   Correlation: 0.489
+
+[Chile] Regime comparison (25 seeds/regime, 600 steps, burn-in=200)
+============================================================
+
+Gini
+  captured           0.7731   [0.7537, 0.7925]
+  dictatorship       0.7843   [0.7607, 0.8080]
+  representative     0.7673   [0.7370, 0.7976]
+
+Unemployment rate
+  captured           0.0289   [0.0231, 0.0348]
+  dictatorship       0.0268   [0.0232, 0.0303]
+  representative     0.0361   [0.0291, 0.0431]
+
+Protest share
+  captured           0.0070   [0.0045, 0.0095]
+  dictatorship       0.0001   [0.0001, 0.0001]
+  representative     0.0290   [0.0207, 0.0373]
+
+Redistribution (mean)
+  captured         1719.1073   [1703.6164, 1734.5981]
+  dictatorship     1715.2724   [1700.1654, 1730.3794]
+  representative   1722.9829   [1707.5028, 1738.4629]
+
+Redistribution (volatility)
+  captured         503.4986   [496.4989, 510.4983]
+  dictatorship     502.4168   [495.7313, 509.1023]
+  representative   510.6516   [504.3002, 517.0030]
+============================================================
+
+[Chile] Reform-vs-revolution diagnostics
+  representative (1484 events): +13.431 +17.875 +22.274 +26.669 +31.057 +35.449 +39.792 +44.143 +48.453 +52.790 +57.091
+  captured (1655 events): +13.239 +17.629 +21.949 +26.249 +30.536 +34.764 +39.012 +43.338 +47.659 +51.977 +56.264
+  dictatorship (63 events): +13.321 +17.726 +22.357 +26.790 +31.320 +35.656 +40.041 +44.137 +48.613 +52.690 +57.051
+
+[Chile] Sensitivity sweep
+country  wage_noise_std  threshold_std_base  mean_gap  std_gap
+  Chile           0.005                0.06   -8.5455  21.1485
+  Chile           0.005                0.08   -8.9605  11.6483
+  Chile           0.005                0.12   -0.3471  17.4111
+  Chile           0.010                0.06  -21.6030  15.2737
+  Chile           0.010                0.08    2.7564  30.7417
+  Chile           0.010                0.12   -0.4994  22.6257
+  Chile           0.020                0.06   -7.6732  25.6134
+  Chile           0.020                0.08    1.6812  20.2934
+  Chile           0.020                0.12  -16.2531  16.4297
+
+[Chile] Permutation null check (n=20): observed=0.0780  p=0.7625
+
+[Chile] Gini trend: ON=+0.001121 [+0.000997,+0.001244]  OFF=+0.001062 [+0.000932,+0.001193]  diff=-0.000058 [-0.000244,+0.000128]
+
+[Chile] Dose-response
+country  multiplier  mean_slope  ci95_lo  ci95_hi
+  Chile           1    0.001261 0.001162 0.001360
+  Chile           3    0.001282 0.001060 0.001503
+  Chile          10    0.000975 0.000823 0.001127
+  Chile          30    0.000687 0.000618 0.000756
+
+[Chile] Targeting diagnostic: subsidy slope=+0.043249 [+0.042113,+0.044385]  recip-nonrecip gini diff=+0.000033 [-0.000194,+0.000259]
+
+[Chile] Mechanism trace
+               mean_wage_var_share         mean_transfer_var_share         mean_owner_var_share         mean_repression_bound_share        
+                              mean     std                    mean     std                 mean     std                        mean     std
+regime                                                                                                                                     
+captured                    0.6978  0.1378                  0.0029  0.0010               0.3172  0.1357                      0.0515  0.0090
+dictatorship                0.7537  0.1478                  0.0036  0.0015               0.2646  0.1469                      0.9242  0.0153
+representative              0.7601  0.0869                  0.0037  0.0012               0.2583  0.0851                      0.0002  0.0006
+
+[Chile] Rare-event frequency (15 seeds/regime, 1000 steps, burn-in=200)
+                mean_spark_rate  pct_seeds_with_any_spark  mean_time_to_first_spark  mean_run_length  mean_max_run_length
+regime                                                                                                                   
+captured                 0.7784                       1.0                    1.3333          13.4755              78.3333
+dictatorship             0.0665                       1.0                   71.0000           1.2833               3.7333
+representative           0.9567                       1.0                    0.0667          87.5441             292.5333
+  Note: spark_rate is the fraction of post-burn-in ticks with ANY protest --
+  this is the metric to cite for dictatorship/captured regimes, NOT
+  mean_protest_share from run_regime_comparison, which washes out isolated
+  rare events to ~0 when averaged over a short window.
+
+[Chile] Coordination sensitivity sweep (Morris-Shin / Edmond)
+                weights  sigma  theta  theta_star  x_star  coordination_success_rate country         regime
+               baseline   0.03 0.4658      0.5858  0.5923                     1.0000   Chile representative
+               baseline   0.07 0.4658      0.5858  0.6010                     0.9725   Chile representative
+               baseline   0.15 0.4658      0.5858  0.6183                     0.8525   Chile representative
+               baseline   0.30 0.4658      0.5858  0.6508                     0.7475   Chile representative
+          gini_dominant   0.03 0.4958      0.5858  0.5923                     1.0000   Chile representative
+          gini_dominant   0.07 0.4958      0.5858  0.6010                     0.9375   Chile representative
+          gini_dominant   0.15 0.4958      0.5858  0.6183                     0.7625   Chile representative
+          gini_dominant   0.30 0.4958      0.5858  0.6508                     0.6775   Chile representative
+redistribution_dominant   0.03 0.4860      0.5858  0.5923                     1.0000   Chile representative
+redistribution_dominant   0.07 0.4860      0.5858  0.6010                     0.9500   Chile representative
+redistribution_dominant   0.15 0.4860      0.5858  0.6183                     0.8175   Chile representative
+redistribution_dominant   0.30 0.4860      0.5858  0.6508                     0.7225   Chile representative
+               baseline   0.03 0.3845      0.5306  0.5329                     1.0000   Chile       captured
+               baseline   0.07 0.3845      0.5306  0.5360                     0.9900   Chile       captured
+               baseline   0.15 0.3845      0.5306  0.5421                     0.8625   Chile       captured
+               baseline   0.30 0.3845      0.5306  0.5536                     0.7300   Chile       captured
+          gini_dominant   0.03 0.4008      0.5306  0.5329                     1.0000   Chile       captured
+          gini_dominant   0.07 0.4008      0.5306  0.5360                     0.9650   Chile       captured
+          gini_dominant   0.15 0.4008      0.5306  0.5421                     0.7975   Chile       captured
+          gini_dominant   0.30 0.4008      0.5306  0.5536                     0.6725   Chile       captured
+redistribution_dominant   0.03 0.4439      0.5306  0.5329                     0.9975   Chile       captured
+redistribution_dominant   0.07 0.4439      0.5306  0.5360                     0.9075   Chile       captured
+redistribution_dominant   0.15 0.4439      0.5306  0.5421                     0.7725   Chile       captured
+redistribution_dominant   0.30 0.4439      0.5306  0.5536                     0.6600   Chile       captured
+               baseline   0.03 0.4281      0.3915  0.3832                     0.0525   Chile   dictatorship
+               baseline   0.07 0.4281      0.3915  0.3722                     0.2475   Chile   dictatorship
+               baseline   0.15 0.4281      0.3915  0.3502                     0.2775   Chile   dictatorship
+               baseline   0.30 0.4281      0.3915  0.3089                     0.3625   Chile   dictatorship
+          gini_dominant   0.03 0.4941      0.3915  0.3832                     0.0000   Chile   dictatorship
+          gini_dominant   0.07 0.4941      0.3915  0.3722                     0.0475   Chile   dictatorship
+          gini_dominant   0.15 0.4941      0.3915  0.3502                     0.1475   Chile   dictatorship
+          gini_dominant   0.30 0.4941      0.3915  0.3089                     0.2900   Chile   dictatorship
+redistribution_dominant   0.03 0.4682      0.3915  0.3832                     0.0000   Chile   dictatorship
+redistribution_dominant   0.07 0.4682      0.3915  0.3722                     0.0875   Chile   dictatorship
+redistribution_dominant   0.15 0.4682      0.3915  0.3502                     0.1975   Chile   dictatorship
+redistribution_dominant   0.30 0.4682      0.3915  0.3089                     0.3075   Chile   dictatorship
+
+[Chile] Cascade detection (102 candidate cascades flagged, pooled jump threshold=0.3750 at p95, across 10 seeds x 3 regimes)
+                  mean     std  count
+regime                               
+captured        0.0023  0.0022     36
+dictatorship   -0.0001  0.0003     35
+representative  0.0077  0.0114     31
+  -> Falsification gap does not consistently drop at detected cascades -- Kuran signature not clearly present in this run; treat as an open finding.
+
+######################################################################
+# Egypt
+######################################################################
+[Egypt] Historical validation (n=16 comparable years)
+  RMSE: 16.855   Correlation: -0.547
+
+[Egypt] Regime comparison (25 seeds/regime, 600 steps, burn-in=200)
+============================================================
+
+Gini
+  captured           0.7595   [0.7391, 0.7798]
+  dictatorship       0.7734   [0.7523, 0.7945]
+  representative     0.7673   [0.7396, 0.7949]
+
+Unemployment rate
+  captured           0.0278   [0.0214, 0.0341]
+  dictatorship       0.0266   [0.0234, 0.0297]
+  representative     0.0264   [0.0232, 0.0296]
+
+Protest share
+  captured           0.0048   [0.0034, 0.0061]
+  dictatorship       0.0001   [0.0001, 0.0001]
+  representative     0.0108   [0.0090, 0.0126]
+
+Redistribution (mean)
+  captured         137.5928   [117.2354, 157.9501]
+  dictatorship     141.8733   [121.3069, 162.4396]
+  representative   161.5658   [135.1090, 188.0226]
+
+Redistribution (volatility)
+  captured          44.1477   [36.8865, 51.4089]
+  dictatorship      45.2019   [38.7834, 51.6204]
+  representative    46.8911   [40.2005, 53.5817]
+============================================================
+
+[Egypt] Reform-vs-revolution diagnostics
+  representative (1567 events): +2.666 +3.218 +3.507 +3.664 +3.776 +3.800 +3.829 +3.880 +3.949 +4.078 +4.200
+  captured (1956 events): +2.308 +2.857 +3.158 +3.382 +3.579 +3.794 +4.031 +4.198 +4.361 +4.497 +4.658
+  dictatorship (0 events): n/a
+
+[Egypt] Sensitivity sweep
+country  wage_noise_std  threshold_std_base  mean_gap  std_gap
+  Egypt           0.005                0.06  -10.5508  13.1476
+  Egypt           0.005                0.08    3.6064  17.8902
+  Egypt           0.005                0.12   10.2309  23.6211
+  Egypt           0.010                0.06    5.6592  15.1949
+  Egypt           0.010                0.08   -4.2567  21.5125
+  Egypt           0.010                0.12    8.1124  19.4187
+  Egypt           0.020                0.06    4.2228   8.6086
+  Egypt           0.020                0.08    0.1431   6.3064
+  Egypt           0.020                0.12   -2.0250  17.1860
+
+[Egypt] Permutation null check (n=9): observed=0.3331  p=0.3745
+
+[Egypt] Gini trend: ON=+0.001049 [+0.000912,+0.001185]  OFF=+0.001222 [+0.001113,+0.001331]  diff=+0.000173 [-0.000026,+0.000373]
+
+[Egypt] Dose-response
+country  multiplier  mean_slope  ci95_lo  ci95_hi
+  Egypt           1    0.001073 0.000960 0.001186
+  Egypt           3    0.001118 0.000993 0.001242
+  Egypt          10    0.001102 0.000947 0.001256
+  Egypt          30    0.001232 0.001098 0.001366
+
+[Egypt] Targeting diagnostic: subsidy slope=+0.003443 [+0.002464,+0.004423]  recip-nonrecip gini diff=+0.000029 [-0.000064,+0.000122]
+
+[Egypt] Mechanism trace
+               mean_wage_var_share         mean_transfer_var_share      mean_owner_var_share         mean_repression_bound_share        
+                              mean     std                    mean  std                 mean     std                        mean     std
+regime                                                                                                                                  
+captured                    0.6968  0.1227                     0.0  0.0               0.3055  0.1239                      0.0534  0.0089
+dictatorship                0.7476  0.1415                     0.0  0.0               0.2550  0.1409                      0.9242  0.0153
+representative              0.7278  0.0883                     0.0  0.0               0.2767  0.0899                      0.0009  0.0019
+
+[Egypt] Rare-event frequency (15 seeds/regime, 1000 steps, burn-in=200)
+                mean_spark_rate  pct_seeds_with_any_spark  mean_time_to_first_spark  mean_run_length  mean_max_run_length
+regime                                                                                                                   
+captured                 0.7021                       1.0                    1.5333           5.8729              33.4000
+dictatorship             0.0673                       1.0                   47.6000           1.2275               3.2667
+representative           0.8612                       1.0                    0.2000          24.4300              82.5333
+  Note: spark_rate is the fraction of post-burn-in ticks with ANY protest --
+  this is the metric to cite for dictatorship/captured regimes, NOT
+  mean_protest_share from run_regime_comparison, which washes out isolated
+  rare events to ~0 when averaged over a short window.
+
+[Egypt] Coordination sensitivity sweep (Morris-Shin / Edmond)
+                weights  sigma  theta  theta_star  x_star  coordination_success_rate country         regime
+               baseline   0.03 0.4499      0.5858  0.5923                     1.0000   Egypt representative
+               baseline   0.07 0.4499      0.5858  0.6010                     0.9900   Egypt representative
+               baseline   0.15 0.4499      0.5858  0.6183                     0.8675   Egypt representative
+               baseline   0.30 0.4499      0.5858  0.6508                     0.7650   Egypt representative
+          gini_dominant   0.03 0.4293      0.5858  0.5923                     1.0000   Egypt representative
+          gini_dominant   0.07 0.4293      0.5858  0.6010                     0.9850   Egypt representative
+          gini_dominant   0.15 0.4293      0.5858  0.6183                     0.8800   Egypt representative
+          gini_dominant   0.30 0.4293      0.5858  0.6508                     0.7450   Egypt representative
+redistribution_dominant   0.03 0.4731      0.5858  0.5923                     1.0000   Egypt representative
+redistribution_dominant   0.07 0.4731      0.5858  0.6010                     0.9675   Egypt representative
+redistribution_dominant   0.15 0.4731      0.5858  0.6183                     0.8300   Egypt representative
+redistribution_dominant   0.30 0.4731      0.5858  0.6508                     0.7450   Egypt representative
+               baseline   0.03 0.4582      0.5306  0.5329                     0.9925   Egypt       captured
+               baseline   0.07 0.4582      0.5306  0.5360                     0.8750   Egypt       captured
+               baseline   0.15 0.4582      0.5306  0.5421                     0.7425   Egypt       captured
+               baseline   0.30 0.4582      0.5306  0.5536                     0.6150   Egypt       captured
+          gini_dominant   0.03 0.4493      0.5306  0.5329                     0.9950   Egypt       captured
+          gini_dominant   0.07 0.4493      0.5306  0.5360                     0.9050   Egypt       captured
+          gini_dominant   0.15 0.4493      0.5306  0.5421                     0.7075   Egypt       captured
+          gini_dominant   0.30 0.4493      0.5306  0.5536                     0.6325   Egypt       captured
+redistribution_dominant   0.03 0.4702      0.5306  0.5329                     0.9900   Egypt       captured
+redistribution_dominant   0.07 0.4702      0.5306  0.5360                     0.8525   Egypt       captured
+redistribution_dominant   0.15 0.4702      0.5306  0.5421                     0.7050   Egypt       captured
+redistribution_dominant   0.30 0.4702      0.5306  0.5536                     0.6075   Egypt       captured
+               baseline   0.03 0.3213      0.3915  0.3832                     0.9800   Egypt   dictatorship
+               baseline   0.07 0.3213      0.3915  0.3722                     0.7850   Egypt   dictatorship
+               baseline   0.15 0.3213      0.3915  0.3502                     0.5875   Egypt   dictatorship
+               baseline   0.30 0.3213      0.3915  0.3089                     0.5000   Egypt   dictatorship
+          gini_dominant   0.03 0.4039      0.3915  0.3832                     0.2775   Egypt   dictatorship
+          gini_dominant   0.07 0.4039      0.3915  0.3722                     0.3125   Egypt   dictatorship
+          gini_dominant   0.15 0.4039      0.3915  0.3502                     0.3600   Egypt   dictatorship
+          gini_dominant   0.30 0.4039      0.3915  0.3089                     0.3825   Egypt   dictatorship
+redistribution_dominant   0.03 0.4343      0.3915  0.3832                     0.0400   Egypt   dictatorship
+redistribution_dominant   0.07 0.4343      0.3915  0.3722                     0.2100   Egypt   dictatorship
+redistribution_dominant   0.15 0.4343      0.3915  0.3502                     0.2825   Egypt   dictatorship
+redistribution_dominant   0.30 0.4343      0.3915  0.3089                     0.3450   Egypt   dictatorship
+
+[Egypt] Cascade detection (86 candidate cascades flagged, pooled jump threshold=0.4050 at p95, across 10 seeds x 3 regimes)
+                  mean     std  count
+regime                               
+captured        0.0029  0.0035     39
+dictatorship    0.0001  0.0004     28
+representative  0.0026  0.0029     19
+  -> Falsification gap consistently DROPS at detected cascades across every regime with events: consistent with Kuran's signature.
+
+######################################################################
+# Germany
+######################################################################
+[Germany] Historical validation (n=65 comparable years)
+  RMSE: 21.499   Correlation: 0.598
+
+[Germany] Regime comparison (25 seeds/regime, 600 steps, burn-in=200)
+============================================================
+
+Gini
+  captured           0.7729   [0.7465, 0.7994]
+  dictatorship       0.7876   [0.7697, 0.8055]
+  representative     0.7792   [0.7509, 0.8074]
+
+Unemployment rate
+  captured           0.0270   [0.0215, 0.0325]
+  dictatorship       0.0262   [0.0227, 0.0296]
+  representative     0.0290   [0.0241, 0.0339]
+
+Protest share
+  captured           0.0043   [0.0030, 0.0057]
+  dictatorship       0.0001   [0.0001, 0.0001]
+  representative     0.0107   [0.0085, 0.0128]
+
+Redistribution (mean)
+  captured          24.8096   [19.6116, 30.0076]
+  dictatorship      21.3205   [16.6197, 26.0212]
+  representative    22.5666   [17.5902, 27.5429]
+
+Redistribution (volatility)
+  captured           8.0611   [6.1723, 9.9498]
+  dictatorship       7.4266   [6.0820, 8.7713]
+  representative     7.5738   [6.2226, 8.9251]
+============================================================
+
+[Germany] Reform-vs-revolution diagnostics
+  representative (1487 events): +0.520 +0.596 +0.656 +0.664 +0.693 +0.734 +0.774 +0.837 +0.899 +0.960 +1.019
+  captured (1907 events): +0.421 +0.505 +0.557 +0.618 +0.655 +0.714 +0.777 +0.837 +0.872 +0.933 +0.984
+  dictatorship (0 events): n/a
+
+[Germany] Sensitivity sweep
+country  wage_noise_std  threshold_std_base  mean_gap  std_gap
+Germany           0.005                0.06    0.9135   6.9669
+Germany           0.005                0.08    0.7460   4.4337
+Germany           0.005                0.12    3.4296   6.1694
+Germany           0.010                0.06   -1.1477   5.4021
+Germany           0.010                0.08    0.9814   3.9218
+Germany           0.010                0.12   -0.9948   4.0537
+Germany           0.020                0.06    2.4236   3.7338
+Germany           0.020                0.08   -0.3184   6.4728
+Germany           0.020                0.12    1.7028   7.8634
+
+[Germany] Permutation null check (n=36): observed=-0.4482  p=0.0120
+
+[Germany] Gini trend: ON=+0.001041 [+0.000946,+0.001136]  OFF=+0.001161 [+0.001070,+0.001251]  diff=+0.000120 [-0.000005,+0.000244]
+
+[Germany] Dose-response
+country  multiplier  mean_slope  ci95_lo  ci95_hi
+Germany           1    0.001098 0.000985 0.001211
+Germany           3    0.000994 0.000859 0.001128
+Germany          10    0.001287 0.001133 0.001442
+Germany          30    0.001095 0.000980 0.001211
+
+[Germany] Targeting diagnostic: subsidy slope=+0.000344 [+0.000036,+0.000652]  recip-nonrecip gini diff=-0.000085 [-0.000220,+0.000051]
+
+[Germany] Mechanism trace
+               mean_wage_var_share         mean_transfer_var_share      mean_owner_var_share         mean_repression_bound_share        
+                              mean     std                    mean  std                 mean     std                        mean     std
+regime                                                                                                                                  
+captured                    0.7198  0.1537                     0.0  0.0               0.2807  0.1543                      0.0530  0.0098
+dictatorship                0.7536  0.1289                     0.0  0.0               0.2481  0.1294                      0.9245  0.0149
+representative              0.6620  0.1157                     0.0  0.0               0.3403  0.1148                      0.0002  0.0006
+
+[Germany] Rare-event frequency (15 seeds/regime, 1000 steps, burn-in=200)
+                mean_spark_rate  pct_seeds_with_any_spark  mean_time_to_first_spark  mean_run_length  mean_max_run_length
+regime                                                                                                                   
+captured                 0.6874                       1.0                    0.9333           5.9790              31.0667
+dictatorship             0.0542                       1.0                   40.9333           1.1944               3.0667
+representative           0.8295                       1.0                    0.0667          11.4512              51.6667
+  Note: spark_rate is the fraction of post-burn-in ticks with ANY protest --
+  this is the metric to cite for dictatorship/captured regimes, NOT
+  mean_protest_share from run_regime_comparison, which washes out isolated
+  rare events to ~0 when averaged over a short window.
+
+[Germany] Coordination sensitivity sweep (Morris-Shin / Edmond)
+                weights  sigma  theta  theta_star  x_star  coordination_success_rate country         regime
+               baseline   0.03 0.5384      0.5858  0.5923                     0.9700 Germany representative
+               baseline   0.07 0.5384      0.5858  0.6010                     0.8275 Germany representative
+               baseline   0.15 0.5384      0.5858  0.6183                     0.7375 Germany representative
+               baseline   0.30 0.5384      0.5858  0.6508                     0.6550 Germany representative
+          gini_dominant   0.03 0.4962      0.5858  0.5923                     1.0000 Germany representative
+          gini_dominant   0.07 0.4962      0.5858  0.6010                     0.9350 Germany representative
+          gini_dominant   0.15 0.4962      0.5858  0.6183                     0.7600 Germany representative
+          gini_dominant   0.30 0.4962      0.5858  0.6508                     0.6775 Germany representative
+redistribution_dominant   0.03 0.4894      0.5858  0.5923                     1.0000 Germany representative
+redistribution_dominant   0.07 0.4894      0.5858  0.6010                     0.9500 Germany representative
+redistribution_dominant   0.15 0.4894      0.5858  0.6183                     0.8075 Germany representative
+redistribution_dominant   0.30 0.4894      0.5858  0.6508                     0.7200 Germany representative
+               baseline   0.03 0.4811      0.5306  0.5329                     0.9600 Germany       captured
+               baseline   0.07 0.4811      0.5306  0.5360                     0.8000 Germany       captured
+               baseline   0.15 0.4811      0.5306  0.5421                     0.6800 Germany       captured
+               baseline   0.30 0.4811      0.5306  0.5536                     0.5900 Germany       captured
+          gini_dominant   0.03 0.5238      0.5306  0.5329                     0.6925 Germany       captured
+          gini_dominant   0.07 0.5238      0.5306  0.5360                     0.5525 Germany       captured
+          gini_dominant   0.15 0.5238      0.5306  0.5421                     0.5450 Germany       captured
+          gini_dominant   0.30 0.5238      0.5306  0.5536                     0.5275 Germany       captured
+redistribution_dominant   0.03 0.5160      0.5306  0.5329                     0.7075 Germany       captured
+redistribution_dominant   0.07 0.5160      0.5306  0.5360                     0.6325 Germany       captured
+redistribution_dominant   0.15 0.5160      0.5306  0.5421                     0.5625 Germany       captured
+redistribution_dominant   0.30 0.5160      0.5306  0.5536                     0.5400 Germany       captured
+               baseline   0.03 0.3909      0.3915  0.3832                     0.3950 Germany   dictatorship
+               baseline   0.07 0.3909      0.3915  0.3722                     0.4075 Germany   dictatorship
+               baseline   0.15 0.3909      0.3915  0.3502                     0.3700 Germany   dictatorship
+               baseline   0.30 0.3909      0.3915  0.3089                     0.4025 Germany   dictatorship
+          gini_dominant   0.03 0.4944      0.3915  0.3832                     0.0000 Germany   dictatorship
+          gini_dominant   0.07 0.4944      0.3915  0.3722                     0.0475 Germany   dictatorship
+          gini_dominant   0.15 0.4944      0.3915  0.3502                     0.1475 Germany   dictatorship
+          gini_dominant   0.30 0.4944      0.3915  0.3089                     0.2900 Germany   dictatorship
+redistribution_dominant   0.03 0.5985      0.3915  0.3832                     0.0000 Germany   dictatorship
+redistribution_dominant   0.07 0.5985      0.3915  0.3722                     0.0000 Germany   dictatorship
+redistribution_dominant   0.15 0.5985      0.3915  0.3502                     0.0475 Germany   dictatorship
+redistribution_dominant   0.30 0.5985      0.3915  0.3089                     0.1600 Germany   dictatorship
+
+[Germany] Cascade detection (89 candidate cascades flagged, pooled jump threshold=0.4275 at p95, across 10 seeds x 3 regimes)
+                  mean     std  count
+regime                               
+captured        0.0027  0.0041     29
+dictatorship   -0.0000  0.0005     29
+representative  0.0035  0.0051     31
+  -> Falsification gap does not consistently drop at detected cascades -- Kuran signature not clearly present in this run; treat as an open finding.
+
+######################################################################
+# Korea
+######################################################################
+[Korea] Historical validation (n=35 comparable years)
+  RMSE: 3.313   Correlation: 0.969
+
+[Korea] Regime comparison (25 seeds/regime, 600 steps, burn-in=200)
+============================================================
+
+Gini
+  captured           0.7791   [0.7599, 0.7983]
+  dictatorship       0.8005   [0.7854, 0.8156]
+  representative     0.7718   [0.7466, 0.7969]
+
+Unemployment rate
+  captured           0.0292   [0.0227, 0.0357]
+  dictatorship       0.0260   [0.0230, 0.0290]
+  representative     0.0316   [0.0249, 0.0383]
+
+Protest share
+  captured           0.0062   [0.0040, 0.0084]
+  dictatorship       0.0001   [0.0001, 0.0001]
+  representative     0.0195   [0.0135, 0.0255]
+
+Redistribution (mean)
+  captured         115.1804   [110.3747, 119.9861]
+  dictatorship     116.7383   [112.1257, 121.3508]
+  representative   211.6699   [191.2959, 232.0439]
+
+Redistribution (volatility)
+  captured          33.3208   [31.9860, 34.6557]
+  dictatorship      32.4017   [30.7914, 34.0119]
+  representative    33.8920   [32.1968, 35.5871]
+============================================================
+
+[Korea] Reform-vs-revolution diagnostics
+  representative (1452 events): +1.080 +1.416 +1.739 +2.056 +2.371 +2.684 +3.004 +3.330 +3.661 +3.983 +4.295
+  captured (1594 events): +0.993 +1.310 +1.591 +1.867 +2.143 +2.438 +2.727 +3.013 +3.294 +3.585 +3.883
+  dictatorship (0 events): n/a
+
+[Korea] Sensitivity sweep
+country  wage_noise_std  threshold_std_base  mean_gap  std_gap
+  Korea           0.005                0.06  124.8538  23.9173
+  Korea           0.005                0.08   85.9568  63.9272
+  Korea           0.005                0.12   79.6022  53.4606
+  Korea           0.010                0.06   46.3544  68.7028
+  Korea           0.010                0.08  135.1032  40.7416
+  Korea           0.010                0.12   62.8817  68.7946
+  Korea           0.020                0.06  200.2463 109.7123
+  Korea           0.020                0.08  181.7177 117.7723
+  Korea           0.020                0.12   71.3318  72.7997
+
+[Korea] Permutation null check (n=27): observed=-0.1294  p=0.5075
+
+[Korea] Gini trend: ON=+0.001185 [+0.001088,+0.001282]  OFF=+0.001186 [+0.001090,+0.001282]  diff=+0.000001 [-0.000129,+0.000132]
+
+[Korea] Dose-response
+country  multiplier  mean_slope  ci95_lo  ci95_hi
+  Korea           1    0.001168 0.001080 0.001256
+  Korea           3    0.001062 0.000856 0.001269
+  Korea          10    0.001156 0.001049 0.001262
+  Korea          30    0.001014 0.000871 0.001156
+
+[Korea] Targeting diagnostic: subsidy slope=+0.002906 [+0.002694,+0.003118]  recip-nonrecip gini diff=+0.000017 [-0.000180,+0.000215]
+
+[Korea] Mechanism trace
+               mean_wage_var_share         mean_transfer_var_share         mean_owner_var_share         mean_repression_bound_share        
+                              mean     std                    mean     std                 mean     std                        mean     std
+regime                                                                                                                                     
+captured                    0.7458  0.1247                  0.0000  0.0000               0.2557  0.1248                      0.0531  0.0093
+dictatorship                0.7723  0.1233                  0.0000  0.0000               0.2297  0.1237                      0.9245  0.0149
+representative              0.7099  0.0930                  0.0002  0.0002               0.2939  0.0909                      0.0002  0.0006
+
+[Korea] Rare-event frequency (15 seeds/regime, 1000 steps, burn-in=200)
+                mean_spark_rate  pct_seeds_with_any_spark  mean_time_to_first_spark  mean_run_length  mean_max_run_length
+regime                                                                                                                   
+captured                 0.7692                       1.0                    1.0000          13.0133              71.2000
+dictatorship             0.0615                       1.0                   63.0000           1.2731               3.9333
+representative           0.9458                       1.0                    0.3333          89.5494             298.6667
+  Note: spark_rate is the fraction of post-burn-in ticks with ANY protest --
+  this is the metric to cite for dictatorship/captured regimes, NOT
+  mean_protest_share from run_regime_comparison, which washes out isolated
+  rare events to ~0 when averaged over a short window.
+
+[Korea] Coordination sensitivity sweep (Morris-Shin / Edmond)
+                weights  sigma  theta  theta_star  x_star  coordination_success_rate country         regime
+               baseline   0.03 0.5081      0.5858  0.5923                     0.9950   Korea representative
+               baseline   0.07 0.5081      0.5858  0.6010                     0.9050   Korea representative
+               baseline   0.15 0.5081      0.5858  0.6183                     0.7900   Korea representative
+               baseline   0.30 0.5081      0.5858  0.6508                     0.7000   Korea representative
+          gini_dominant   0.03 0.5059      0.5858  0.5923                     0.9975   Korea representative
+          gini_dominant   0.07 0.5059      0.5858  0.6010                     0.9225   Korea representative
+          gini_dominant   0.15 0.5059      0.5858  0.6183                     0.7400   Korea representative
+          gini_dominant   0.30 0.5059      0.5858  0.6508                     0.6650   Korea representative
+redistribution_dominant   0.03 0.5080      0.5858  0.5923                     0.9950   Korea representative
+redistribution_dominant   0.07 0.5080      0.5858  0.6010                     0.9075   Korea representative
+redistribution_dominant   0.15 0.5080      0.5858  0.6183                     0.7850   Korea representative
+redistribution_dominant   0.30 0.5080      0.5858  0.6508                     0.7075   Korea representative
+               baseline   0.03 0.4232      0.5306  0.5329                     1.0000   Korea       captured
+               baseline   0.07 0.4232      0.5306  0.5360                     0.9425   Korea       captured
+               baseline   0.15 0.4232      0.5306  0.5421                     0.8000   Korea       captured
+               baseline   0.30 0.4232      0.5306  0.5536                     0.6825   Korea       captured
+          gini_dominant   0.03 0.4471      0.5306  0.5329                     0.9975   Korea       captured
+          gini_dominant   0.07 0.4471      0.5306  0.5360                     0.9125   Korea       captured
+          gini_dominant   0.15 0.4471      0.5306  0.5421                     0.7125   Korea       captured
+          gini_dominant   0.30 0.4471      0.5306  0.5536                     0.6325   Korea       captured
+redistribution_dominant   0.03 0.4672      0.5306  0.5329                     0.9900   Korea       captured
+redistribution_dominant   0.07 0.4672      0.5306  0.5360                     0.8575   Korea       captured
+redistribution_dominant   0.15 0.4672      0.5306  0.5421                     0.7075   Korea       captured
+redistribution_dominant   0.30 0.4672      0.5306  0.5536                     0.6100   Korea       captured
+               baseline   0.03 0.3385      0.3915  0.3832                     0.9325   Korea   dictatorship
+               baseline   0.07 0.3385      0.3915  0.3722                     0.7050   Korea   dictatorship
+               baseline   0.15 0.3385      0.3915  0.3502                     0.5425   Korea   dictatorship
+               baseline   0.30 0.3385      0.3915  0.3089                     0.4900   Korea   dictatorship
+          gini_dominant   0.03 0.4392      0.3915  0.3832                     0.0425   Korea   dictatorship
+          gini_dominant   0.07 0.4392      0.3915  0.3722                     0.1600   Korea   dictatorship
+          gini_dominant   0.15 0.4392      0.3915  0.3502                     0.2550   Korea   dictatorship
+          gini_dominant   0.30 0.4392      0.3915  0.3089                     0.3475   Korea   dictatorship
+redistribution_dominant   0.03 0.4203      0.3915  0.3832                     0.1150   Korea   dictatorship
+redistribution_dominant   0.07 0.4203      0.3915  0.3722                     0.2825   Korea   dictatorship
+redistribution_dominant   0.15 0.4203      0.3915  0.3502                     0.3100   Korea   dictatorship
+redistribution_dominant   0.30 0.4203      0.3915  0.3089                     0.3475   Korea   dictatorship
+
+[Korea] Cascade detection (89 candidate cascades flagged, pooled jump threshold=0.3839 at p95, across 10 seeds x 3 regimes)
+                  mean     std  count
+regime                               
+captured        0.0013  0.0030     35
+dictatorship    0.0001  0.0006     38
+representative  0.0097  0.0095     16
+  -> Falsification gap consistently DROPS at detected cascades across every regime with events: consistent with Kuran's signature.
+
+######################################################################
+# Russia
+######################################################################
+[Russia] Historical validation (n=20 comparable years)
+  RMSE: 10.057   Correlation: 0.463
+
+[Russia] Regime comparison (25 seeds/regime, 600 steps, burn-in=200)
+============================================================
+
+Gini
+  captured           0.7676   [0.7471, 0.7881]
+  dictatorship       0.7880   [0.7662, 0.8098]
+  representative     0.7742   [0.7553, 0.7932]
+
+Unemployment rate
+  captured           0.0273   [0.0220, 0.0326]
+  dictatorship       0.0269   [0.0238, 0.0300]
+  representative     0.0285   [0.0237, 0.0333]
+
+Protest share
+  captured           0.0040   [0.0032, 0.0048]
+  dictatorship       0.0001   [0.0001, 0.0001]
+  representative     0.0106   [0.0085, 0.0127]
+
+Redistribution (mean)
+  captured          31.4291   [23.1870, 39.6711]
+  dictatorship      33.5915   [24.3314, 42.8515]
+  representative    36.7475   [30.0631, 43.4318]
+
+Redistribution (volatility)
+  captured          13.0999   [9.5137, 16.6861]
+  dictatorship      14.2410   [11.2158, 17.2662]
+  representative    15.7050   [12.7695, 18.6404]
+============================================================
+
+[Russia] Reform-vs-revolution diagnostics
+  representative (1623 events): +0.768 +0.886 +0.986 +1.092 +1.210 +1.340 +1.417 +1.477 +1.584 +1.666 +1.780
+  captured (1925 events): +0.660 +0.735 +0.741 +0.807 +0.864 +0.921 +1.003 +1.113 +1.195 +1.284 +1.363
+  dictatorship (0 events): n/a
+
+[Russia] Sensitivity sweep
+country  wage_noise_std  threshold_std_base  mean_gap  std_gap
+ Russia           0.005                0.06    4.4826   9.2912
+ Russia           0.005                0.08   -1.0742   7.3157
+ Russia           0.005                0.12   -2.4673   5.5046
+ Russia           0.010                0.06   -4.4133  22.5760
+ Russia           0.010                0.08   -2.2336   9.2027
+ Russia           0.010                0.12    0.9756   9.9583
+ Russia           0.020                0.06    1.2870  12.1954
+ Russia           0.020                0.08    0.9926   4.7309
+ Russia           0.020                0.12  -13.1331   6.4107
+
+[Russia] Permutation null check (n=16): observed=-0.2495  p=0.3715
+
+[Russia] Gini trend: ON=+0.001082 [+0.000971,+0.001192]  OFF=+0.001067 [+0.000895,+0.001238]  diff=-0.000015 [-0.000229,+0.000200]
+
+[Russia] Dose-response
+country  multiplier  mean_slope  ci95_lo  ci95_hi
+ Russia           1    0.001183 0.001077 0.001288
+ Russia           3    0.001191 0.001092 0.001291
+ Russia          10    0.001180 0.001037 0.001322
+ Russia          30    0.001182 0.001091 0.001272
+
+[Russia] Targeting diagnostic: subsidy slope=+0.001151 [+0.000488,+0.001813]  recip-nonrecip gini diff=-0.000163 [-0.000445,+0.000120]
+
+[Russia] Mechanism trace
+               mean_wage_var_share         mean_transfer_var_share      mean_owner_var_share         mean_repression_bound_share        
+                              mean     std                    mean  std                 mean     std                        mean     std
+regime                                                                                                                                  
+captured                    0.7023  0.1756                     0.0  0.0               0.2976  0.1760                      0.0536  0.0089
+dictatorship                0.7290  0.1647                     0.0  0.0               0.2739  0.1643                      0.9242  0.0157
+representative              0.6790  0.1012                     0.0  0.0               0.3211  0.1003                      0.0007  0.0016
+
+[Russia] Rare-event frequency (15 seeds/regime, 1000 steps, burn-in=200)
+                mean_spark_rate  pct_seeds_with_any_spark  mean_time_to_first_spark  mean_run_length  mean_max_run_length
+regime                                                                                                                   
+captured                 0.6791                       1.0                    0.4000           5.2464              33.7333
+dictatorship             0.0649                       1.0                   46.1333           1.2296               3.2667
+representative           0.8330                       1.0                    0.5333          11.0267              48.7333
+  Note: spark_rate is the fraction of post-burn-in ticks with ANY protest --
+  this is the metric to cite for dictatorship/captured regimes, NOT
+  mean_protest_share from run_regime_comparison, which washes out isolated
+  rare events to ~0 when averaged over a short window.
+
+[Russia] Coordination sensitivity sweep (Morris-Shin / Edmond)
+                weights  sigma  theta  theta_star  x_star  coordination_success_rate country         regime
+               baseline   0.03 0.4002      0.5858  0.5923                     1.0000  Russia representative
+               baseline   0.07 0.4002      0.5858  0.6010                     1.0000  Russia representative
+               baseline   0.15 0.4002      0.5858  0.6183                     0.9325  Russia representative
+               baseline   0.30 0.4002      0.5858  0.6508                     0.8125  Russia representative
+          gini_dominant   0.03 0.4277      0.5858  0.5923                     1.0000  Russia representative
+          gini_dominant   0.07 0.4277      0.5858  0.6010                     0.9850  Russia representative
+          gini_dominant   0.15 0.4277      0.5858  0.6183                     0.8825  Russia representative
+          gini_dominant   0.30 0.4277      0.5858  0.6508                     0.7500  Russia representative
+redistribution_dominant   0.03 0.4700      0.5858  0.5923                     1.0000  Russia representative
+redistribution_dominant   0.07 0.4700      0.5858  0.6010                     0.9700  Russia representative
+redistribution_dominant   0.15 0.4700      0.5858  0.6183                     0.8375  Russia representative
+redistribution_dominant   0.30 0.4700      0.5858  0.6508                     0.7450  Russia representative
+               baseline   0.03 0.4228      0.5306  0.5329                     1.0000  Russia       captured
+               baseline   0.07 0.4228      0.5306  0.5360                     0.9475  Russia       captured
+               baseline   0.15 0.4228      0.5306  0.5421                     0.8025  Russia       captured
+               baseline   0.30 0.4228      0.5306  0.5536                     0.6825  Russia       captured
+          gini_dominant   0.03 0.4492      0.5306  0.5329                     0.9950  Russia       captured
+          gini_dominant   0.07 0.4492      0.5306  0.5360                     0.9050  Russia       captured
+          gini_dominant   0.15 0.4492      0.5306  0.5421                     0.7075  Russia       captured
+          gini_dominant   0.30 0.4492      0.5306  0.5536                     0.6325  Russia       captured
+redistribution_dominant   0.03 0.4571      0.5306  0.5329                     0.9950  Russia       captured
+redistribution_dominant   0.07 0.4571      0.5306  0.5360                     0.8725  Russia       captured
+redistribution_dominant   0.15 0.4571      0.5306  0.5421                     0.7400  Russia       captured
+redistribution_dominant   0.30 0.4571      0.5306  0.5536                     0.6375  Russia       captured
+               baseline   0.03 0.4273      0.3915  0.3832                     0.0550  Russia   dictatorship
+               baseline   0.07 0.4273      0.3915  0.3722                     0.2475  Russia   dictatorship
+               baseline   0.15 0.4273      0.3915  0.3502                     0.2775  Russia   dictatorship
+               baseline   0.30 0.4273      0.3915  0.3089                     0.3650  Russia   dictatorship
+          gini_dominant   0.03 0.4455      0.3915  0.3832                     0.0250  Russia   dictatorship
+          gini_dominant   0.07 0.4455      0.3915  0.3722                     0.1400  Russia   dictatorship
+          gini_dominant   0.15 0.4455      0.3915  0.3502                     0.2450  Russia   dictatorship
+          gini_dominant   0.30 0.4455      0.3915  0.3089                     0.3400  Russia   dictatorship
+redistribution_dominant   0.03 0.4535      0.3915  0.3832                     0.0050  Russia   dictatorship
+redistribution_dominant   0.07 0.4535      0.3915  0.3722                     0.1375  Russia   dictatorship
+redistribution_dominant   0.15 0.4535      0.3915  0.3502                     0.2400  Russia   dictatorship
+redistribution_dominant   0.30 0.4535      0.3915  0.3089                     0.3150  Russia   dictatorship
+
+[Russia] Cascade detection (83 candidate cascades flagged, pooled jump threshold=0.4200 at p95, across 10 seeds x 3 regimes)
+                  mean     std  count
+regime                               
+captured        0.0020  0.0035     41
+dictatorship    0.0000  0.0007     25
+representative  0.0036  0.0048     17
+  -> Falsification gap consistently DROPS at detected cascades across every regime with events: consistent with Kuran's signature.
+
+######################################################################
+# South Africa
+######################################################################
+[South Africa] Historical validation (n=26 comparable years)
+  RMSE: 3.469   Correlation: 0.840
+
+[South Africa] Regime comparison (25 seeds/regime, 600 steps, burn-in=200)
+============================================================
+
+Gini
+  captured           0.8003   [0.7764, 0.8242]
+  dictatorship       0.7898   [0.7704, 0.8091]
+  representative     0.7774   [0.7578, 0.7970]
+
+Unemployment rate
+  captured           0.0303   [0.0227, 0.0380]
+  dictatorship       0.0250   [0.0218, 0.0282]
+  representative     0.0279   [0.0227, 0.0330]
+
+Protest share
+  captured           0.0040   [0.0030, 0.0050]
+  dictatorship       0.0001   [0.0001, 0.0001]
+  representative     0.0086   [0.0068, 0.0104]
+
+Redistribution (mean)
+  captured          31.2215   [29.4061, 33.0369]
+  dictatorship      33.6457   [31.4100, 35.8814]
+  representative    36.1228   [33.4167, 38.8289]
+
+Redistribution (volatility)
+  captured           9.1838   [8.3756, 9.9921]
+  dictatorship       9.4798   [8.7017, 10.2579]
+  representative    10.0878   [9.1883, 10.9872]
+============================================================
+
+[South Africa] Reform-vs-revolution diagnostics
+  representative (1601 events): +0.225 +0.359 +0.420 +0.524 +0.621 +0.719 +0.810 +0.892 +0.976 +1.056 +1.157
+  captured (2073 events): +0.179 +0.277 +0.346 +0.429 +0.495 +0.576 +0.655 +0.733 +0.790 +0.857 +0.937
+  dictatorship (0 events): n/a
+
+[South Africa] Sensitivity sweep
+     country  wage_noise_std  threshold_std_base  mean_gap  std_gap
+South Africa           0.005                0.06   -0.8659   3.5505
+South Africa           0.005                0.08    1.4484   2.1795
+South Africa           0.005                0.12    0.9326   2.8414
+South Africa           0.010                0.06   -0.1930   2.7313
+South Africa           0.010                0.08    2.1737   4.0360
+South Africa           0.010                0.12    0.5329   1.5410
+South Africa           0.020                0.06    0.2123   4.4376
+South Africa           0.020                0.08    0.1912   4.2938
+South Africa           0.020                0.12    1.3201   3.1668
+
+[South Africa] Permutation null check (n=23): observed=0.1879  p=0.3755
+
+[South Africa] Gini trend: ON=+0.001114 [+0.001029,+0.001198]  OFF=+0.001033 [+0.000880,+0.001186]  diff=-0.000081 [-0.000244,+0.000083]
+
+[South Africa] Dose-response
+     country  multiplier  mean_slope  ci95_lo  ci95_hi
+South Africa           1    0.001065 0.000981 0.001150
+South Africa           3    0.001155 0.001070 0.001240
+South Africa          10    0.001155 0.001035 0.001276
+South Africa          30    0.001175 0.001068 0.001281
+
+[South Africa] Targeting diagnostic: subsidy slope=+0.000791 [+0.000680,+0.000902]  recip-nonrecip gini diff=-0.000096 [-0.000233,+0.000041]
+
+[South Africa] Mechanism trace
+               mean_wage_var_share         mean_transfer_var_share      mean_owner_var_share         mean_repression_bound_share        
+                              mean     std                    mean  std                 mean     std                        mean     std
+regime                                                                                                                                  
+captured                    0.7067  0.1202                     0.0  0.0               0.2934  0.1205                      0.0548  0.0098
+dictatorship                0.6882  0.1716                     0.0  0.0               0.3123  0.1702                      0.9247  0.0149
+representative              0.6641  0.1475                     0.0  0.0               0.3363  0.1472                      0.0007  0.0015
+
+[South Africa] Rare-event frequency (15 seeds/regime, 1000 steps, burn-in=200)
+                mean_spark_rate  pct_seeds_with_any_spark  mean_time_to_first_spark  mean_run_length  mean_max_run_length
+regime                                                                                                                   
+captured                 0.6362                       1.0                    0.9333           4.1163              26.4667
+dictatorship             0.0543                       1.0                   53.3333           1.1768               2.9333
+representative           0.8037                       1.0                    0.1333           7.6183              44.6000
+  Note: spark_rate is the fraction of post-burn-in ticks with ANY protest --
+  this is the metric to cite for dictatorship/captured regimes, NOT
+  mean_protest_share from run_regime_comparison, which washes out isolated
+  rare events to ~0 when averaged over a short window.
+
+[South Africa] Coordination sensitivity sweep (Morris-Shin / Edmond)
+                weights  sigma  theta  theta_star  x_star  coordination_success_rate      country         regime
+               baseline   0.03 0.2956      0.5858  0.5923                     1.0000 South Africa representative
+               baseline   0.07 0.2956      0.5858  0.6010                     1.0000 South Africa representative
+               baseline   0.15 0.2956      0.5858  0.6183                     0.9875 South Africa representative
+               baseline   0.30 0.2956      0.5858  0.6508                     0.8775 South Africa representative
+          gini_dominant   0.03 0.4304      0.5858  0.5923                     1.0000 South Africa representative
+          gini_dominant   0.07 0.4304      0.5858  0.6010                     0.9850 South Africa representative
+          gini_dominant   0.15 0.4304      0.5858  0.6183                     0.8800 South Africa representative
+          gini_dominant   0.30 0.4304      0.5858  0.6508                     0.7425 South Africa representative
+redistribution_dominant   0.03 0.3642      0.5858  0.5923                     1.0000 South Africa representative
+redistribution_dominant   0.07 0.3642      0.5858  0.6010                     1.0000 South Africa representative
+redistribution_dominant   0.15 0.3642      0.5858  0.6183                     0.9500 South Africa representative
+redistribution_dominant   0.30 0.3642      0.5858  0.6508                     0.8500 South Africa representative
+               baseline   0.03 0.5009      0.5306  0.5329                     0.8725 South Africa       captured
+               baseline   0.07 0.5009      0.5306  0.5360                     0.7075 South Africa       captured
+               baseline   0.15 0.5009      0.5306  0.5421                     0.6175 South Africa       captured
+               baseline   0.30 0.5009      0.5306  0.5536                     0.5700 South Africa       captured
+          gini_dominant   0.03 0.4245      0.5306  0.5329                     1.0000 South Africa       captured
+          gini_dominant   0.07 0.4245      0.5306  0.5360                     0.9500 South Africa       captured
+          gini_dominant   0.15 0.4245      0.5306  0.5421                     0.7550 South Africa       captured
+          gini_dominant   0.30 0.4245      0.5306  0.5536                     0.6625 South Africa       captured
+redistribution_dominant   0.03 0.4873      0.5306  0.5329                     0.9400 South Africa       captured
+redistribution_dominant   0.07 0.4873      0.5306  0.5360                     0.7800 South Africa       captured
+redistribution_dominant   0.15 0.4873      0.5306  0.5421                     0.6525 South Africa       captured
+redistribution_dominant   0.30 0.4873      0.5306  0.5536                     0.5775 South Africa       captured
+               baseline   0.03 0.4303      0.3915  0.3832                     0.0500 South Africa   dictatorship
+               baseline   0.07 0.4303      0.3915  0.3722                     0.2400 South Africa   dictatorship
+               baseline   0.15 0.4303      0.3915  0.3502                     0.2750 South Africa   dictatorship
+               baseline   0.30 0.4303      0.3915  0.3089                     0.3625 South Africa   dictatorship
+          gini_dominant   0.03 0.4776      0.3915  0.3832                     0.0000 South Africa   dictatorship
+          gini_dominant   0.07 0.4776      0.3915  0.3722                     0.0700 South Africa   dictatorship
+          gini_dominant   0.15 0.4776      0.3915  0.3502                     0.1825 South Africa   dictatorship
+          gini_dominant   0.30 0.4776      0.3915  0.3089                     0.3025 South Africa   dictatorship
+redistribution_dominant   0.03 0.4609      0.3915  0.3832                     0.0050 South Africa   dictatorship
+redistribution_dominant   0.07 0.4609      0.3915  0.3722                     0.1175 South Africa   dictatorship
+redistribution_dominant   0.15 0.4609      0.3915  0.3502                     0.2150 South Africa   dictatorship
+redistribution_dominant   0.30 0.4609      0.3915  0.3089                     0.3100 South Africa   dictatorship
+
+[South Africa] Cascade detection (97 candidate cascades flagged, pooled jump threshold=0.3850 at p95, across 10 seeds x 3 regimes)
+                  mean     std  count
+regime                               
+captured        0.0013  0.0032     35
+dictatorship   -0.0001  0.0006     32
+representative  0.0039  0.0036     30
+  -> Falsification gap does not consistently drop at detected cascades -- Kuran signature not clearly present in this run; treat as an open finding.
+
+######################################################################
+# United Kingdom
+######################################################################
+[United Kingdom] Historical validation (n=64 comparable years)
+  RMSE: 14.962   Correlation: 0.598
+
+[United Kingdom] Regime comparison (25 seeds/regime, 600 steps, burn-in=200)
+============================================================
+
+Gini
+  captured           0.7827   [0.7591, 0.8064]
+  dictatorship       0.7982   [0.7788, 0.8176]
+  representative     0.7797   [0.7563, 0.8031]
+
+Unemployment rate
+  captured           0.0276   [0.0223, 0.0328]
+  dictatorship       0.0267   [0.0224, 0.0310]
+  representative     0.0287   [0.0236, 0.0337]
+
+Protest share
+  captured           0.0044   [0.0031, 0.0057]
+  dictatorship       0.0001   [0.0001, 0.0001]
+  representative     0.0104   [0.0086, 0.0123]
+
+Redistribution (mean)
+  captured          71.6960   [66.1317, 77.2602]
+  dictatorship      63.9034   [58.0273, 69.7795]
+  representative    65.4277   [58.1467, 72.7087]
+
+Redistribution (volatility)
+  captured          20.7496   [18.3507, 23.1485]
+  dictatorship      20.5833   [18.7603, 22.4064]
+  representative    19.4656   [17.4362, 21.4950]
+============================================================
+
+[United Kingdom] Reform-vs-revolution diagnostics
+  representative (1592 events): +0.583 +0.815 +1.009 +1.195 +1.342 +1.531 +1.694 +1.841 +1.983 +2.137 +2.280
+  captured (1735 events): +0.463 +0.631 +0.811 +0.949 +1.116 +1.257 +1.391 +1.523 +1.706 +1.855 +2.025
+  dictatorship (0 events): n/a
+
+[United Kingdom] Sensitivity sweep
+       country  wage_noise_std  threshold_std_base  mean_gap  std_gap
+United Kingdom           0.005                0.06   -1.6648   6.4744
+United Kingdom           0.005                0.08    1.8449   7.1125
+United Kingdom           0.005                0.12    2.1896   6.7047
+United Kingdom           0.010                0.06    4.3699   9.4995
+United Kingdom           0.010                0.08    2.7918   7.3828
+United Kingdom           0.010                0.12    1.0236   5.5974
+United Kingdom           0.020                0.06   -2.7337   6.0637
+United Kingdom           0.020                0.08    0.1736   5.3697
+United Kingdom           0.020                0.12   -1.7610   6.4520
+
+[United Kingdom] Permutation null check (n=23): observed=-0.2426  p=0.2735
+
+[United Kingdom] Gini trend: ON=+0.001124 [+0.001045,+0.001202]  OFF=+0.001113 [+0.000989,+0.001238]  diff=-0.000010 [-0.000143,+0.000122]
+
+[United Kingdom] Dose-response
+       country  multiplier  mean_slope  ci95_lo  ci95_hi
+United Kingdom           1    0.001110 0.000983 0.001238
+United Kingdom           3    0.001109 0.000994 0.001223
+United Kingdom          10    0.000978 0.000847 0.001109
+United Kingdom          30    0.001115 0.000970 0.001260
+
+[United Kingdom] Targeting diagnostic: subsidy slope=+0.001859 [+0.001494,+0.002225]  recip-nonrecip gini diff=-0.000093 [-0.000200,+0.000013]
+
+[United Kingdom] Mechanism trace
+               mean_wage_var_share        mean_transfer_var_share      mean_owner_var_share         mean_repression_bound_share        
+                              mean    std                    mean  std                 mean     std                        mean     std
+regime                                                                                                                                 
+captured                    0.6792  0.131                     0.0  0.0               0.3216  0.1299                      0.0537  0.0085
+dictatorship                0.7798  0.103                     0.0  0.0               0.2220  0.1040                      0.9245  0.0149
+representative              0.7041  0.142                     0.0  0.0               0.2961  0.1410                      0.0006  0.0012
+
+[United Kingdom] Rare-event frequency (15 seeds/regime, 1000 steps, burn-in=200)
+                mean_spark_rate  pct_seeds_with_any_spark  mean_time_to_first_spark  mean_run_length  mean_max_run_length
+regime                                                                                                                   
+captured                 0.6696                       1.0                    0.5333           5.1443              34.5333
+dictatorship             0.0462                       1.0                   55.3333           1.2100               3.0000
+representative           0.8326                       1.0                    0.6000          13.7069              63.7333
+  Note: spark_rate is the fraction of post-burn-in ticks with ANY protest --
+  this is the metric to cite for dictatorship/captured regimes, NOT
+  mean_protest_share from run_regime_comparison, which washes out isolated
+  rare events to ~0 when averaged over a short window.
+
+[United Kingdom] Coordination sensitivity sweep (Morris-Shin / Edmond)
+                weights  sigma  theta  theta_star  x_star  coordination_success_rate        country         regime
+               baseline   0.03 0.6269      0.5858  0.5923                     0.1200 United Kingdom representative
+               baseline   0.07 0.6269      0.5858  0.6010                     0.3550 United Kingdom representative
+               baseline   0.15 0.6269      0.5858  0.6183                     0.4675 United Kingdom representative
+               baseline   0.30 0.6269      0.5858  0.6508                     0.5450 United Kingdom representative
+          gini_dominant   0.03 0.5254      0.5858  0.5923                     0.9875 United Kingdom representative
+          gini_dominant   0.07 0.5254      0.5858  0.6010                     0.8650 United Kingdom representative
+          gini_dominant   0.15 0.5254      0.5858  0.6183                     0.7075 United Kingdom representative
+          gini_dominant   0.30 0.5254      0.5858  0.6508                     0.6550 United Kingdom representative
+redistribution_dominant   0.03 0.5598      0.5858  0.5923                     0.8750 United Kingdom representative
+redistribution_dominant   0.07 0.5598      0.5858  0.6010                     0.7425 United Kingdom representative
+redistribution_dominant   0.15 0.5598      0.5858  0.6183                     0.6600 United Kingdom representative
+redistribution_dominant   0.30 0.5598      0.5858  0.6508                     0.6225 United Kingdom representative
+               baseline   0.03 0.6076      0.5306  0.5329                     0.0025 United Kingdom       captured
+               baseline   0.07 0.6076      0.5306  0.5360                     0.1775 United Kingdom       captured
+               baseline   0.15 0.6076      0.5306  0.5421                     0.2975 United Kingdom       captured
+               baseline   0.30 0.6076      0.5306  0.5536                     0.4500 United Kingdom       captured
+          gini_dominant   0.03 0.5391      0.5306  0.5329                     0.4700 United Kingdom       captured
+          gini_dominant   0.07 0.5391      0.5306  0.5360                     0.4375 United Kingdom       captured
+          gini_dominant   0.15 0.5391      0.5306  0.5421                     0.5100 United Kingdom       captured
+          gini_dominant   0.30 0.5391      0.5306  0.5536                     0.5150 United Kingdom       captured
+redistribution_dominant   0.03 0.5560      0.5306  0.5329                     0.2075 United Kingdom       captured
+redistribution_dominant   0.07 0.5560      0.5306  0.5360                     0.4075 United Kingdom       captured
+redistribution_dominant   0.15 0.5560      0.5306  0.5421                     0.4675 United Kingdom       captured
+redistribution_dominant   0.30 0.5560      0.5306  0.5536                     0.4925 United Kingdom       captured
+               baseline   0.03 0.3592      0.3915  0.3832                     0.8100 United Kingdom   dictatorship
+               baseline   0.07 0.3592      0.3915  0.3722                     0.5675 United Kingdom   dictatorship
+               baseline   0.15 0.3592      0.3915  0.3502                     0.4625 United Kingdom   dictatorship
+               baseline   0.30 0.3592      0.3915  0.3089                     0.4575 United Kingdom   dictatorship
+          gini_dominant   0.03 0.4751      0.3915  0.3832                     0.0000 United Kingdom   dictatorship
+          gini_dominant   0.07 0.4751      0.3915  0.3722                     0.0750 United Kingdom   dictatorship
+          gini_dominant   0.15 0.4751      0.3915  0.3502                     0.1850 United Kingdom   dictatorship
+          gini_dominant   0.30 0.4751      0.3915  0.3089                     0.3050 United Kingdom   dictatorship
+redistribution_dominant   0.03 0.4626      0.3915  0.3832                     0.0050 United Kingdom   dictatorship
+redistribution_dominant   0.07 0.4626      0.3915  0.3722                     0.1125 United Kingdom   dictatorship
+redistribution_dominant   0.15 0.4626      0.3915  0.3502                     0.2125 United Kingdom   dictatorship
+redistribution_dominant   0.30 0.4626      0.3915  0.3089                     0.3100 United Kingdom   dictatorship
+
+[United Kingdom] Cascade detection (105 candidate cascades flagged, pooled jump threshold=0.3650 at p95, across 10 seeds x 3 regimes)
+                  mean     std  count
+regime                               
+captured        0.0019  0.0033     48
+dictatorship    0.0000  0.0005     32
+representative  0.0034  0.0033     25
+  -> Falsification gap consistently DROPS at detected cascades across every regime with events: consistent with Kuran's signature.
+
+######################################################################
+# United States
+######################################################################
+[United States] Historical validation (n=66 comparable years)
+  RMSE: 2.335   Correlation: 0.742
+
+[United States] Regime comparison (25 seeds/regime, 600 steps, burn-in=200)
+============================================================
+
+Gini
+  captured           0.7823   [0.7653, 0.7992]
+  dictatorship       0.7658   [0.7390, 0.7926]
+  representative     0.7647   [0.7427, 0.7867]
+
+Unemployment rate
+  captured           0.0291   [0.0209, 0.0373]
+  dictatorship       0.0259   [0.0230, 0.0288]
+  representative     0.0255   [0.0217, 0.0293]
+
+Protest share
+  captured           0.0031   [0.0024, 0.0039]
+  dictatorship       0.0001   [0.0000, 0.0001]
+  representative     0.0062   [0.0053, 0.0071]
+
+Redistribution (mean)
+  captured         299.6215   [293.0462, 306.1969]
+  dictatorship     303.5289   [296.0840, 310.9737]
+  representative   301.9139   [294.0862, 309.7416]
+
+Redistribution (volatility)
+  captured          93.8134   [89.6074, 98.0194]
+  dictatorship      92.1979   [87.4903, 96.9055]
+  representative    95.9508   [91.7030, 100.1987]
+============================================================
+
+[United States] Reform-vs-revolution diagnostics
+  representative (1574 events): +1.802 +3.000 +3.731 +4.560 +5.366 +6.185 +6.977 +7.843 +8.611 +9.424 +10.155
+  captured (1920 events): +1.837 +3.010 +3.784 +4.503 +5.377 +6.169 +6.971 +7.704 +8.522 +9.278 +10.046
+  dictatorship (0 events): n/a
+
+[United States] Sensitivity sweep
+      country  wage_noise_std  threshold_std_base  mean_gap  std_gap
+United States           0.005                0.06   -5.3540  11.4153
+United States           0.005                0.08   -1.9284   5.4808
+United States           0.005                0.12   -5.5920   4.9243
+United States           0.010                0.06   -6.2196  11.6677
+United States           0.010                0.08    2.8711   5.1999
+United States           0.010                0.12    1.1116   8.9328
+United States           0.020                0.06   -4.2638   5.5756
+United States           0.020                0.08    1.9498   9.7677
+United States           0.020                0.12   -7.2720   4.7959
+
+[United States] Permutation null check (n=50): observed=-0.1328  p=0.3465
+
+[United States] Gini trend: ON=+0.001087 [+0.000953,+0.001221]  OFF=+0.001109 [+0.000993,+0.001226]  diff=+0.000022 [-0.000169,+0.000214]
+
+[United States] Dose-response
+      country  multiplier  mean_slope  ci95_lo  ci95_hi
+United States           1    0.001073 0.000932 0.001214
+United States           3    0.001188 0.001063 0.001314
+United States          10    0.001051 0.000931 0.001170
+United States          30    0.001172 0.001040 0.001303
+
+[United States] Targeting diagnostic: subsidy slope=+0.008519 [+0.007909,+0.009129]  recip-nonrecip gini diff=-0.000089 [-0.000202,+0.000024]
+
+[United States] Mechanism trace
+               mean_wage_var_share         mean_transfer_var_share      mean_owner_var_share         mean_repression_bound_share        
+                              mean     std                    mean  std                 mean     std                        mean     std
+regime                                                                                                                                  
+captured                    0.6577  0.1696                  0.0001  0.0               0.3453  0.1678                      0.0545  0.0100
+dictatorship                0.7488  0.0971                  0.0001  0.0               0.2558  0.0969                      0.9241  0.0149
+representative              0.7266  0.0947                  0.0001  0.0               0.2772  0.0933                      0.0002  0.0007
+
+[United States] Rare-event frequency (15 seeds/regime, 1000 steps, burn-in=200)
+                mean_spark_rate  pct_seeds_with_any_spark  mean_time_to_first_spark  mean_run_length  mean_max_run_length
+regime                                                                                                                   
+captured                 0.5598                       1.0                    3.2667           3.0593              21.6000
+dictatorship             0.0410                       1.0                   67.4667           1.1203               2.3333
+representative           0.7494                       1.0                    0.3333           5.4898              32.2000
+  Note: spark_rate is the fraction of post-burn-in ticks with ANY protest --
+  this is the metric to cite for dictatorship/captured regimes, NOT
+  mean_protest_share from run_regime_comparison, which washes out isolated
+  rare events to ~0 when averaged over a short window.
+
+[United States] Coordination sensitivity sweep (Morris-Shin / Edmond)
+                weights  sigma  theta  theta_star  x_star  coordination_success_rate       country         regime
+               baseline   0.03 0.5996      0.5858  0.5923                     0.4000 United States representative
+               baseline   0.07 0.5996      0.5858  0.6010                     0.5200 United States representative
+               baseline   0.15 0.5996      0.5858  0.6183                     0.5700 United States representative
+               baseline   0.30 0.5996      0.5858  0.6508                     0.5700 United States representative
+          gini_dominant   0.03 0.5347      0.5858  0.5923                     0.9800 United States representative
+          gini_dominant   0.07 0.5347      0.5858  0.6010                     0.8425 United States representative
+          gini_dominant   0.15 0.5347      0.5858  0.6183                     0.6875 United States representative
+          gini_dominant   0.30 0.5347      0.5858  0.6508                     0.6475 United States representative
+redistribution_dominant   0.03 0.5455      0.5858  0.5923                     0.9400 United States representative
+redistribution_dominant   0.07 0.5455      0.5858  0.6010                     0.8225 United States representative
+redistribution_dominant   0.15 0.5455      0.5858  0.6183                     0.7075 United States representative
+redistribution_dominant   0.30 0.5455      0.5858  0.6508                     0.6500 United States representative
+               baseline   0.03 0.5743      0.5306  0.5329                     0.0700 United States       captured
+               baseline   0.07 0.5743      0.5306  0.5360                     0.3000 United States       captured
+               baseline   0.15 0.5743      0.5306  0.5421                     0.4000 United States       captured
+               baseline   0.30 0.5743      0.5306  0.5536                     0.4925 United States       captured
+          gini_dominant   0.03 0.5450      0.5306  0.5329                     0.3900 United States       captured
+          gini_dominant   0.07 0.5450      0.5306  0.5360                     0.4075 United States       captured
+          gini_dominant   0.15 0.5450      0.5306  0.5421                     0.4925 United States       captured
+          gini_dominant   0.30 0.5450      0.5306  0.5536                     0.5075 United States       captured
+redistribution_dominant   0.03 0.5501      0.5306  0.5329                     0.2550 United States       captured
+redistribution_dominant   0.07 0.5501      0.5306  0.5360                     0.4550 United States       captured
+redistribution_dominant   0.15 0.5501      0.5306  0.5421                     0.4800 United States       captured
+redistribution_dominant   0.30 0.5501      0.5306  0.5536                     0.5025 United States       captured
+               baseline   0.03 0.3544      0.3915  0.3832                     0.8575 United States   dictatorship
+               baseline   0.07 0.3544      0.3915  0.3722                     0.6025 United States   dictatorship
+               baseline   0.15 0.3544      0.3915  0.3502                     0.4725 United States   dictatorship
+               baseline   0.30 0.3544      0.3915  0.3089                     0.4650 United States   dictatorship
+          gini_dominant   0.03 0.3872      0.3915  0.3832                     0.4900 United States   dictatorship
+          gini_dominant   0.07 0.3872      0.3915  0.3722                     0.3825 United States   dictatorship
+          gini_dominant   0.15 0.3872      0.3915  0.3502                     0.3850 United States   dictatorship
+          gini_dominant   0.30 0.3872      0.3915  0.3089                     0.4025 United States   dictatorship
+redistribution_dominant   0.03 0.4220      0.3915  0.3832                     0.1050 United States   dictatorship
+redistribution_dominant   0.07 0.4220      0.3915  0.3722                     0.2725 United States   dictatorship
+redistribution_dominant   0.15 0.4220      0.3915  0.3502                     0.3025 United States   dictatorship
+redistribution_dominant   0.30 0.4220      0.3915  0.3089                     0.3475 United States   dictatorship
+
+[United States] Cascade detection (51 candidate cascades flagged, pooled jump threshold=0.3775 at p95, across 10 seeds x 3 regimes)
+                  mean     std  count
+regime                               
+captured        0.0017  0.0032     18
+dictatorship    0.0003  0.0005     19
+representative  0.0019  0.0032     14
+  -> Falsification gap consistently DROPS at detected cascades across every regime with events: consistent with Kuran's signature.
+
+======================================================================
+CROSS-COUNTRY COMPARISON
+======================================================================
+
+Cross-country comparison on 'mean_redistribution'
+======================================================================
+       country         regime      mean   ci95_lo   ci95_hi
+         Chile       captured 1719.1073 1703.6164 1734.5981
+         Chile   dictatorship 1715.2724 1700.1654 1730.3794
+         Chile representative 1722.9829 1707.5028 1738.4629
+         Egypt       captured  137.5928  117.2354  157.9501
+         Egypt   dictatorship  141.8733  121.3069  162.4396
+         Egypt representative  161.5658  135.1090  188.0226
+       Germany       captured   24.8096   19.6116   30.0076
+       Germany   dictatorship   21.3205   16.6197   26.0212
+       Germany representative   22.5666   17.5902   27.5429
+         Korea       captured  115.1804  110.3747  119.9861
+         Korea   dictatorship  116.7383  112.1257  121.3508
+         Korea representative  211.6699  191.2959  232.0439
+        Russia       captured   31.4291   23.1870   39.6711
+        Russia   dictatorship   33.5915   24.3314   42.8515
+        Russia representative   36.7475   30.0631   43.4318
+  South Africa       captured   31.2215   29.4061   33.0369
+  South Africa   dictatorship   33.6457   31.4100   35.8814
+  South Africa representative   36.1228   33.4167   38.8289
+United Kingdom       captured   71.6960   66.1317   77.2602
+United Kingdom   dictatorship   63.9034   58.0273   69.7795
+United Kingdom representative   65.4277   58.1467   72.7087
+ United States       captured  299.6215  293.0462  306.1969
+ United States   dictatorship  303.5289  296.0840  310.9737
+ United States representative  301.9139  294.0862  309.7416
+
+Representative − dictatorship gap by country (sorted):
+       country  representative_minus_dictatorship
+         Korea                            94.9316
+         Egypt                            19.6926
+         Chile                             7.7105
+        Russia                             3.1560
+  South Africa                             2.4771
+United Kingdom                             1.5243
+       Germany                             1.2461
+ United States                            -1.6150
+
+======================================================================
+NOT YET IMPLEMENTED (flagged, not silently skipped):
+  - Period-by-period / rolling-window refit of response fn + BVAR
+  - Compositional/indirect correlation analysis (spending mix vs protest)
+  - Full per-permutation BVAR refit for the null check
+======================================================================

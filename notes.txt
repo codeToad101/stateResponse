@@ -26,3 +26,14 @@ list of countries plus theorized "box":
 representative: US, germany, UK
 captured: south africa (boom, 1994), chile (boom, 2019)
 dictatorship: russia, egypt (boom, 2011)
+
+
+(d) Optional, more ambitious: exogenous shocks to theta (regime fundamentals). compute_theta_fundamental is currently a 
+smooth deterministic function of gini/growth/redistribution. Real-world sparks (self-immolation, elite defection, external
+ shock) are informational — Morris-Shin's own framework is literally about signals of theta, not theta itself moving
+  smoothly. Injecting rare, small-probability shocks to the signal (not the true macro state) would be the most
+   theoretically faithful way to let coordination clear unexpectedly, but it's a bigger addition than (a)–(c) and I'd 
+   treat it as a phase 2 unless you want it now.
+
+ABM "redistribution numbers" seem not comparable cross-country:
+Chile is around 1,700, Korea around 200, US around 300, Germany around 20
